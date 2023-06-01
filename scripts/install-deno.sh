@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 echo === Install deno
 
 if which deno >>/dev/null 2>&1 ;then

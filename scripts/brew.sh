@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 echo === Install Homebrew
 
 if which brew >>/dev/null 2>&1 ;then

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -eu
 echo === Install Rust
 
 if which rustup >>/dev/null 2>&1 ;then

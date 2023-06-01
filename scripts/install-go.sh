@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -eu
 echo === Install Go
 
 if which go >>/dev/null 2>&1 ;then

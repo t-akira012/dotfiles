@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -eu
 echo === git config
 git config --global ghq.root ~/src
 git config --global alias.st status

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 echo === Clone zsh function
 
 [[ ! -d ~/.config/zsh ]] && \

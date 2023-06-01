@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -eu
 echo --- SET GIT USER for GLOBAL ---
 echo What are you email address?
 read email

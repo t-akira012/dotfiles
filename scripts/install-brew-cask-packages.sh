@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -eu
 if [[ $(uname) != "Darwin" ]];then
   echo "This script is only for macOS"
   exit 1

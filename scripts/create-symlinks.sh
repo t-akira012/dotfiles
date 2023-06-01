@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 echo === Create symbolic links
 
 BASEPATH=$HOME/dotfiles/root

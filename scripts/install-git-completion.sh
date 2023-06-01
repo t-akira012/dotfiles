@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 echo === Download git-completion
 
 export LOCAL_BIN="$HOME/.local/bin"
