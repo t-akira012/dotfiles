@@ -7,10 +7,10 @@ if which brew >>/dev/null 2>&1 ;then
 else
   echo "Installing homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  brew doctor
   [[ `uname` == "Darwin" ]] \
     && eval "$(/opt/homebrew/bin/brew shellenv)" \
     || test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+  brew doctor
 fi
 
 echo === Install Homebrew packages
