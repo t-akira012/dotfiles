@@ -7,9 +7,11 @@ if which brew >>/dev/null 2>&1 ;then
 else
   echo "Installing homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  [[ `uname` == "Darwin" ]] \
-    && eval "$(/opt/homebrew/bin/brew shellenv)" \
-    || test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+  if [[ `uname` == "Darwin" ]];then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif test -d ~/.linuxbrew >>/dev/null 2>&1 ;then
+    eval "$(~/.linuxbrew/bin/brew shellenv)"
+  fi
   brew doctor
 fi
 
