@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo === Install Homebrew
 
-if which brew >>/dev/null 2&>1 ;then
+if which brew >>/dev/null 2>&1 ;then
   echo "Homebrew already installed."
 else
   echo "Installing homebrew..."

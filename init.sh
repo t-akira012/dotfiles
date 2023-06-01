@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 cd $(dirname $0)
 
-[[ $(uname) == "Darwin" ]] && chsh -s $(which zsh)
+if [[ "$SHELL" != *zsh ]];then
+  [[ $(uname) == "Darwin" ]] && chsh -s $(which zsh)
+fi
 
 ./scripts/brew.sh
 ./scripts/install-go.sh
