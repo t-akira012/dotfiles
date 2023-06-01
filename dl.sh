@@ -5,13 +5,9 @@ cd $(dirname $0)
   echo "dotfiles already exists" && \
   exit 1
 
-clone(){
-  git clone https://github.com/t-akira012/pub-dotfiles
-  mv pub-dotfiles $HOME/dotfiles
-}
 download(){
 
-  local tarball=https://github.com/t-akira012/pub-dotfiles/archive/main.tar.gz
+  local tarball=https://github.com/t-akira012/dotfiles/archive/main.tar.gz
   if type curl; then
     curl -L $tarball | tar zxv
   elif type wget; then
@@ -19,12 +15,12 @@ download(){
   else
     echo 'curl or wget required'
   fi
-  mv pub-dotfiles-main $HOME/dotfiles
+  mv dotfiles-main $HOME/dotfiles
 }
 
 main(){
   if type git ;then
-    clone
+    git clone https://github.com/t-akira012/dotfiles
   else
     download
   fi
