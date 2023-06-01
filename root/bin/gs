@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -e
+
+# set at .zshrc-ex
+if [[ ! -e "$GIST_DIR" ]]; then
+  echo '$GIST_DIR set at .zshrc-ex'
+  exit 1
+fi
+
+[ $# -ge 1 ] && SUB_COMMAND=$1
+[ $# -ge 1 ] && shift 1 && QUERY=$*
+
+cd $GIST_DIR
+
+push() {
+  git push origin @
+}
+
+pull() {
+  git pull origin master >/dev/null 2>&1
+}
+
+commit() {
+  local isChanged=$(git status --porcelain | wc -l)
+  [[ "$is_changed" = "0" ]] && exit 0
+  local name=$(basename "$filepath")
+  git add "$filepath" && git commit -m "updated $name"
+}
+
+view() {
+  local filepath=$GIST_DIR/$1
+  bat "$filepath"
+}
+
+edit() {
+  local filepath=$GIST_DIR/$1
+  $EDITOR "$filepath"
+  commit && push
+}
+
+add() {
+  [[ -z "$QUERY" ]] && exit 1
+  local filepath=$GIST_DIR/$QUERY.md
+  echo create filepath: "$filepath"
+  $EDITOR "$filepath"
+  commit && push
+}
+
+edit_list() {
+  pull &
+  local selected=$(ls -1 "$GIST_DIR" | sort | sed 's/.md//' | fzf --preview "cat {}.md")
+  [[ -n "$selected" ]] && edit "$selected.md"
+}
+
+view_list() {
+  pull &
+  local selected=$(ls -1 "$GIST_DIR" | sort | sed 's/.md//' | fzf --preview "cat {}.md")
+  [[ -n "$selected" ]] && view "$selected.md"
+}
+
+gitgrep() {
+  pull &
+  git grep "$QUERY"
+}
+
+case "$SUB_COMMAND" in
+"add") add ;;
+"e") edit_list ;;
+"edit") edit_list ;;
+"pull") pull ;;
+"push") push ;;
+"grep") gitgrep ;;
+*) view_list ;;
+esac

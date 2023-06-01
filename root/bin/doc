@@ -1,0 +1,57 @@
+#!/bin/bash
+
+if [[ ! -e "$MEMO_DIR" ]]; then
+  echo '$MEMO_DIR set at .zshrc-ex'
+  exit 1
+fi
+
+QUERY="$1"
+DATE=$(date "+%Y-%m-%d")
+HHMMSS=$(date "+%H-%M-%S")
+
+cd $MEMO_DIR
+
+clean() {
+  rm -rf ${MEMO_DIR}/.DS_Store
+  find ${MEMO_DIR} -maxdepth 1 -empty -delete
+  echo Deleted empty files.
+}
+
+flush() {
+  clean
+  BAK_DIR="${MEMO_DIR}bak_${DATE}"
+  mkdir -p $BAK_DIR
+  find $MEMO_DIR -maxdepth 1 -type f -exec mv -n {} $MEMO_DIR \;
+}
+
+sync() {
+  clean
+  result=0
+  output=$(git status 2>&1 >/dev/null) || result=$?
+  if [[ $result == 0 ]]; then
+    echo Sync git repsitory.
+    local isChanged=$(git status --porcelain | wc -l)
+    [[ "$is_changed" = "0" ]] && exit 0
+    git add --all && git commit -m "updated"
+
+    git pull origin @
+    git push origin @
+  else
+    echo Is not git repository.
+  fi
+}
+
+execute() {
+  local filename="${MEMO_DIR}/$DATE.md"
+  clean
+  nvim $filename
+  exit 0
+}
+
+case "$QUERY" in
+"clean") clean ;;
+"flush") flush ;;
+'sync') sync ;;
+'open') execute ;;
+*) execute
+esac

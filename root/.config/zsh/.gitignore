@@ -1,0 +1,9 @@
+.zsh_history
+.zshenv
+.zcompcache
+.zcompdump
+.zcompdump.*
+repos/*
+zfunc/*
+*.bak
+.zsh_sessions

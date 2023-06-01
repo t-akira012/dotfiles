@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR="$HOME/Documents/doc"
+DATE=$(date "+%Y-%m-%d")
+HHMMSS=$(date "+%H-%M-%S")
+
+filename="${DIR}/$DATE.md"
+touch $filename
+open -a "/Applications/CotEditor.app" $filename
