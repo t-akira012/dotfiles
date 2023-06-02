@@ -216,3 +216,4 @@ if [[ $(uname) == "Darwin" ]];then
   brew install --cask slack
 fi
 
+echo initialize done.
