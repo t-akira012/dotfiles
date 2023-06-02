@@ -132,7 +132,7 @@ fi
 echo === Download git-completion
 
 export LOCAL_BIN="$HOME/.local/bin"
-[[ ! -d "$LOCAL_BIN" ]] && mkdir -p $TARGET
+[[ ! -d "$LOCAL_BIN" ]] && mkdir -p $LOCAL_BIN
 
 cd $LOCAL_BIN
 wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
