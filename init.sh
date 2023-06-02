@@ -104,10 +104,9 @@ else
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 
-echo Install rust crates
+echo Install rust tools
 source "$HOME/.cargo/env"
 cargo install \
-  rustfmt \
   ripgrep \
   exa \
   bat \
