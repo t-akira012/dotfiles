@@ -11,16 +11,21 @@ fi
 #########################################################
 echo === Install Homebrew
 
+_eval_brew(){
+  if [[ -e /opt/homebrew/bin/brew ]];then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif test -d ~/.linuxbrew >>/dev/null 2>&1 ;then
+    eval "$(~/.linuxbrew/bin/brew shellenv)"
+  fi
+}
+
+eval_brew
 if which brew >>/dev/null 2>&1 ;then
   echo "Homebrew already installed."
 else
   echo "Installing homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  if [[ $(uname) == "Darwin" ]];then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  elif test -d ~/.linuxbrew >>/dev/null 2>&1 ;then
-    eval "$(~/.linuxbrew/bin/brew shellenv)"
-  fi
+  _eval_brew
 fi
 
 echo ===  Install Homebrew packages
@@ -100,6 +105,7 @@ else
 fi
 
 echo Install rust crates
+source "$HOME/.cargo/env"
 cargo install \
   rustfmt \
   ripgrep \
