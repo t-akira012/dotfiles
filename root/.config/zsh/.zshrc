@@ -144,6 +144,14 @@ __fzf-ghq-cd() {
   [[ ! -z $SELECTED ]] && cd $(ghq root)/$SELECTED
   zle reset-prompt
 }
+__fzf-files-depth1() {
+  local SELECTED=$(unbuffer ls -lA --color | grep '^-' | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  if [[ -n $SELECTED ]]; then
+    BUFFER="${BUFFER}\"$SELECTED\""
+    CURSOR=${#BUFFER}
+  fi
+  zle reset-prompt
+}
 
 
 # source
@@ -162,12 +170,14 @@ zle -N __fzf-ghq-cd
 zle -N __fzf-la
 zle -N __fzf-la-cd
 zle -N __fzf-open
+zle -N __fzf-files-depth1
 bindkey '^@' __nothing
 bindkey '^s' __nothing
 bindkey '^r' __fzf-history
 bindkey '^t' __fzf-find
 bindkey '^g' __fzf-ghq-cd
 bindkey '^o' __fzf-find-dir
+bindkey '^v' __fzf-files-depth1
 bindkey '\el' __fzf-la
 bindkey '\ez' __fzf-z-insert
 
