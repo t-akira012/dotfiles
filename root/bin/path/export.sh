@@ -1,4 +1,5 @@
-export BROWESR="/Applications/Google Chrome.app"
+# export BROWSER="/Applications/Google Chrome.app"
+export BROWSER="/Applications/Vivaldi.app"
 export FILTER='fzf'
 if [[ $(command -v nvim) ]]; then
   export EDITOR="nvim"

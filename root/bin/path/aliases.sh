@@ -6,6 +6,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ln='ln -i'
 alias o.='open .'
+alias ob="open -a $BROWSER"
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
