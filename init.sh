@@ -19,7 +19,7 @@ _eval_brew(){
   fi
 }
 
-eval_brew
+_eval_brew
 if which brew >>/dev/null 2>&1 ;then
   echo "Homebrew already installed."
 else
