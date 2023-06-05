@@ -14,6 +14,7 @@ alias cdchore='cd $HOME/Chore'
 alias cdot='cd $HOME/dotfiles'
 alias cdbin='cd $HOME/bin'
 alias cdnas='cd $HOME/nas'
+alias cdoc="[[ -d $MEMO_DIR ]] && cd $MEMO_DIR || echo 'MEMO_DIR is not set'"
 alias prv='ssh prv'
 
 alias tree="tree -I node_modules"
