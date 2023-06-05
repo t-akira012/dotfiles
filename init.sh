@@ -200,6 +200,17 @@ git config --global diff.colorMovedWS allow-indentation-change
 git config --global grep.lineNumber true
 
 #########################################################
+# create w3m config
+#########################################################
+
+if [[ ! -d "$HOME/.w3m" ]];then
+  mkdir "$HOME/.w3m"
+fi
+
+[[ ! -f $HOME/.w3m/config ]] && touch "$HOME/.w3m/config"
+echo "extbrowser /usr/bin/open" >> "$HOME/.w3m/config"
+
+#########################################################
 # cask packages
 #########################################################
 

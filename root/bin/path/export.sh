@@ -8,6 +8,7 @@ else
   export EDITOR="vim"
 fi
 
+alias v="$EDITOR"
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 
