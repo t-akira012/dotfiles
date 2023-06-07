@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -e
+
+[[ ! -e "$BOOKMARKS_DIR" ]] && echo 'You must set $BOOKMARKS_DIR.' && exit 1
+[ $# -ge 1 ] && SUB_COMMAND=$1
+[ $# -ge 1 ] && shift 1 && QUERY=$*
+
+cd "$BOOKMARKS_DIR"
+
+push() {
+  git push origin @
+}
+
+pull() {
+  git pull origin main >/dev/null 2>&1
+}
+
+commit() {
+  if git status --porcelain >/dev/null 2>&1; then
+    git add "$filepath" && git commit -m "updated $(basename "$filepath")"
+  fi
+}
+
+view() {
+  local filepath=$BOOKMARKS_DIR/$1
+  bat "$filepath"
+}
+
+edit() {
+  local filepath=$BOOKMARKS_DIR/$1
+  $EDITOR "$filepath"
+  commit && push
+}
+
+add() {
+  [[ -z "$QUERY" ]] && exit 1
+  local filepath=$BOOKMARKS_DIR/$QUERY.md
+  echo create filepath: "$filepath"
+  $EDITOR "$filepath"
+  commit && push
+}
+
+edit_list() {
+  pull &
+  local selected=$(ls -1 "$BOOKMARKS_DIR" | sort | sed 's/.md//' | fzf --preview "cat {}.md")
+  [[ -n "$selected" ]] && edit "$selected.md"
+}
+
+gitgrep() {
+  pull &
+  git grep "$QUERY"
+}
+
+case "$SUB_COMMAND" in
+"add") add ;;
+"e") edit_list ;;
+"edit") edit_list ;;
+"pull") pull ;;
+"push") push ;;
+"grep") gitgrep ;;
+*) edit_list ;;
+esac
