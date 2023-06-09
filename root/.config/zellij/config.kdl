@@ -23,7 +23,7 @@ keybinds clear-defaults=true {
         bind "v" { SwitchToMode "Scroll"; }
         bind "P" { ToggleFloatingPanes; SwitchToMode "Normal"; }
         bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-        bind "c" { NewTab; SwitchToMode "Normal"; }
+        bind "c" { NewTab; SwitchToMode "Normal"; SwitchToMode "RenameTab"; TabNameInput 0; }
         bind "t" { SwitchToMode "Tab"; }
         bind "," { SwitchToMode "RenameTab"; }
         bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
