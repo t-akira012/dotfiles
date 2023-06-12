@@ -83,9 +83,9 @@ _gen_fzf_default_opts() {
   local FZF_DARK="--color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:$base02,hl+:$blue --color info:$yellow,prompt:$yellow,pointer:$base3,marker:$base3,spinner:$yellow"
   local FZF_LIGHT="--color fg:-1,bg:-1,hl:$blue,fg+:$base02,bg+:$base2,hl+:$blue --color info:$yellow,prompt:$yellow,pointer:$base03,marker:$base03,spinner:$yellow"
   if [[ "$TERM_COLOR_MODE" == "LIGHT" ]]; then
-    export COLOR_OPTS="$FZF_DARK"
-  else
     export COLOR_OPTS="$FZF_LIGHT"
+  else
+    export COLOR_OPTS="$FZF_DARK"
   fi
   local OPTS="--height 70% --layout=reverse --preview-window=right --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
   export FZF_DEFAULT_OPTS="$COLOR_OPTS $OPTS"
