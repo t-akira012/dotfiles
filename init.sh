@@ -169,6 +169,16 @@ cd $HOME/.config/zsh/repos/pure
 ln -s "$PWD/pure.zsh" $HOME/.config/zsh/zfunc/prompt_pure_setup
 ln -s "$PWD/async.zsh" $HOME/.config/zsh/zfunc/async
 
+# create .zshrc-ex
+cat <<EOF >> $HOME/.zshrc-ex
+# export OPENAI_API_KEY=''
+# export PATH=""
+# export GIST_DIR=""
+# export MEMO_DIR=""
+# export BOOKMARKS_DIR=""
+# export TERM_COLOR_MODE='LIGHT'
+EOF
+
 #########################################################
 # kickstart.nvim
 #########################################################
