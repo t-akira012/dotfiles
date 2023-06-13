@@ -177,7 +177,7 @@ bindkey '^r' __fzf-history
 bindkey '^t' __fzf-find
 bindkey '^g' __fzf-ghq-cd
 bindkey '^o' __fzf-find-dir
-bindkey '^v' __fzf-files-depth1
+bindkey '^j' __fzf-files-depth1
 bindkey '\el' __fzf-la
 bindkey '\ez' __fzf-z-insert
 
