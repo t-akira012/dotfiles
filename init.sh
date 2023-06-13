@@ -176,7 +176,13 @@ cat <<EOF >> $HOME/.zshrc-ex
 # export GIST_DIR=""
 # export MEMO_DIR=""
 # export BOOKMARKS_DIR=""
-# export TERM_COLOR_MODE='LIGHT'
+#
+# colors
+# export TERM_COLOR_MODE='DARK'
+# export NVIM_COLOR_DARK='tokyonight'
+# export NVIM_COLOR_LIGHT='tokyonight-day'
+# export ZELLIJ_COLOR_DARK='tokyonight'
+# export ZELLIJ_COLOR_LIGHT='pencil-light'
 EOF
 
 #########################################################

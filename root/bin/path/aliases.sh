@@ -20,7 +20,6 @@ alias prv='ssh prv'
 alias tree="tree -I node_modules"
 alias treed="tree -d -I node_modules"
 alias a='OPENAPP=$(unbuffer fd -d 3 '^*.app$' /Applications/ | fzf --ansi) && open "$OPENAPP"'
-alias zz='zellij'
 alias t='date +"%Y/%m/%d %a %H:%M:%S"'
 
 if type podman >/dev/null 2>&1; then
@@ -38,11 +37,14 @@ start_tmux() {
 }
 alias ta='start_tmux'
 
-tmux_select_window_fzf (){
-  [[ -z $1 ]] && local window=$(tmux list-windows | awk '{print $1, $2}' | fzf --preview '' | cut -c 1) || local window=$1
-  tmux select-window -t $window
+start_zellij() {
+  if [[ "$TERM_COLOR_MODE" == "LIGHT" ]];then
+    zellij options --theme "$ZELLIJ_COLOR_LIGHT"
+  else
+    zellij options --theme "$ZELLIJ_COLOR_DARK"
+  fi
 }
-# alias t='tmux_select_window_fzf'
+alias zz='start_zellij'
 
 alias statf="stat --format='%a %U %G %n'"
 alias sls='serverless'

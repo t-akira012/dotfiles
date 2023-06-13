@@ -185,7 +185,7 @@ pane_frames false
 // Once these themes are defined, one of them should to be selected in the "theme" section of this file
 //
 themes {
-    tokyo-night-storm {
+    tokyonight {
         fg 169 177 214
         bg 36 40 59
         black 56 62 90
@@ -198,18 +198,18 @@ themes {
         white 192 202 245
         orange 255 158 100
     }
-    gruvbox-light {
-        fg 60 56 54
-        bg 251 82 75
-        black 40 40 40
-        red 205 75 69
-        green 152 151 26
-        yellow 215 153 33
-        blue 69 133 136
-        magenta 177 98 134
-        cyan 104 157 106
-        white 213 196 161
-        orange 214 93 14
+    pencil-light {
+        fg "#005F87"
+        bg "#f1f1f1"
+        black "#f1f1f1"
+        red "#B6D6FD"
+        green "#10A778"
+        yellow "#A89C14"
+        blue "#008EC4"
+        magenta "#B6D6FD"
+        cyan "#20A5BA"
+        white "#424242"
+        orange "#D75F5F"
     }
     gruvbox-dark {
         fg 213 196 161
@@ -229,7 +229,7 @@ themes {
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "tokyo-night-storm"
+theme "tokyonight"
 
 // The name of the default layout to load on startup
 // Default: "default"
