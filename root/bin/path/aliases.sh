@@ -38,10 +38,14 @@ start_tmux() {
 alias ta='start_tmux'
 
 start_zellij() {
-  if [[ "$TERM_COLOR_MODE" == "LIGHT" ]];then
-    zellij options --theme "$ZELLIJ_COLOR_LIGHT"
+  if [[ -z "$ZELLIJ" ]];then
+    if [[ "$TERM_COLOR_MODE" == "LIGHT" ]];then
+      zellij options --theme "$ZELLIJ_COLOR_LIGHT"
+    else
+      zellij options --theme "$ZELLIJ_COLOR_DARK"
+    fi
   else
-    zellij options --theme "$ZELLIJ_COLOR_DARK"
+    echo zellij is aready running.
   fi
 }
 alias zz='start_zellij'
