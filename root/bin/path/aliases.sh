@@ -51,7 +51,6 @@ start_zellij() {
 alias zz='start_zellij'
 
 alias statf="stat --format='%a %U %G %n'"
-alias sls='serverless'
 alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
 
 alias ranger='TERM=xterm-256color && ranger'
@@ -64,3 +63,7 @@ alias bd='cd ../'
 alias cdr='cd $_'
 
 alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
+
+
+alias sls='serverless'
+alias tf='terraform'
