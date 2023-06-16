@@ -149,7 +149,7 @@ if [[ -f $HOME/.local/bin/git-prompt.sh ]];then
   GIT_PS1_SHOWUPSTREAM=auto
   GIT_PS1_SHOWUNTRACKEDFILES=
   GIT_PS1_SHOWSTASHSTATE=
-  export PS1='\[\033[36m\]\w\[\033[34m\]$(__git_ps1)\[\033[00m\]\n$ '
+  export PS1='\[\033[32m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n$ '
 else
   export PS1='\[\033[35m\]\w\033[00m\]\n$ '
 fi
