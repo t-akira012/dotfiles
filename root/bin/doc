@@ -7,21 +7,21 @@ fi
 
 QUERY="$1"
 DATE=$(date "+%Y-%m-%d")
-HHMMSS=$(date "+%H-%M-%S")
+TARGET_DIR="$MEMO_DIR/daily"
 
-cd $MEMO_DIR
+cd $TARGET_DIR
 
 clean() {
-  rm -rf ${MEMO_DIR}/.DS_Store
-  find ${MEMO_DIR} -maxdepth 1 -empty -delete
+  rm -rf ${TARGET_DIR}/.DS_Store
+  find ${TARGET_DIR} -maxdepth 1 -empty -delete
   echo Deleted empty files.
 }
 
 flush() {
   clean
-  BAK_DIR="${MEMO_DIR}bak_${DATE}"
+  BAK_DIR="${TARGET_DIR}bak_${DATE}"
   mkdir -p $BAK_DIR
-  find $MEMO_DIR -maxdepth 1 -type f -exec mv -n {} $MEMO_DIR \;
+  find $TARGET_DIR -maxdepth 1 -type f -exec mv -n {} $TARGET_DIR \;
 }
 
 sync() {
@@ -42,7 +42,7 @@ sync() {
 }
 
 execute() {
-  local filename="${MEMO_DIR}/$DATE.md"
+  local filename="${TARGET_DIR}/$DATE.md"
   clean
   nvim $filename
   exit 0

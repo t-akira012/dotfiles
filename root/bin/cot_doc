@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="$HOME/Documents/doc"
+DIR="$HOME/Documents/doc/daily"
 DATE=$(date "+%Y-%m-%d")
 HHMMSS=$(date "+%H-%M-%S")
 

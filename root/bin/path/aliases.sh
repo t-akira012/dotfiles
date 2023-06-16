@@ -66,4 +66,3 @@ alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
 
 
 alias sls='serverless'
-alias tf='terraform'

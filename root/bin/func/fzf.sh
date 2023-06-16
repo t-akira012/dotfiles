@@ -44,7 +44,7 @@ alias o='__fzf-open'
 alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
 # alias vz='__fzf-find-vi'
-alias tt='__fzf-tree'
+alias tf='__fzf-tree'
 alias ghqw='__fzf-ghq-web'
 alias cdg='ghq-cd'
 
