@@ -78,5 +78,5 @@ cd) _cd ;;
 list) _list ;;
 push) _push ;;
 pull) _pull ;;
-*) name=$COMMAND _edit ;;
+*) name="memo/$COMMAND" _edit ;;
 esac
