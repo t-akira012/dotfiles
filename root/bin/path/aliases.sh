@@ -22,10 +22,6 @@ alias treed="tree -d -I node_modules"
 alias a='OPENAPP=$(unbuffer fd -d 3 '^*.app$' /Applications/ | fzf --ansi) && open "$OPENAPP"'
 alias t='date +"%Y/%m/%d %a %H:%M:%S"'
 
-if type podman >/dev/null 2>&1; then
-  alias docker="podman"
-fi
-
 start_tmux() {
   if [[ $__CFBundleIdentifier == 'com.microsoft.VSCode' ]]; then
     [[ -z "$(tmux ls | grep code)" ]] && tmux new -s 'code' || tmux a -t 'code'
