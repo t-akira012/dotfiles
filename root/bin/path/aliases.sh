@@ -54,7 +54,7 @@ alias r='[ -z "$TMUX" ] && ranger || echo "in TMUX"'
 
 alias mp='multipass'
 alias mk='make'
-alias q='exit'
+alias qqq='exit'
 alias bd='cd ../'
 alias cdr='cd $_'
 
