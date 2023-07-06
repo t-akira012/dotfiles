@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-echo What are you email address?
+echo What is your email address?
 read email
 
 echo Add ssh key to github
