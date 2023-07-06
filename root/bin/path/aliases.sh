@@ -6,21 +6,22 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ln='ln -i'
 alias o.='open .'
-alias ob="open -a $BROWSER"
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
-alias cdchore='cd $HOME/Chore'
 alias cdot='cd $HOME/dotfiles'
 alias cdbin='cd $HOME/bin'
 alias cdnas='cd $HOME/nas'
 alias cdoc="[[ -d $MEMO_DIR ]] && cd $MEMO_DIR || echo 'MEMO_DIR is not set'"
+alias cdr='cd $_'
+
 alias prv='ssh prv'
 
 alias tree="tree -I node_modules"
-alias treed="tree -d -I node_modules"
-alias a='OPENAPP=$(unbuffer fd -d 3 '^*.app$' /Applications/ | fzf --ansi) && open "$OPENAPP"'
-alias t='date +"%Y/%m/%d %a %H:%M:%S"'
+alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
+alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
+alias sls='serverless'
+
 
 start_tmux() {
   if [[ $__CFBundleIdentifier == 'com.microsoft.VSCode' ]]; then
@@ -33,32 +34,27 @@ start_tmux() {
 }
 alias ta='start_tmux'
 
-start_zellij() {
-  if [[ -z "$ZELLIJ" ]];then
-    if [[ "$TERM_COLOR_MODE" == "LIGHT" ]];then
-      zellij options --theme "$ZELLIJ_COLOR_LIGHT"
-    else
-      zellij options --theme "$ZELLIJ_COLOR_DARK"
-    fi
-  else
-    echo zellij is aready running.
-  fi
-}
-alias zz='start_zellij'
 
-alias statf="stat --format='%a %U %G %n'"
-alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
+# alias mp='multipass'
+# alias qqq='exit'
+# alias bd='cd ../'
+# alias ranger='TERM=xterm-256color && ranger'
+# alias r='[ -z "$TMUX" ] && ranger || echo "in TMUX"'
 
-alias ranger='TERM=xterm-256color && ranger'
-alias r='[ -z "$TMUX" ] && ranger || echo "in TMUX"'
+# alias statf="stat --format='%a %U %G %n'"
+# alias treed="tree -d -I node_modules"
+# alias a='OPENAPP=$(unbuffer fd -d 3 '^*.app$' /Applications/ | fzf --ansi) && open "$OPENAPP"'
+# alias t='date +"%Y/%m/%d %a %H:%M:%S"'
 
-alias mp='multipass'
-alias mk='make'
-alias qqq='exit'
-alias bd='cd ../'
-alias cdr='cd $_'
-
-alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
-
-
-alias sls='serverless'
+# start_zellij() {
+#   if [[ -z "$ZELLIJ" ]];then
+#     if [[ "$TERM_COLOR_MODE" == "LIGHT" ]];then
+#       zellij options --theme "$ZELLIJ_COLOR_LIGHT"
+#     else
+#       zellij options --theme "$ZELLIJ_COLOR_DARK"
+#     fi
+#   else
+#     echo zellij is aready running.
+#   fi
+# }
+# alias zz='start_zellij'
