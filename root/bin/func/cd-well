@@ -1,0 +1,7 @@
+if [ ! -f $HOME/.cd-well ]; then
+  touch $HOME/.cd-well
+fi
+__cd-well(){
+    cat $HOME/.cd-well
+    _z -l 2>&1 | awk '{print $2}'
+}

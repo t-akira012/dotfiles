@@ -85,17 +85,12 @@ bindkey "^I" menu-complete
 bindkey "\e[Z" reverse-menu-complete
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
+# replace z
+. $HOME/bin/func/cd-well
+
 # functions
 __nothing() {
     return
-}
-
-if [ ! -f $HOME/.cd-well ]; then
-  touch $HOME/.cd-well
-fi
-__cd-well(){
-    cat $HOME/.cd-well
-    _z -l 2>&1 | awk '{print $2}'
 }
 
 __fzf-z-insert() {

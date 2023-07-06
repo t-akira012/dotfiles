@@ -4,7 +4,6 @@ __fzf-open() {
   [[ -f "$SELECTED" ]] && open "$SELECTED"
 }
 
-
 __fzf-z-cd() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"

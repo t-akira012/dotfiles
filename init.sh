@@ -2,14 +2,10 @@
 set -eu
 cd $(dirname $0)
 
-if [[ "$SHELL" != *zsh ]];then
-  [[ $(uname) == "Darwin" ]] && chsh -s $(which zsh)
-fi
-
 #########################################################
 # homebrew
 #########################################################
-echo === Install Homebrew
+echo Install Homebrew
 
 _eval_brew(){
   if [[ -e /opt/homebrew/bin/brew ]];then
@@ -28,7 +24,7 @@ else
   _eval_brew
 fi
 
-echo ===  Install Homebrew packages
+echo Install Homebrew packages
 
 brew install \
   git \
@@ -57,26 +53,19 @@ brew tap homebrew/cask-fonts \
 #########################################################
 
 
-echo ===  Create symbolic links
+echo Create symbolic links
 BASEPATH=$HOME/dotfiles/root
-
 [[ ! -d $HOME/.config ]] && mkdir $HOME/.config
-
 ln -si $BASEPATH/bin $HOME/bin
-
 ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
-
 ln -si $BASEPATH/.config/git $HOME/.config/git
-ln -si $BASEPATH/.config/zsh $HOME/.config/zsh
 ln -si $BASEPATH/.config/zellij $HOME/.config/zellij
-
 ln -si $BASEPATH/.bashrc $HOME/.bashrc
-ln -si $BASEPATH/.config/zsh/.zshrc $HOME/.zshrc
 
 #########################################################
 # Go
 #########################################################
-echo === Install Go
+echo Install Go
 
 if which go >>/dev/null 2>&1 ;then
   echo "Go already installed."
@@ -85,7 +74,7 @@ else
     && go version
 fi
 
-echo === Install Go packages
+echo Install Go packages
 brew install fzf ghq
 go install golang.org/x/tools/cmd/goimports@latest
 go install golang.org/x/tools/gopls@latest
@@ -95,7 +84,7 @@ go install github.com/google/yamlfmt/cmd/yamlfmt@latest
 #########################################################
 # Rust
 #########################################################
-echo === Install Rust
+echo Install Rust
 
 if which rustup >>/dev/null 2>&1 ;then
   echo "Rust already installed."
@@ -116,7 +105,7 @@ cargo install \
 # deno
 #########################################################
 
-echo === Install deno
+echo Install deno
 
 if which deno >>/dev/null 2>&1 ;then
   echo "Deno already installed."
@@ -128,7 +117,7 @@ fi
 # git-completion
 #########################################################
 
-echo === Download git-completion
+echo Download git-completion
 
 export LOCAL_BIN="$HOME/.local/bin"
 [[ ! -d "$LOCAL_BIN" ]] && mkdir -p $LOCAL_BIN
@@ -139,51 +128,6 @@ wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-com
 
 chmod +x git-prompt.sh
 chmod +x git-completion.bash
-
-#########################################################
-# zsh tools
-#########################################################
-
-echo === Clone zsh function
-
-[[ ! -d ~/.config/zsh ]] && \
-  echo "zsh config directory not found" && \
-  exit 1
-
-cd $HOME/.config/zsh
-
-[[ ! -d repos ]] && mkdir repos
-[[ ! -d zfunc ]] && mkdir zfunc
-
-cd $HOME/.config/zsh/repos
-
-git clone https://github.com/zsh-users/zsh-syntax-highlighting --depth 1
-git clone https://github.com/zsh-users/zsh-autosuggestions --depth 1
-git clone https://github.com/zsh-users/zsh-completions --depth 1
-git clone https://github.com/intelfx/pure --depth 1
-git clone https://github.com/ohmyzsh/ohmyzsh --depth 1
-git clone https://github.com/Tarrasch/zsh-bd --depth 1
-
-# pure install
-cd $HOME/.config/zsh/repos/pure
-ln -s "$PWD/pure.zsh" $HOME/.config/zsh/zfunc/prompt_pure_setup
-ln -s "$PWD/async.zsh" $HOME/.config/zsh/zfunc/async
-
-# create .zshrc-ex
-cat <<EOF >> $HOME/.zshrc-ex
-# export OPENAI_API_KEY=''
-# export PATH=""
-# export GIST_DIR=""
-# export MEMO_DIR=""
-# export BOOKMARKS_DIR=""
-#
-# colors
-# export TERM_COLOR_MODE='DARK'
-# export NVIM_COLOR_DARK='tokyonight'
-# export NVIM_COLOR_LIGHT='tokyonight-day'
-# export ZELLIJ_COLOR_DARK='tokyonight'
-# export ZELLIJ_COLOR_LIGHT='pencil-light'
-EOF
 
 #########################################################
 # kickstart.nvim
@@ -201,7 +145,7 @@ fi
 # git config
 #########################################################
 
-echo === git config
+echo git config
 git config --global ghq.root ~/src
 git config --global alias.st status
 git config --global alias.co checkout
@@ -225,6 +169,28 @@ fi
 
 [[ ! -f $HOME/.w3m/config ]] && touch "$HOME/.w3m/config"
 echo "extbrowser /usr/bin/open" >> "$HOME/.w3m/config"
+
+#########################################################
+# for bash
+#########################################################
+if [[ $(uname) == "Darwin" ]]; then
+  echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
+fi
+
+cat <<EOF >> $HOME/.ex
+# export OPENAI_API_KEY=''
+# export PATH=""
+# export GIST_DIR=""
+# export MEMO_DIR=""
+# export BOOKMARKS_DIR=""
+#
+# colors
+# export TERM_COLOR_MODE='DARK'
+# export NVIM_COLOR_DARK='tokyonight'
+# export NVIM_COLOR_LIGHT='tokyonight-day'
+# export ZELLIJ_COLOR_DARK='tokyonight'
+# export ZELLIJ_COLOR_LIGHT='pencil-light'
+EOF
 
 #########################################################
 # cask packages

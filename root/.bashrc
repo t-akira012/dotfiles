@@ -3,7 +3,7 @@
 export LANG="ja_JP.UTF-8"
 
 export BASHRC_EX="$HOME/.ex"
-[[ -e $BASHRC_EX ]] && . $BASHRC_EX
+[[ -e "$BASHRC_EX" ]] && . "$BASHRC_EX"
 
 # disable C-s
 stty stop undef
@@ -14,6 +14,8 @@ export IGNOREEOF=9999
 [[ -d /home/linuxbrew ]] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 # M1 brew
 [[ -d /opt/homebrew/ ]] && export PATH="/opt/homebrew/bin:$PATH"
+# asdf
+[[ -f $(brew --prefix asdf)/libexec/asdf.sh ]] && . $(brew --prefix asdf)/libexec/asdf.sh
 
 # bash-completion
 [[ -f $(brew --prefix)/etc/bash_completion ]] && . $(brew --prefix)/etc/bash_completion
@@ -30,7 +32,7 @@ unalias z 2> /dev/null
 
 ## History
 HISTCONTROL=ignoreboth
-HISTIGNORE='?:??:???:????:?????:exit:history*:reload:cd *:vi *:vim *:delhis'
+HISTIGNORE='?:??:???:????:?????:exit:history*:reload:cd *:delhis'
 HISTSIZE=1000
 HISTFILESIZE=2000
 # bashのプロセスを終了する時に、メモリ上の履歴を履歴ファイルに追記する動作を停止
@@ -58,6 +60,10 @@ __share_history() {
     history -c &&
     history -r
 }
+
+
+# replace z
+. $HOME/bin/func/cd-well
 
 # bindkey functions
 __fzf-z-insert() {
