@@ -1,8 +1,9 @@
+# ---- ZSHRC ----
 # Lang
 export LANG="ja_JP.UTF-8"
 
 export ZDOTDIR="$HOME/.config/zsh"
-export ZSHRC_EX="$HOME/.zshrc-ex"
+export ZSHRC_EX="$HOME/.ex"
 [[ -e "$ZSHRC_EX" ]] && . $ZSHRC_EX
 
 # disable C-s
@@ -154,23 +155,17 @@ __fzf-files-depth1() {
 }
 
 
-# source
-. $HOME/bin/path/aliases.sh
-. $HOME/bin/path/export.sh
-. $HOME/bin/func/fzf.sh
-. $HOME/bin/func/git.sh
-
 # bindkey
 zle -N __nothing
 zle -N __fzf-z-insert
+zle -N __fzf-la
 zle -N __fzf-history
 zle -N __fzf-find
-zle -N __fzf-find-dir
 zle -N __fzf-ghq-cd
-zle -N __fzf-la
-zle -N __fzf-la-cd
-zle -N __fzf-open
+zle -N __fzf-find-dir
 zle -N __fzf-files-depth1
+bindkey '\el' __fzf-la
+bindkey '\ez' __fzf-z-insert
 bindkey '^@' __nothing
 bindkey '^s' __nothing
 bindkey '^r' __fzf-history
@@ -178,8 +173,12 @@ bindkey '^t' __fzf-find
 bindkey '^g' __fzf-ghq-cd
 bindkey '^o' __fzf-find-dir
 bindkey '^j' __fzf-files-depth1
-bindkey '\el' __fzf-la
-bindkey '\ez' __fzf-z-insert
+
+# source
+. $HOME/bin/path/aliases.sh
+. $HOME/bin/path/export.sh
+. $HOME/bin/func/fzf.sh
+. $HOME/bin/func/git.sh
 
 # alias
 alias reload="exec zsh -l"

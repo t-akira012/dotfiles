@@ -1,7 +1,8 @@
+# ---- BASHRC ----
 # Lang
 export LANG="ja_JP.UTF-8"
 
-export BASHRC_EX="$HOME/.bashrc-ex"
+export BASHRC_EX="$HOME/.ex"
 [[ -e $BASHRC_EX ]] && . $BASHRC_EX
 
 # disable C-s
@@ -101,12 +102,28 @@ __fzf-ghq-cd() {
     cd $(ghq root)/$selected
 }
 
+__fzf-find-dir() {
+  local selected=$(fd -t d -I | fzf)
+  [[ -n $selected ]] && \
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}\"$selected\"${READLINE_LINE:$READLINE_POINT}" && \
+    READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))
+}
+
+__fzf-files-depth1() {
+  local selected=$(unbuffer ls -lA --color | grep '^-' | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  [[ -n $selected ]] && \
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}\"$selected\"${READLINE_LINE:$READLINE_POINT}" && \
+    READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))
+}
+
 # bind
 bind -x ' "\ez": __fzf-z-insert'
 bind -x ' "\ed": __fzf-la'
 bind -x ' "\C-t": __fzf-find'
 bind -x ' "\C-g": __fzf-ghq-cd '
 bind -x ' "\C-r": __fzf-history'
+bind -x ' "\C-o": __fzf-find-dir'
+bind -x ' "\C-j": __fzf-files-depth1'
 
 alias reload='source ~/.bashrc'
 alias delhis='__fzf-delete-history'
@@ -149,13 +166,7 @@ if [[ -f $HOME/.local/bin/git-prompt.sh ]];then
   GIT_PS1_SHOWUPSTREAM=auto
   GIT_PS1_SHOWUNTRACKEDFILES=
   GIT_PS1_SHOWSTASHSTATE=
-  export PS1='\[\033[32m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n$ '
+  export PS1='\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n$ '
 else
   export PS1='\[\033[35m\]\w\033[00m\]\n$ '
 fi
-
-# tmux
-# if [[ -n $(type tmux) && -z $TMUX && $TERM_PROGRAM != "vscode" ]]; then
-#   [[ $(tmux ls) ]] && tmux a || tmux
-# fi
-. "$HOME/.cargo/env"
