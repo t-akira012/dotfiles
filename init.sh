@@ -45,9 +45,14 @@ brew install \
   gawk \
   shfmt \
 
+# cask-fonts
 brew tap homebrew/cask-fonts \
   && brew install font-hackgen font-hackgen-nerd
-
+brew tap homebrew/cask-fonts \
+  && brew install font-plemol-jp
+  && brew install font-plemol-jp-nf
+  && brew install font-plemol-jp-hs
+#
 #########################################################
 # Create symbolic links
 #########################################################
