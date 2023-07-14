@@ -43,6 +43,7 @@ sync() {
 
 execute() {
   local filename="${TARGET_DIR}/$DATE.md"
+  read -p "open memo file: $filename."
   clean
   nvim $filename
   exit 0
