@@ -1,6 +1,8 @@
 #!/bin/bash
 # https://raw.githubusercontent.com/masawada/dotfiles/master/bin/m
 
+NOTE_PREFIX='Notes'
+
 # dependencies
 if [[ ! -e "$MEMO_DIR" ]]; then
   echo '$MEMO_DIR set at .zshrc-ex'
@@ -78,5 +80,5 @@ cd) _cd ;;
 list) _list ;;
 push) _push ;;
 pull) _pull ;;
-*) name="memo/$COMMAND" _edit ;;
+*) name="$NOTE_PREFIX/$COMMAND" _edit ;;
 esac
