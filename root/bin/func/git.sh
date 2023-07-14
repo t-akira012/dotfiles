@@ -22,7 +22,7 @@ alias gr="cdGitRoot"
 
 cdGitRoot() {
   local target=$(git rev-parse --show-toplevel)
-  [[ -d $target ]] && cd $target || echo not git repo
+  [[ -d $target ]] && cd "$target" || echo not git repo
 }
 getGitRootDir() {
   git rev-parse --show-toplevel
