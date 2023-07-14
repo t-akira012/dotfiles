@@ -1,1 +1,8 @@
-$EDITOR $HOME/Documents/doc/todo.md
+#!/bin/bash
+
+if [[ ! -e "$MEMO_DIR" ]]; then
+  echo '$MEMO_DIR set at .zshrc-ex'
+  exit 1
+fi
+
+$EDITOR $MEMO_DIR/todo.md

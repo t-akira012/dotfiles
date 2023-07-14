@@ -1,6 +1,11 @@
 #!/bin/bash
 
-DIR="$HOME/Documents/doc/daily"
+if [[ ! -e "$MEMO_DIR" ]]; then
+  echo '$MEMO_DIR set at .zshrc-ex'
+  exit 1
+fi
+
+DIR="$MEMO_DIR/daily"
 DATE=$(date "+%Y-%m-%d")
 HHMMSS=$(date "+%H-%M-%S")
 
