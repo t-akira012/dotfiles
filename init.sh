@@ -163,6 +163,7 @@ git config --global difftool.prompt false
 git config --global diff.colorMoved dimmed-zebra
 git config --global diff.colorMovedWS allow-indentation-change
 git config --global grep.lineNumber true
+git config --global core.quotepath false
 
 #########################################################
 # create w3m config
