@@ -22,6 +22,7 @@ alias tree="tree -I node_modules"
 alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
 alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
 alias sls='serverless'
+[[ -d "/opt/homebrew/opt/util-linux/bin/" ]] && alias cal='/opt/homebrew/opt/util-linux/bin/cal -m'
 
 
 start_tmux() {

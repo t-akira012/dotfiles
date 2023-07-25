@@ -41,6 +41,7 @@ brew install \
   coreutils \
   binutils \
   findutils \
+  util-linux \
   gnu-sed \
   gawk \
   shfmt \
