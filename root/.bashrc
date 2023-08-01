@@ -140,6 +140,16 @@ alias delhis='__fzf-delete-history'
 . $HOME/bin/func/fzf.sh
 . $HOME/bin/func/git.sh
 
+# vifm cd
+vicd() {
+    local dst="$(command vifm --choose-dir - "$@")"
+    if [ -z "$dst" ]; then
+        echo 'Directory picking cancelled/failed'
+        return 1
+    fi
+    cd "$dst"
+}
+
 # show status
 __show_status() {
     local status=$(echo ${PIPESTATUS[@]})
