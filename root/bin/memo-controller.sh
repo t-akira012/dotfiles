@@ -40,7 +40,7 @@ _list_files() {
 _create_new_file(){
   cd "$TARGET_DIR"
   FILE_PATH="$TARGET_DIR/${NEWFILE_PREFIX_DIR}/${SUB_COMMAND}.md"
-  $EDITOR $FILE_PATH
+  $EDITOR "$FILE_PATH"
 }
 
 _commit(){
