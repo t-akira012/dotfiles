@@ -167,7 +167,7 @@ bindkey '^r' __fzf-history
 bindkey '^t' __fzf-find
 bindkey '^g' __fzf-ghq-cd
 bindkey '^o' __fzf-find-dir
-bindkey '^j' __fzf-files-depth1
+# bindkey '^j' __fzf-files-depth1
 
 # source
 . $HOME/bin/path/aliases.sh

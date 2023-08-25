@@ -129,7 +129,7 @@ bind -x ' "\C-t": __fzf-find'
 bind -x ' "\C-g": __fzf-ghq-cd '
 bind -x ' "\C-r": __fzf-history'
 bind -x ' "\C-o": __fzf-find-dir'
-bind -x ' "\C-j": __fzf-files-depth1'
+# bind -x ' "\C-j": __fzf-files-depth1'
 
 alias reload='source ~/.bashrc'
 alias delhis='__fzf-delete-history'
