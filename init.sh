@@ -8,65 +8,59 @@ cd $(dirname $0)
 echo Install Homebrew
 
 _eval_brew(){
-  if [[ -e /opt/homebrew/bin/brew ]];then
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-  elif test -d ~/.linuxbrew >>/dev/null 2>&1 ;then
-    eval "$(~/.linuxbrew/bin/brew shellenv)"
-  fi
+    if [[ -e /opt/homebrew/bin/brew ]];then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif test -d ~/.linuxbrew >>/dev/null 2>&1 ;then
+        eval "$(~/.linuxbrew/bin/brew shellenv)"
+    fi
 }
 
 _eval_brew
 if which brew >>/dev/null 2>&1 ;then
-  echo "Homebrew already installed."
+    echo "Homebrew already installed."
 else
-  echo "Installing homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  _eval_brew
+    echo "Installing homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    _eval_brew
 fi
 
 echo Install Homebrew packages
 
 brew install \
-  git \
-  gh \
-  curl \
-  wget \
-  tree \
-  tmux \
-  watch \
-  expect \
-  z \
-  unar \
-  nvim \
-  coreutils \
-  binutils \
-  findutils \
-  util-linux \
-  gnu-sed \
-  gawk \
-  shfmt \
+    git \
+    gh \
+    curl \
+    wget \
+    tree \
+    tmux \
+    watch \
+    expect \
+    z \
+    unar \
+    nvim \
+    shfmt \
 
 # cask-fonts
 brew tap homebrew/cask-fonts \
-  && brew install font-hackgen font-hackgen-nerd
-brew tap homebrew/cask-fonts \
-  && brew install font-plemol-jp
-  && brew install font-plemol-jp-nf
-  && brew install font-plemol-jp-hs
-#
-#########################################################
-# Create symbolic links
-#########################################################
+    && brew install font-hackgen font-hackgen-nerd
+    brew tap homebrew/cask-fonts \
+        && brew install font-plemol-jp
+            && brew install font-plemol-jp-nf
+            && brew install font-plemol-jp-hs
+            #
+            #########################################################
+            # Create symbolic links
+            #########################################################
 
 
-echo Create symbolic links
-BASEPATH=$HOME/dotfiles/root
-[[ ! -d $HOME/.config ]] && mkdir $HOME/.config
-ln -si $BASEPATH/bin $HOME/bin
-ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
-ln -si $BASEPATH/.config/git $HOME/.config/git
-ln -si $BASEPATH/.config/zellij $HOME/.config/zellij
-ln -si $BASEPATH/.bashrc $HOME/.bashrc
+            echo Create symbolic links
+            BASEPATH=$HOME/dotfiles/root
+            [[ ! -d $HOME/.config ]] && mkdir $HOME/.config
+            ln -si $BASEPATH/bin $HOME/bin
+            ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
+            ln -si $BASEPATH/.config/git $HOME/.config/git
+            ln -si $BASEPATH/.config/zellij $HOME/.config/zellij
+            ln -si $BASEPATH/.bashrc $HOME/.bashrc
 
 #########################################################
 # Go
@@ -74,10 +68,10 @@ ln -si $BASEPATH/.bashrc $HOME/.bashrc
 echo Install Go
 
 if which go >>/dev/null 2>&1 ;then
-  echo "Go already installed."
+    echo "Go already installed."
 else
-  brew install go \
-    && go version
+    brew install go \
+        && go version
 fi
 
 echo Install Go packages
@@ -93,19 +87,19 @@ go install github.com/google/yamlfmt/cmd/yamlfmt@latest
 echo Install Rust
 
 if which rustup >>/dev/null 2>&1 ;then
-  echo "Rust already installed."
+    echo "Rust already installed."
 else
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 
 echo Install rust tools
 source "$HOME/.cargo/env"
 cargo install \
-  ripgrep \
-  exa \
-  bat \
-  fd-find \
-  zellij
+    ripgrep \
+    exa \
+    bat \
+    fd-find \
+    zellij
 
 #########################################################
 # deno
@@ -114,9 +108,9 @@ cargo install \
 echo Install deno
 
 if which deno >>/dev/null 2>&1 ;then
-  echo "Deno already installed."
+    echo "Deno already installed."
 else
-  curl -fsSL https://deno.land/x/install/install.sh | sh
+    curl -fsSL https://deno.land/x/install/install.sh | sh
 fi
 
 #########################################################
@@ -140,11 +134,11 @@ chmod +x git-completion.bash
 #########################################################
 
 if which ghq >>/dev/null 2>&1 ;then
-  echo === install kickstart.nvim
-  ghq get -p t-akira012/kickstart.nvim
-  ln -si $(ghq root)/github.com/t-akira012/kickstart.nvim $HOME/.config/nvim
+    echo === install kickstart.nvim
+    ghq get -p t-akira012/kickstart.nvim
+    ln -si $(ghq root)/github.com/t-akira012/kickstart.nvim $HOME/.config/nvim
 else
-  echo "require ghq"
+    echo "require ghq"
 fi
 
 #########################################################
@@ -171,7 +165,7 @@ git config --global core.quotepath false
 #########################################################
 
 if [[ ! -d "$HOME/.w3m" ]];then
-  mkdir "$HOME/.w3m"
+    mkdir "$HOME/.w3m"
 fi
 
 [[ ! -f $HOME/.w3m/config ]] && touch "$HOME/.w3m/config"
@@ -181,7 +175,7 @@ echo "extbrowser /usr/bin/open" >> "$HOME/.w3m/config"
 # for bash
 #########################################################
 if [[ $(uname) == "Darwin" ]]; then
-  echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
+    echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
 fi
 
 cat <<EOF >> $HOME/.ex
@@ -204,16 +198,24 @@ EOF
 #########################################################
 
 if [[ $(uname) == "Darwin" ]];then
-  echo '=== Install cask packages'
-  brew install --cask google-chrome
-  brew install --cask visual-studio-code
-  brew install --cask coteditor
-  brew install --cask iterm2
-  brew install --cask karabiner-elements
-  brew install --cask alfred
-  brew install --cask rectangle
-  brew install --cask alt-tab
-  brew install --cask slack
+    echo '=== Install packages for macOS'
+    brew install \
+        gnu-sed \
+        gawk \
+        coreutils \
+        binutils \
+        findutils \
+        util-linux \
+        echo '=== Install cask packages'
+            brew install --cask google-chrome
+            brew install --cask visual-studio-code
+            brew install --cask coteditor
+            brew install --cask iterm2
+            brew install --cask karabiner-elements
+            brew install --cask alfred
+            brew install --cask rectangle
+            brew install --cask alt-tab
+            brew install --cask slack
 fi
 
 echo initialize done.
