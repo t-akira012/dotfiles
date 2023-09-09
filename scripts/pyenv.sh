@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -eu
+brew install pyenv
+
 echo インストールするバージョンを入力
 read -p "未入力の場合 latest にします: " version
 test -z $version \
@@ -7,7 +9,6 @@ test -z $version \
 
 echo Install version is $version
 
-brew install pyenv
 pyenv install $version
 pyenv global $version
 

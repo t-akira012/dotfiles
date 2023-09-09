@@ -14,8 +14,11 @@ nodenv install $version
 nodenv global $version
 npm i -g npm yarn
 
-echo node version is $(nodenv version)
-echo npm version is $(npm -v)
-echo yarn version is $(yarn -v)
+echo node version
+nodenv version
+echo npm version
+npm -v
+echo yarn version
+yarn -v
 
 echo done.
