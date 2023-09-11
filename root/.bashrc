@@ -15,20 +15,18 @@ export IGNOREEOF=9999
 # M1 brew
 [[ -d /opt/homebrew/ ]] && export PATH="/opt/homebrew/bin:$PATH"
 # asdf
+[[ -f $HOME/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
 [[ -f $(brew --prefix asdf)/libexec/asdf.sh ]] && . $(brew --prefix asdf)/libexec/asdf.sh
 
 # bash-completion
 [[ -f $(brew --prefix)/etc/bash_completion ]] && . $(brew --prefix)/etc/bash_completion
+
 # タブ補完
 bind '"\t":menu-complete'
 bind '"\e[Z": menu-complete-backward'
 bind "set show-all-if-ambiguous on"
 bind "set completion-ignore-case on"
 bind "set menu-complete-display-prefix on"
-
-# z
-[[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
-unalias z 2> /dev/null
 
 ## History
 HISTCONTROL=ignoreboth
@@ -61,11 +59,12 @@ __share_history() {
     history -r
 }
 
-
-# replace z
+# z
+[[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
 . $HOME/bin/func/cd-well
 
 # bindkey functions
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 __fzf-z-insert() {
   local selected=$(_z -l 2>&1 | sort | awk '{print $2}' | fzf | sed 's/^[0-9,.]* *//')
   [[ -n $selected ]] && \
@@ -115,13 +114,6 @@ __fzf-find-dir() {
     READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))
 }
 
-__fzf-files-depth1() {
-  local selected=$(unbuffer ls -lA --color | grep '^-' | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
-  [[ -n $selected ]] && \
-    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}\"$selected\"${READLINE_LINE:$READLINE_POINT}" && \
-    READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))
-}
-
 # bind
 bind -x ' "\ez": __fzf-z-insert'
 bind -x ' "\ed": __fzf-la'
@@ -129,7 +121,6 @@ bind -x ' "\C-t": __fzf-find'
 bind -x ' "\C-g": __fzf-ghq-cd '
 bind -x ' "\C-r": __fzf-history'
 bind -x ' "\C-o": __fzf-find-dir'
-# bind -x ' "\C-j": __fzf-files-depth1'
 
 alias reload='source ~/.bashrc'
 alias delhis='__fzf-delete-history'
