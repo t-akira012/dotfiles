@@ -1,3 +1,7 @@
+if [[ ! -e "~/.local/share/gnome-shell/extensions/xremap@k0kubun.com" ]]
+    git clone https://github.com/xremap/xremap-gnome ~/.local/share/gnome-shell/extensions/xremap@k0kubun.com
+fi
+
 if ! type xremap 2>&1 ;then
     cargo install xremap --features gnome
 fi
