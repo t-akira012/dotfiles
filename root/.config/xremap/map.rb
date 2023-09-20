@@ -1,7 +1,7 @@
 # vim:fenc=utf-8 ff=unix ft=ruby ts=2 sw=2 sts=2
 # https://github.com/hachibeeDI/dotfiles/blob/master/.xremap.conf
 
-window class_not: ['Alacritty', 'URxvt'] do
+window class_not: 'Alacritty' do
   remap 'C-b', to: 'Left'
   remap 'C-f', to: 'Right'
   remap 'C-p', to: 'Up'
@@ -31,15 +31,16 @@ window class_not: ['Alacritty', 'URxvt'] do
   end
 
   remap 'Super-Enter', to: 'M-Enter'
+  remap 'Super-Equal', to: 'Ctrl-Equal'
+  remap 'Super-Minus', to: 'Ctrl-Minus'
+
+  remap 'Super-Shift-t', to: 'Shift-Ctrl-t'
 end
 
 
-window class_only: ['Alacritty', 'URxvt'] do
-  remap 'Super-c', to: 'Ctrl-Shift-c'
-  remap 'Super-v', to: 'Ctrl-Shift-v'
+window class_only: 'Alacritty' do
+  remap 'Super-v', to: 'C-Shift-v'
 end
-
-
 
 window class_only: 'slack' do
   remap 'Super-k', to: 'Ctrl-k'
