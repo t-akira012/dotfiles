@@ -18,7 +18,7 @@ window class_not: ['urxvt', 'gnome-terminal-server', 'Alacritty'] do
   # remap 'C-u', to: ['Shift-Home', 'BackSpace']
   remap 'C-y', to: 'Shift-Insert'
 
-  # remap 'C-h', to: 'BackSpace'
+  remap 'C-h', to: 'BackSpace'
   # remap 'C-d', to: 'Delete'
 
   remap 'M-h', to: 'Ctrl-BackSpace'
@@ -47,6 +47,7 @@ window class_only: ['google-chrome', 'vivaldi-stable', 'firefox-aurora'] do
     remap "Super-#{key}", to: "C-#{key}"
   end
 
+  remap 'Super-Enter', to: 'M-Enter'
   remap "C-q", to: "C-w"
   remap "Super-q", to: "Super-w"
 end
