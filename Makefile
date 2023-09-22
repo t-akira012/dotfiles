@@ -1,0 +1,2 @@
+commit:
+	npx git-cz
