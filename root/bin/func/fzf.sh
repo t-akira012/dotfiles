@@ -42,7 +42,7 @@ ghq-cd() {
 alias o='__fzf-open'
 alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
-# alias vz='__fzf-find-vi'
+alias vz='__fzf-find-vi'
 alias tf='__fzf-tree'
 alias ghqw='__fzf-ghq-web'
 alias cdg='ghq-cd'
