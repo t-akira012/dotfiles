@@ -6,7 +6,8 @@ if type apt ;then
     sudo apt update && \
         sudo apt install -y \
         git build-essential coreutils \
-        gh curl wget tree tmux watch expect unar shfmt xsel
+        cmake gettext fontconfig \
+        gh curl wget tree tmux watch expect unar shfmt xsel bash-completion
     mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
     # bash -c ./_brew.sh
 fi
