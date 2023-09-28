@@ -32,7 +32,7 @@ start_tmux() {
   elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
     [[ -z "$(tmux ls | grep iTerm)" ]] && tmux new -s 'iTerm' || tmux a -t 'iTerm'
   else
-    [[ -z "$(tmux ls | grep other)" ]] && tmux new -s 'other' || tmux a -t 'other'
+      [[ -z "$(tmux ls | grep other)" ]] && tmux new -s $(whoami) || tmux a -t 'other'
   fi
 }
 alias ta='start_tmux'
