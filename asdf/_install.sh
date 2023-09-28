@@ -11,12 +11,8 @@ else
     exit 1
 fi
 
-plugins=(nodejs python ruby go)
-for p in "${plugins[@]}"; do
-    asdf plugin add $p
-    asdf install $p latest
-    asdf global $p latest
-done
+asdf plugin add go
+asdf plugin add ruby
+asdf plugin add python
+asdf plugin add nodejs
 
-echo for nodejs
-npm i -g npm yarn

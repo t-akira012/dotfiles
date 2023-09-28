@@ -16,10 +16,10 @@ export IGNOREEOF=9999
 [[ -d /opt/homebrew/ ]] && export PATH="/opt/homebrew/bin:$PATH"
 # asdf
 [[ -f $HOME/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
-[[ -f $(brew --prefix asdf)/libexec/asdf.sh ]] && . $(brew --prefix asdf)/libexec/asdf.sh
+type brew >/dev/null 2>&1 && [[ -f $(brew --prefix asdf)/libexec/asdf.sh ]] && . $(brew --prefix asdf)/libexec/asdf.sh
 
 # bash-completion
-[[ -f $(brew --prefix)/etc/bash_completion ]] && . $(brew --prefix)/etc/bash_completion
+type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/bash_completion ]] && . $(brew --prefix)/etc/bash_completion
 
 # タブ補完
 bind '"\t":menu-complete'
@@ -60,7 +60,7 @@ __share_history() {
 }
 
 # z
-[[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
+type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
 . $HOME/bin/func/cd-well
 
 # bindkey functions

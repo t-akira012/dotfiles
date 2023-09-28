@@ -6,15 +6,21 @@ if type apt ;then
     sudo apt update && \
         sudo apt install -y \
         git build-essential coreutils \
-        gh curl wget tree tmux watch expect unar shfmt xsel
+        cmake gettext fontconfig \
+        gh curl wget tree tmux watch expect unar shfmt xsel bash-completion
     mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
-    bash -c ./_brew.sh
 fi
 
 if [[ $(uname) == "Darwin" ]];then
     echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
     bash -c ./_brew.sh
 fi
+
+#########################################################
+echo "Install asdf"
+#########################################################
+bash -c ./asdf/_install.sh
+. $HOME/.bashrc
 
 #########################################################
 echo "Add git config"
@@ -53,8 +59,8 @@ export LOCAL_BIN="$HOME/.local/bin"
 [[ ! -d "$LOCAL_BIN" ]] && mkdir -p $LOCAL_BIN
 
 cd $LOCAL_BIN
-curl -o https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-curl -o https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 
 chmod +x git-prompt.sh
 chmod +x git-completion.bash

@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if ! type node; then
-    asdf plugin add nodejs
+if ! type node >/dev/null 2>&1 ; then
     asdf install nodejs latest
     asdf global nodejs latest
 fi
