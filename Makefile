@@ -1,6 +1,9 @@
 commit:
 	npx git-cz
 
+push:
+	git push origin @
+
 .PHONY: asdf
 asdf:
 	./asdf/go.sh
