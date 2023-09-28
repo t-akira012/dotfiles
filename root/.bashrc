@@ -60,7 +60,7 @@ __share_history() {
 }
 
 # z
-[[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
+type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
 . $HOME/bin/func/cd-well
 
 # bindkey functions
