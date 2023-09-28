@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-if ! type python; then
-    # asdf plugin add python
+if ! type python >/dev/null 2>&1 ; then
     asdf install python latest
     asdf global python latest
 fi

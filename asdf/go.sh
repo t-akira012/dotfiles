@@ -5,7 +5,7 @@ set -eux
 echo Install Go
 #########################################################
 
-if type go >>/dev/null 2>&1 ;then
+if type go >/dev/null 2>&1 ;then
     echo "Go already installed."
 else
     asdf plugin add golang
