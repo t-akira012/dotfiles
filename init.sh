@@ -8,7 +8,7 @@ if type apt ;then
         git build-essential coreutils \
         gh curl wget tree tmux watch expect unar shfmt xsel
     mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
-    bash -c ./_brew.sh
+    # bash -c ./_brew.sh
 fi
 
 if [[ $(uname) == "Darwin" ]];then
