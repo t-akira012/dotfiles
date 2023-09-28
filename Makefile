@@ -3,7 +3,6 @@ commit:
 
 .PHONY: asdf
 asdf:
-	./asdf/_install.sh
 	./asdf/go.sh
 	./asdf/python.sh
 	./asdf/ruby.sh

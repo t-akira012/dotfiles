@@ -9,13 +9,18 @@ if type apt ;then
         cmake gettext fontconfig \
         gh curl wget tree tmux watch expect unar shfmt xsel bash-completion
     mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
-    # bash -c ./_brew.sh
 fi
 
 if [[ $(uname) == "Darwin" ]];then
     echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
     bash -c ./_brew.sh
 fi
+
+#########################################################
+echo "Install asdf"
+#########################################################
+bash -c ./asdf/_install.sh
+. $HOME/.bashrc
 
 #########################################################
 echo "Add git config"
