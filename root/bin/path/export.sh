@@ -1,11 +1,12 @@
-export BROWSER="/Applications/Google\ Chrome.app"
+export BROWSER="/Applications/Firefox.app"
+# export BROWSER="/Applications/Google\ Chrome.app"
 # export BROWSER="/Applications/Vivaldi.app"
 export FILTER='fzf'
 if [[ $(command -v nvim) ]]; then
-  export EDITOR="nvim"
-  alias vimdiff='nvim -d'
+	export EDITOR="nvim"
+	alias vimdiff='nvim -d'
 else
-  export EDITOR="vim"
+	export EDITOR="vim"
 fi
 
 alias v="$EDITOR"
@@ -43,55 +44,54 @@ export PATH="$HOME/.deno/bin:$PATH"
 
 # ruby
 if [[ $(command -v asdf) ]]; then
-  :
+	:
 elif [[ $(command -v rbenv) ]]; then
-  eval "$(rbenv init - zsh)"
+	eval "$(rbenv init - zsh)"
 fi
 
 # python
 if [[ $(command -v asdf) ]]; then
-  :
+	:
 elif [[ $(command -v pyenv) ]]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
+	export PYENV_ROOT="$HOME/.pyenv"
+	export PATH="$PYENV_ROOT/bin:$PATH"
+	eval "$(pyenv init -)"
 fi
-
 
 # node
 if [[ $(command -v asdf) ]]; then
-  :
+	:
 elif [[ $(command -v nodebrew) ]]; then
-  export PATH="$HOME/.nodebrew/current/bin:$PATH"
+	export PATH="$HOME/.nodebrew/current/bin:$PATH"
 elif [[ $(command -v nodenv) ]]; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
-  eval "$(nodenv init -)"
+	export PATH="$HOME/.nodenv/bin:$PATH"
+	eval "$(nodenv init -)"
 fi
 
 # fzf
 # https://github.com/junegunn/fzf/wiki/Color-schemes
 _gen_fzf_default_opts() {
-  # https://github.com/jez/dotfiles/blob/master/util/fzf.zsh#L47C1-L58C4
-  # Solarized Dark color scheme for fzf
-  export FZF_DARK="
+	# https://github.com/jez/dotfiles/blob/master/util/fzf.zsh#L47C1-L58C4
+	# Solarized Dark color scheme for fzf
+	export FZF_DARK="
     --color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:-1,hl+:$blue
     --color info:$yellow,prompt:$yellow,pointer:$base3,marker:$base3,spinner:$yellow
     --no-separator
   "
-  # Solarized Light color scheme for fzf
-  export FZF_LIGHT="
+	# Solarized Light color scheme for fzf
+	export FZF_LIGHT="
     --color fg:-1,bg:-1,hl:$blue,fg+:$base02,bg+:-1,hl+:$blue
     --color info:$yellow,prompt:$yellow,pointer:$base03,marker:$base03,spinner:$yellow
     --no-separator
   "
-  if [[ "$TERM_COLOR_MODE" == "LIGHT" ]]; then
-    export COLOR_OPTS="$FZF_LIGHT"
-  else
-    export COLOR_OPTS="$FZF_DARK"
-  fi
-  local OPTS="--height 70% --layout=reverse --preview-window=right --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
-  export FZF_DEFAULT_OPTS="$COLOR_OPTS $OPTS"
-  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!.git/*"'
-  export FZF_TMUX_OPTS="-p 80%"
+	if [[ "$TERM_COLOR_MODE" == "LIGHT" ]]; then
+		export COLOR_OPTS="$FZF_LIGHT"
+	else
+		export COLOR_OPTS="$FZF_DARK"
+	fi
+	local OPTS="--height 70% --layout=reverse --preview-window=right --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
+	export FZF_DEFAULT_OPTS="$COLOR_OPTS $OPTS"
+	export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!.git/*"'
+	export FZF_TMUX_OPTS="-p 80%"
 }
 _gen_fzf_default_opts
