@@ -81,18 +81,11 @@ echo Create ~/.ex
 #########################################################
 
 cat <<EOF >> $HOME/.ex
-# export OPENAI_API_KEY=''
-# export PATH=""
-# export GIST_DIR=""
-# export MEMO_DIR=""
-# export BOOKMARKS_DIR=""
-#
-# colors
 # export TERM_COLOR_MODE='DARK'
 # export NVIM_COLOR_DARK='tokyonight'
 # export NVIM_COLOR_LIGHT='tokyonight-day'
-# export ZELLIJ_COLOR_DARK='tokyonight'
-# export ZELLIJ_COLOR_LIGHT='pencil-light'
+# export BROWSER="/Applications/Firefox\ Developer\ Edition.app/"
+# export BROWSER="/Applications/Google\ Chrome.app/"
 EOF
 
 echo initialize done.
