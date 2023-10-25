@@ -49,6 +49,7 @@ BASEPATH=$HOME/dotfiles/root
 ln -si $BASEPATH/bin $HOME/bin
 ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
 ln -si $BASEPATH/.config/git $HOME/.config/git
+ln -si $BASEPATH/starship.toml $HOME/starship.toml
 ln -si $BASEPATH/.bashrc $HOME/.bashrc
 
 #########################################################

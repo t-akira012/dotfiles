@@ -22,9 +22,9 @@ __fzf-tree() {
 
 __fzf-find-vi() {
   if [[ $# -eq 0 ]]; then
-    local selected=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}'  | sed 's?^./??' | fzf)
+    local selected=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | sort | sed 's?^./??' | fzf)
   else
-    local selected=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}'  | sed 's?^./??' | fzf -q $*)
+    local selected=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | sort | sed 's?^./??' | fzf -q $*)
   fi
   [[ -n $selected ]] && echo $selected && $EDITOR "$selected"
 }
