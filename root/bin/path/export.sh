@@ -13,14 +13,14 @@ alias vim="$EDITOR"
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # coreutils
-[[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]] && export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
-[[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]] && export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+# [[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 # gnu
-[[ $(command -v gsed) ]] && alias sed='gsed'
-[[ $(command -v gawk) ]] && alias awk='gawk'
-[[ $(command -v ggrep) ]] && alias grep='ggrep'
-[[ $(command -v gxargs) ]] && alias xargs="gxargs"
+# [[ $(command -v gsed) ]] && alias sed='gsed'
+# [[ $(command -v gawk) ]] && alias awk='gawk'
+# [[ $(command -v ggrep) ]] && alias grep='ggrep'
+# [[ $(command -v gxargs) ]] && alias xargs="gxargs"
 
 # bin
 export PATH="$HOME/bin:$PATH"

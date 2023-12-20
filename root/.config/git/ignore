@@ -1,7 +1,7 @@
 .DS_Store
 Thumbs.db
 .vscode/
-.todo
+.todo*
 .TODO
 .php-cs-fixer.cache
 .idea/
