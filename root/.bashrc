@@ -165,18 +165,20 @@ __show_status() {
     ${SETCOLOR_NORMAL}
 }
 
-eval "$(starship init bash)"
-
-# git-prompt
-# [[ -f $HOME/.local/bin/git-completion.bash ]] && source $HOME/.local/bin/git-completion.bash
-# [[ -n $SSH_CLIENT ]] && export SSH_DISPLAY="\e[01;33m(ssh)\e[m "
-# if [[ -f $HOME/.local/bin/git-prompt.sh ]];then
-#   . $HOME/.local/bin/git-prompt.sh
-#   GIT_PS1_SHOWDIRTYSTATE=true
-#   GIT_PS1_SHOWUPSTREAM=auto
-#   GIT_PS1_SHOWUNTRACKEDFILES=
-#   GIT_PS1_SHOWSTASHSTATE=
-#   export PS1="$SSH_DISPLAY\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n$ "
-# else
-#   export PS1="$SSH_DISPLAY\[\033[35m\]\w\033[00m\]\n$ "
-# fi
+if [[ $(uname) == 'Darwin' ]]; then
+    eval "$(starship init bash)"
+else
+    # git-prompt
+    [[ -f $HOME/.local/bin/git-completion.bash ]] && source $HOME/.local/bin/git-completion.bash
+    [[ -n $SSH_CLIENT ]] && export SSH_DISPLAY="\e[01;33m(ssh)\e[m "
+    if [[ -f $HOME/.local/bin/git-prompt.sh ]];then
+      . $HOME/.local/bin/git-prompt.sh
+      GIT_PS1_SHOWDIRTYSTATE=true
+      GIT_PS1_SHOWUPSTREAM=auto
+      GIT_PS1_SHOWUNTRACKEDFILES=
+      GIT_PS1_SHOWSTASHSTATE=
+      export PS1="$SSH_DISPLAY\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n$ "
+    else
+      export PS1="$SSH_DISPLAY\[\033[35m\]\w\033[00m\]\n$ "
+    fi
+fi
