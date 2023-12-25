@@ -15,6 +15,7 @@ alias cdbin='cd $HOME/bin'
 alias cdoc="[[ -d $MEMO_DIR ]] && cd $MEMO_DIR || echo 'MEMO_DIR is not set'"
 alias cdocs="cd $HOME/docs/"
 alias cdr='cd $_'
+alias k='kubectl'
 
 alias prv='ssh prv'
 
