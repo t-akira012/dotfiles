@@ -39,6 +39,15 @@ ghq-cd() {
   [[ ! -z $SELECTED ]] && cd $(ghq root)/$SELECTED 
 }
 
+# ファイル名コピー
+__fzf-filename-copy(){
+  local SELECTED=$(unbuffer ls -lA --color | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "" | xargs echo)
+  if [[ ! -z $SELECTED ]]; then
+    local ext=${SELECTED##*.}
+    echo $(basename -s .$ext $SELECTED) | pbcopy
+  fi
+}
+
 alias o='__fzf-open'
 alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
@@ -46,6 +55,7 @@ alias vz='__fzf-find-vi'
 alias tf='__fzf-tree'
 alias ghqw='__fzf-ghq-web'
 alias cdg='ghq-cd'
+alias fnamecopy='__fzf-filename-copy'
 
 
 ## Works
