@@ -48,6 +48,35 @@ __fzf-filename-copy(){
   fi
 }
 
+# 複数ファイルを選択してファイル移動
+__fzf-multi-move(){
+  if ! type gxargs > /dev/null 2>&1;then
+      echo require gxargs
+  fi
+  if ! type gmv > /dev/null 2>&1;then
+      echo require gmv
+  fi
+  local SELECTED="$(unbuffer ls -lA --color | tail -n +2 | fzf -m --ansi --preview "" | awk '{print substr($0,index($0,$9))}')"
+
+  if [[ ! -z $SELECTED ]]; then
+      local DIR_SELECT_MODE=$(echo -e "current_dir\nz\ntree" | fzf --preview "")
+      if [[ $DIR_SELECT_MODE == 'z' ]];then
+          local TARGET_DIR="$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
+      fi
+      if [[ $DIR_SELECT_MODE == 'tree' ]];then
+          local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
+          local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -d -a -I node_modules -I .git | fzf)
+      fi
+      if [[ $DIR_SELECT_MODE == 'current_dir' ]];then
+          local TARGET_DIR="$PWD/$(unbuffer ls -lA --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}")"
+      fi
+      echo -e "== TARGET DIR IS:\n$TARGET_DIR"
+      echo -e "== SOURCE FILE IS:\n$SELECTED"
+      read -p "OK?(ctrl-c OR enter)"
+      echo "${SELECTED}" | gxargs -d\\n -I {} gmv -i -v {} -t "$TARGET_DIR"
+  fi
+}
+
 alias o='__fzf-open'
 alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
@@ -56,22 +85,4 @@ alias tf='__fzf-tree'
 alias ghqw='__fzf-ghq-web'
 alias cdg='ghq-cd'
 alias fnamecopy='__fzf-filename-copy'
-
-
-## Works
-
-__fzf-tree-Works(){
-  local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
-  local W_DIR=$HOME/Works
-  local SELECTED=$(tree $W_DIR -i -d -n -N -L $DEPTH -f -d -a -I node_modules -I .git | sed "s?$W_DIR??g" | fzf --preview "[[ -d $W_DIR/{} ]] && exa -T $W_DIR/{} | head -200 || bat $W_DIR/{}")
-  if [[ -n $SELECTED ]]; then
-    BUFFER="${BUFFER}\"$W_DIR/$SELECTED\""
-    CURSOR=${#BUFFER}
-  fi
-  zle reset-prompt
-}
-
-if [[ $SHELL == "/bin/zsh" ]];then
-    zle -N __fzf-tree-Works
-    bindkey '\et' __fzf-tree-Works
-fi
+alias mmv='__fzf-multi-move'
