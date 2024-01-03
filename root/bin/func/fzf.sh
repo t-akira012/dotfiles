@@ -56,7 +56,7 @@ __fzf-multi-move(){
   if ! type gmv > /dev/null 2>&1;then
       echo require gmv
   fi
-  local SELECTED="$(unbuffer ls -lA --color | tail -n +2 | fzf -m --ansi --preview "" | awk '{print substr($0,index($0,$9))}')"
+  local SELECTED="$(unbuffer ls -lA --color | tail -n +2 | fzf -m --ansi --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}')"
 
   if [[ ! -z $SELECTED ]]; then
       local DIR_SELECT_MODE=$(echo -e "current_dir\nz\ntree" | fzf --preview "")
