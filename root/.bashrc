@@ -73,9 +73,10 @@ __fzf-z-insert() {
 }
 
 __fzf-find() {
-  local selected=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | fzf)
+  local selected="$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | fzf -m | sed -e 's/^/"/g;s/$/"/g' | tr '\n' ' ')"
+  echo "$selected"
   [[ -n $selected ]] && \
-    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}\"$selected\"${READLINE_LINE:$READLINE_POINT}" && \
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}"$selected"${READLINE_LINE:$READLINE_POINT}" && \
     READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))
 }
 __fzf-history() {
@@ -96,7 +97,7 @@ __fzf-delete-history() {
   history -w
 }
 __fzf-la() {
-  local selected=$(unbuffer ls -lA --color | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  local selected=$(unbuffer ls -lA --color | fzf --ansi --preview="[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
   [[ -n $selected ]] && \
     READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}\"$selected\"${READLINE_LINE:$READLINE_POINT}" && \
     READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))
