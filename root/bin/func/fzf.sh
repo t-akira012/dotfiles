@@ -48,7 +48,34 @@ __fzf-filename-copy(){
   fi
 }
 
-# 複数ファイルを選択してファイル移動
+# 複数ファイルを選択してファイルコピー
+__fzf-multi-copy(){
+  if ! type gxargs > /dev/null 2>&1;then
+      echo require gxargs
+  fi
+  if ! type gcp > /dev/null 2>&1;then
+      echo require gcp
+  fi
+  local SELECTED="$(unbuffer ls -lA --color | tail -n +2 | fzf -m --ansi --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}')"
+
+  if [[ ! -z $SELECTED ]]; then
+      local DIR_SELECT_MODE=$(echo -e "current_dir\nz\ntree" | fzf --preview "")
+      if [[ $DIR_SELECT_MODE == 'z' ]];then
+          local TARGET_DIR="$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
+      fi
+      if [[ $DIR_SELECT_MODE == 'tree' ]];then
+          local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
+          local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -d -a -I node_modules -I .git | fzf)
+      fi
+      if [[ $DIR_SELECT_MODE == 'current_dir' ]];then
+          local TARGET_DIR="$PWD/$(unbuffer ls -la --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}")"
+      fi
+      echo -e "== TARGET DIR IS:\n$TARGET_DIR"
+      echo -e "== SOURCE FILE IS:\n$SELECTED"
+      read -p "OK?(ctrl-c OR enter)"
+      echo "${SELECTED}" | gxargs -d\\n -I {} gcp -i -v {} -t "$TARGET_DIR"
+  fi
+}
 __fzf-multi-move(){
   if ! type gxargs > /dev/null 2>&1;then
       echo require gxargs
@@ -68,7 +95,7 @@ __fzf-multi-move(){
           local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -d -a -I node_modules -I .git | fzf)
       fi
       if [[ $DIR_SELECT_MODE == 'current_dir' ]];then
-          local TARGET_DIR="$PWD/$(unbuffer ls -lA --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}")"
+          local TARGET_DIR="$PWD/$(unbuffer ls -la --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}")"
       fi
       echo -e "== TARGET DIR IS:\n$TARGET_DIR"
       echo -e "== SOURCE FILE IS:\n$SELECTED"
@@ -86,3 +113,4 @@ alias ghqw='__fzf-ghq-web'
 alias cdg='ghq-cd'
 alias fnamecopy='__fzf-filename-copy'
 alias mmv='__fzf-multi-move'
+alias mcp='__fzf-multi-copy'
