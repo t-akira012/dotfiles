@@ -117,7 +117,7 @@ __fzf-find-dir() {
 
 # bind
 bind -x ' "\ez": __fzf-z-insert'
-bind -x ' "\ed": __fzf-la'
+bind -x ' "\C-x": __fzf-la'
 bind -x ' "\C-t": __fzf-find'
 bind -x ' "\C-g": __fzf-ghq-cd '
 bind -x ' "\C-r": __fzf-history'
