@@ -2,7 +2,6 @@
 Thumbs.db
 .vscode/
 .todo*
-.TODO
+.memo*
 .php-cs-fixer.cache
 .idea/
-...local*.md
