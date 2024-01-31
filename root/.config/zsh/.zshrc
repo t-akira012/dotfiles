@@ -111,14 +111,6 @@ __fzf-find() {
   zle reset-prompt
 }
 
-__fzf-find-dir() {
-  local SELECTED=$(fd -t d -I | fzf)
-  if [[ -n $SELECTED ]]; then
-    BUFFER="${BUFFER}\"${SELECTED}\""
-    CURSOR=${#BUFFER}
-  fi
-  zle reset-prompt
-}
 __fzf-history() {
   local SELECTED=$(fc -l -n -r 1 | fzf --query=$BUFFER --preview="")
   if [[ -n $SELECTED ]]; then
@@ -128,7 +120,7 @@ __fzf-history() {
   zle reset-prompt
 }
 __fzf-la() {
-  local SELECTED=$(unbuffer ls -lA --color | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  local SELECTED=$(unbuffer ls -lA --color | fzf --ansi --preview="[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
   if [[ -n $SELECTED ]]; then
     BUFFER="${BUFFER}\"$SELECTED\""
     CURSOR=${#BUFFER}
@@ -140,15 +132,15 @@ __fzf-ghq-cd() {
   [[ ! -z $SELECTED ]] && cd $(ghq root)/$SELECTED
   zle reset-prompt
 }
-__fzf-files-depth1() {
-  local SELECTED=$(unbuffer ls -lA --color | grep '^-' | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+
+__fzf-find-dir() {
+  local SELECTED=$(fd -t d -I | fzf)
   if [[ -n $SELECTED ]]; then
-    BUFFER="${BUFFER}\"$SELECTED\""
+    BUFFER="${BUFFER}\"${SELECTED}\""
     CURSOR=${#BUFFER}
   fi
   zle reset-prompt
 }
-
 
 # bindkey
 zle -N __nothing
@@ -158,7 +150,6 @@ zle -N __fzf-history
 zle -N __fzf-find
 zle -N __fzf-ghq-cd
 zle -N __fzf-find-dir
-zle -N __fzf-files-depth1
 bindkey '\el' __fzf-la
 bindkey '\ez' __fzf-z-insert
 bindkey '^@' __nothing
@@ -167,7 +158,6 @@ bindkey '^r' __fzf-history
 bindkey '^t' __fzf-find
 bindkey '^g' __fzf-ghq-cd
 bindkey '^o' __fzf-find-dir
-# bindkey '^j' __fzf-files-depth1
 
 # source
 . $HOME/bin/path/aliases.sh
@@ -187,5 +177,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 . ${ZPLUGDIR}zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # pure
-autoload -U promptinit; promptinit
-prompt pure
+# autoload -U promptinit; promptinit
+# prompt pure
+
+if [[ $(uname) == 'Darwin' ]] && type starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi

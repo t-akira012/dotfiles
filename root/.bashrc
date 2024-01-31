@@ -87,7 +87,7 @@ __fzf-history() {
     READLINE_LINE="$selected"
     READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
-__fzf-delete-history() {
+__fzf-delete-history() { # bash-only
   __share_history
   local BUFFER=$READLINE_LINE
   local selected=$(history | sort | uniq | fzf --query="$BUFFER" --preview="" | awk '{print $1}')
@@ -144,7 +144,7 @@ vicd() {
 
 # show status
 __show_status() {
-    local status=$(echo ${PIPESTATUS[@]})
+    local status=$(echo "${PIPESTATUS[@]}")
     local SETCOLOR_SUCCESS="echo -en \\033[1;39m"
     local SETCOLOR_FAILURE="echo -en \\033[1;31m"
     local SETCOLOR_WARNING="echo -en \\033[1;33m"
