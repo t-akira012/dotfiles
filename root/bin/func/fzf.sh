@@ -72,7 +72,11 @@ __fzf-multi-copy(){
       fi
       echo -e "== TARGET DIR IS:\n$TARGET_DIR"
       echo -e "== SOURCE FILE IS:\n$SELECTED"
-      read -p "OK?(ctrl-c OR enter)"
+      if [ -n "$ZSH_VERSION" ]; then
+          read "OK?(ctrl-c OR enter)"
+      else
+          read -p "OK?(ctrl-c OR enter)"
+      fi
       echo "${SELECTED}" | gxargs -d\\n -I {} gcp -i -v {} -t "$TARGET_DIR"
   fi
 }
@@ -99,7 +103,11 @@ __fzf-multi-move(){
       fi
       echo -e "== TARGET DIR IS:\n$TARGET_DIR"
       echo -e "== SOURCE FILE IS:\n$SELECTED"
-      read -p "OK?(ctrl-c OR enter)"
+      if [ -n "$ZSH_VERSION" ]; then
+          read "OK?(ctrl-c OR enter)"
+      else
+          read -p "OK?(ctrl-c OR enter)"
+      fi
       echo "${SELECTED}" | gxargs -d\\n -I {} gmv -i -v {} -t "$TARGET_DIR"
   fi
 }
