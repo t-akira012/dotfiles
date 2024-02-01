@@ -11,11 +11,11 @@ function tmuxpopup(){
 
     # セッション名に"popup"が含まれるかチェック
     if [[ $session == *"popup"* ]]; then
-    # "popup"が含まれる場合、クライアントをデタッチ（ポップアップを閉じる）
-    tmux detach-client
+        # "popup"が含まれる場合、クライアントをデタッチ（ポップアップを閉じる）
+        tmux detach-client
     else
-    # "popup"が含まれない場合、新しいポップアップウィンドウを表示
-    tmux popup -d '#{pane_current_path}' -xC -yC -w$width -h$height "tmux attach -t popup || tmux new -s popup"
+        # "popup"が含まれない場合、新しいポップアップウィンドウを表示
+        tmux popup -d '#{pane_current_path}' -xC -yC -w$width -h$height -E "tmux attach -t popup || tmux new -s popup"
     fi
 }
 
