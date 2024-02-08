@@ -228,7 +228,7 @@ dupulicate-repo() {
     echo $REPO_NAME is exist.
   else
     cd $TMP
-    git clone $REMOTE --depth 1
+    git clone $REMOTE
     ls -la $TMP
   fi
   cd $TMP
