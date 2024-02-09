@@ -124,23 +124,23 @@ gitCopyBranchName() {
   pbpaste
 }
 
-# gitOpenIssue() {
-#   # gh command wrap to fzf
-#   local s=$(unbuffer gh issue list -L 99 | tail -n +4 | fzf --ansi --preview "" | awk '{print $1}' | sed 's/#//')
-#   [[ -n $s ]] && gh issue view "$s"
-#   read "?Enter or C-c"
-#   gh issue view --web "$s"
-#   # for bash && read -p "show comments?(Enter or C-c)>" && gh issue view "$s" --comments
-# }
-#
-# gitOpenPr() {
-#   # gh command wrap to fzf
-#   local s=$(unbuffer gh pr list -L 99 | tail -n +4 | fzf --ansi --preview "" | awk '{print $1}' | sed 's/#//')
-#   [[ -n $s ]] && gh pr view "$s"
-#   read "?Enter or C-c"
-#   gh pr view --web "$s"
-#   # for bash && read -p "show comments?(Enter or C-c)>" && gh pr view "$s" --comments
-# }
+gitOpenIssue() {
+  # gh command wrap to fzf
+  local s=$(unbuffer gh issue list -L 99 | tail -n +4 | fzf --ansi --preview "" | awk '{print $1}' | sed 's/#//')
+  [[ -n $s ]] && gh issue view "$s"
+  read "?Enter or C-c"
+  gh issue view --web "$s"
+  # for bash && read -p "show comments?(Enter or C-c)>" && gh issue view "$s" --comments
+}
+
+gitOpenPr() {
+  # gh command wrap to fzf
+  local s=$(unbuffer gh pr list -L 99 | tail -n +4 | fzf --ansi --preview "" | awk '{print $1}' | sed 's/#//')
+  [[ -n $s ]] && gh pr view "$s"
+  read "?Enter or C-c"
+  gh pr view --web "$s"
+  # for bash && read -p "show comments?(Enter or C-c)>" && gh pr view "$s" --comments
+}
 
 gitOpenRepo() {
   local s=$(unbuffer gh repo list $1 -L 999 | tail -n +4 | fzf --ansi --preview "" | awk '{print $1}')
