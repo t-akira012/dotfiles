@@ -90,16 +90,24 @@ __fzf-multi-move(){
   local SELECTED="$(unbuffer ls -lA --color | tail -n +2 | fzf -m --ansi --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}')"
 
   if [[ ! -z $SELECTED ]]; then
-      local DIR_SELECT_MODE=$(echo -e "current_dir\nz\ntree" | fzf --preview "")
+      local DIR_SELECT_MODE=$(echo -e "current_dir\nz\ntree\nDropbox\nHome" | fzf --preview "")
       if [[ $DIR_SELECT_MODE == 'z' ]];then
           local TARGET_DIR="$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
       fi
       if [[ $DIR_SELECT_MODE == 'tree' ]];then
           local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
-          local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -d -a -I node_modules -I .git | fzf)
+          local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -a -I node_modules -I .git | fzf)
       fi
       if [[ $DIR_SELECT_MODE == 'current_dir' ]];then
           local TARGET_DIR="$PWD/$(unbuffer ls -la --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}")"
+      fi
+      if [[ $DIR_SELECT_MODE == 'Dropbox' ]];then
+          local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
+          local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -a -I node_modules -I .git $HOME/Dropbox| fzf)
+      fi
+      if [[ $DIR_SELECT_MODE == 'Home' ]];then
+          local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
+          local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -I node_modules -I .git -I Applications -I Library $HOME | fzf)
       fi
       echo -e "== TARGET DIR IS:\n$TARGET_DIR"
       echo -e "== SOURCE FILE IS:\n$SELECTED"
