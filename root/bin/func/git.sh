@@ -234,8 +234,8 @@ dupulicate-repo() {
   cd $TMP
 }
 
-purge-git-branches() {
-  echo === リモートブランチに存在しないブランチをすべて削除
+delete-local-branches-not-on-remote() {
+  echo リモートブランチに存在しないブランチをすべて削除
   git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
 }
 
