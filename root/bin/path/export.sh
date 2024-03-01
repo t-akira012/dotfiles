@@ -1,3 +1,8 @@
+export TMUX_SESSION_NAME=$(tmux display-message -p '#S')
+if [ $TMUX_SESSION_NAME == "popup" ]; then
+    nvim
+fi
+
 export FILTER='fzf'
 if [[ $(command -v nvim) ]]; then
 	export EDITOR="nvim"
