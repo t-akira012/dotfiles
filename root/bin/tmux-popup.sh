@@ -3,8 +3,8 @@
 # tmux popup windowをトグルする関数
 function tmuxpopup(){
     # ウィンドウのサイズを設定
-    width='90%'
-    height='80%'
+    width='100%'
+    height='100%'
 
     # 現在のセッション名を取得
     session=$(tmux display-message -p -F "#{session_name}")
