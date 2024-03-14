@@ -3,7 +3,7 @@
 # tmux popup windowをトグルする関数
 function tmuxpopup(){
     # ウィンドウのサイズを設定
-    width='100%'
+    width='50%'
     height='100%'
 
     # 現在のセッション名を取得
@@ -15,7 +15,7 @@ function tmuxpopup(){
         tmux detach-client
     else
         # "popup"が含まれない場合、新しいポップアップウィンドウを表示
-        tmux popup -d '#{pane_current_path}' -xC -yC -w$width -h$height -E "tmux attach -t popup || tmux new -s popup"
+        tmux popup -d '#{pane_current_path}' -xR -yC -w$width -h$height -E "tmux attach -t popup || tmux new -s popup"
     fi
 }
 
