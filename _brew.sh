@@ -31,28 +31,11 @@ fi
 if [[ $(uname) == "Darwin" ]]; then
 	echo Install Homebrew packages
 	brew install \
-		git \
-		gh \
-		curl \
-		wget \
-		tree \
-		tmux \
-		watch \
-		expect \
-		z \
-		unar \
-		nvim \
-		shfmt \
-		bash-completion
+		git gh curl wget tree tmux watch expect z unar nvim shfmt bash-completion git-delta
 
 	echo '=== Install packages for macOS'
 	brew install \
-		gnu-sed \
-		gawk \
-		coreutils \
-		binutils \
-		findutils \
-		util-linux
+		gnu-sed gawk coreutils binutils findutils util-linux
 
 	echo '=== Install cask packages'
 	brew install --cask google-chrome

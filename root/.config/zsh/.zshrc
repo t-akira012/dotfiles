@@ -182,6 +182,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 # autoload -U promptinit; promptinit
 # prompt pure
 
-if [[ $(uname) == 'Darwin' ]] && type starship &> /dev/null; then
+if type starship > /dev/null 2>&1; then
     eval "$(starship init zsh)"
 fi

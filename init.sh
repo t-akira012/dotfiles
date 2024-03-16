@@ -16,7 +16,7 @@ if type pacman > /dev/null 2>&1;then
     yes | sudo pacman -S \
         yay \
         git base-devel coreutils \
-        github-cli curl wget tree tmux expect unarchiver shfmt xsel bash-completion
+        github-cli curl wget tree tmux expect unarchiver shfmt xsel bash-completion git-delta
     sudo pacman -Scc
 fi
 
@@ -34,17 +34,13 @@ BASEPATH=$HOME/dotfiles/root
 ln -si $BASEPATH/bin $HOME/bin
 ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
 ln -si $BASEPATH/.config/git $HOME/.config/git
-ln -si $BASEPATH/starship.toml $HOME/.config/starship.toml
-
-#########################################################
-echo "Install asdf"
-#########################################################
-./asdf/_install.sh
+ln -si $BASEPATH/.config/starship.toml $HOME/.config/starship.toml
 
 #########################################################
 echo "Add git config"
 #########################################################
 
+cp $HOME/.config/git/config.template $HOME/.config/git/config
 git config --global ghq.root ~/src
 git config --global alias.st status
 git config --global alias.co checkout
