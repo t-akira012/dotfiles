@@ -16,3 +16,8 @@ asdf plugin add ruby
 asdf plugin add python
 asdf plugin add nodejs
 
+./asdf/go.sh
+./asdf/python.sh
+./asdf/ruby.sh
+./asdf/rust.sh
+./asdf/nodejs.sh
