@@ -2,6 +2,8 @@
 set -eu
 cd $(dirname $0)
 
+[[ -e $HOME/.zshrc ]] && mv "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +"%Y%m%d_%H%M")"
+
 echo Create symbolic links
 BASEPATH=$HOME/dotfiles/root
 [[ ! -d $HOME/.config ]] && mkdir $HOME/.config

@@ -11,7 +11,7 @@ else
     exit 1
 fi
 
-asdf plugin add go
+asdf plugin add golang
 asdf plugin add ruby
 asdf plugin add python
 asdf plugin add nodejs

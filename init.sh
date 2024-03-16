@@ -8,7 +8,16 @@ if type apt ;then
         git build-essential coreutils \
         cmake gettext fontconfig \
         gh curl wget tree tmux watch expect unar shfmt xsel bash-completion
-    mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
+    [[ -e $HOME/.bashrc ]] && mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
+fi
+
+if type pacman > /dev/null ;then
+    sudo pacman-mirrors --fasttrack && sudo pacman -Syy
+    yes | sudo pacman -S \
+        yay \
+        git base-devel coreutils \
+        github-cli curl wget tree tmux expect unarchiver shfmt xsel bash-completion
+    sudo pacman -Scc
 fi
 
 if [[ $(uname) == "Darwin" ]];then
@@ -17,10 +26,20 @@ if [[ $(uname) == "Darwin" ]];then
 fi
 
 #########################################################
+echo Create symbolic links
+#########################################################
+
+BASEPATH=$HOME/dotfiles/root
+[[ ! -d $HOME/.config ]] && mkdir $HOME/.config
+ln -si $BASEPATH/bin $HOME/bin
+ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
+ln -si $BASEPATH/.config/git $HOME/.config/git
+ln -si $BASEPATH/starship.toml $HOME/.config/starship.toml
+
+#########################################################
 echo "Install asdf"
 #########################################################
 bash -c ./asdf/_install.sh
-. $HOME/.bashrc
 
 #########################################################
 echo "Add git config"
@@ -39,18 +58,6 @@ git config --global diff.colorMoved dimmed-zebra
 git config --global diff.colorMovedWS allow-indentation-change
 git config --global grep.lineNumber true
 git config --global core.quotepath false
-
-#########################################################
-echo Create symbolic links
-#########################################################
-
-BASEPATH=$HOME/dotfiles/root
-[[ ! -d $HOME/.config ]] && mkdir $HOME/.config
-ln -si $BASEPATH/bin $HOME/bin
-ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
-ln -si $BASEPATH/.config/git $HOME/.config/git
-ln -si $BASEPATH/starship.toml $HOME/starship.toml
-ln -si $BASEPATH/.bashrc $HOME/.bashrc
 
 #########################################################
 echo Download git-completion

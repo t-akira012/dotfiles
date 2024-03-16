@@ -12,6 +12,7 @@ alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
 alias cdot='cd $HOME/dotfiles'
 alias cdbin='cd $HOME/bin'
+export MEMO_DIR="$HOME/doc"
 alias cdoc="cd $MEMO_DIR"
 alias cdocs="cd $HOME/docs/"
 alias cdr='cd $_'

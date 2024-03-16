@@ -21,12 +21,19 @@ type brew >/dev/null 2>&1 && [[ -f $(brew --prefix asdf)/libexec/asdf.sh ]] && .
 # bash-completion
 type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/bash_completion ]] && . $(brew --prefix)/etc/bash_completion
 
+function is_interactive_shell() {
+    # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
+    [[ "$-" =~ "i" ]]
+}
+
 # タブ補完
-bind '"\t":menu-complete'
-bind '"\e[Z": menu-complete-backward'
-bind "set show-all-if-ambiguous on"
-bind "set completion-ignore-case on"
-bind "set menu-complete-display-prefix on"
+if is_interactive_shell; then
+    bind '"\t":menu-complete'
+    bind '"\e[Z": menu-complete-backward'
+    bind "set show-all-if-ambiguous on"
+    bind "set completion-ignore-case on"
+    bind "set menu-complete-display-prefix on"
+fi
 
 ## History
 HISTCONTROL=ignoreboth
@@ -116,12 +123,14 @@ __fzf-find-dir() {
 }
 
 # bind
-bind -x ' "\ez": __fzf-z-insert'
-bind -x ' "\C-x": __fzf-la'
-bind -x ' "\C-t": __fzf-find'
-bind -x ' "\C-g": __fzf-ghq-cd '
-bind -x ' "\C-r": __fzf-history'
-bind -x ' "\C-o": __fzf-find-dir'
+if is_interactive_shell;then
+    bind -x ' "\ez": __fzf-z-insert'
+    bind -x ' "\C-x": __fzf-la'
+    bind -x ' "\C-t": __fzf-find'
+    bind -x ' "\C-g": __fzf-ghq-cd '
+    bind -x ' "\C-r": __fzf-history'
+    bind -x ' "\C-o": __fzf-find-dir'
+fi
 
 alias reload='source ~/.bashrc'
 alias delhis='__fzf-delete-history'

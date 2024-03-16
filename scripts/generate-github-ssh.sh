@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -eu
 
+[[ ! -d $HOME/.ssh ]] && mkdir $HOME/.ssh
+
 echo What is your email address?
 read email
 
