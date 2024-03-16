@@ -28,5 +28,5 @@ git clone --depth 1 https://github.com/x-motemen/ghq $HOME/.local/repos/ghq \
     && make install
 
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf \
-    && yes | $HOME/.local/repos/fzf/install
+    && $HOME/.local/repos/fzf/install
 

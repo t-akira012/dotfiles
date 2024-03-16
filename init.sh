@@ -2,7 +2,7 @@
 set -eu
 cd $(dirname $0)
 
-if type apt 2>&1;then
+if type apt > /dev/null 2>&1;then
     sudo apt update && \
         sudo apt install -y \
         git build-essential coreutils \
