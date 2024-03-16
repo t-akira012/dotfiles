@@ -3,7 +3,7 @@
 sudo pacman -Syy
 
 # 日本語入力
-sudo pacman -S manjaro-asian-input-support-ibus fcitx-mozc gtk2
+sudo pacman -S manjaro-asian-input-support-ibus gtk2 fcitx5 fcitx5-configtool fcitx5-mozc fcitx5-im
 
 # ホームディレクトリの英語化
 sudo pacman -S xdg-user-dirs-gtk
