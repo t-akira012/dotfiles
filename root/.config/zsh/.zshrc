@@ -17,7 +17,7 @@ setopt IGNOREEOF
 # M1 brew
 [[ -d /opt/homebrew/ ]] && eval $(/opt/homebrew/bin/brew shellenv)
 # z
-[[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
+type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
 unalias z 2> /dev/null
 
 
