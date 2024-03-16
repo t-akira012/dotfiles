@@ -7,7 +7,7 @@ fi
 if [[ -f $HOME/.asdf/asdf.sh ]];then
     . $HOME/.asdf/asdf.sh
 else
-    echo require asdf.bash
+    echo require asdf.sh
     exit 1
 fi
 
