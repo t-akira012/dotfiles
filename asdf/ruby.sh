@@ -3,7 +3,7 @@ set -e
 
 
 if ! type ruby >/dev/null 2>&1 ; then
-    if type apt; then
+    if type apt 2>&1; then
         sudo apt update
         sudo apt -y install libssl-dev zlib1g-dev libyaml-0-2 libyaml-dev
     fi

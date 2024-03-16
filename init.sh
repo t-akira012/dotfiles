@@ -2,7 +2,7 @@
 set -eu
 cd $(dirname $0)
 
-if type apt ;then
+if type apt 2>&1;then
     sudo apt update && \
         sudo apt install -y \
         git build-essential coreutils \
@@ -11,7 +11,7 @@ if type apt ;then
     [[ -e $HOME/.bashrc ]] && mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
 fi
 
-if type pacman > /dev/null ;then
+if type pacman > /dev/null 2>&1;then
     sudo pacman-mirrors --fasttrack && sudo pacman -Syy
     yes | sudo pacman -S \
         yay \
@@ -35,11 +35,6 @@ ln -si $BASEPATH/bin $HOME/bin
 ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
 ln -si $BASEPATH/.config/git $HOME/.config/git
 ln -si $BASEPATH/starship.toml $HOME/.config/starship.toml
-
-#########################################################
-echo "Install asdf"
-#########################################################
-bash -c ./asdf/_install.sh
 
 #########################################################
 echo "Add git config"

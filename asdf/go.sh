@@ -8,7 +8,6 @@ echo Install Go
 if type go >/dev/null 2>&1 ;then
     echo "Go already installed."
 else
-    asdf plugin add golang
     asdf install golang latest
     asdf global golang latest
     go version
@@ -29,5 +28,5 @@ git clone --depth 1 https://github.com/x-motemen/ghq $HOME/.local/repos/ghq \
     && make install
 
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf \
-    && $HOME/.local/repos/fzf/install
+    && yes | $HOME/.local/repos/fzf/install
 
