@@ -178,10 +178,17 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 . ${ZPLUGDIR}ohmyzsh/lib/completion.zsh
 . ${ZPLUGDIR}zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# pure
-# autoload -U promptinit; promptinit
-# prompt pure
-
-if type starship > /dev/null 2>&1; then
+if [[ -e /etc/arch-release ]]; then
+    USE_POWERLINE="true"
+    if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
+        source /usr/share/zsh/manjaro-zsh-config
+    fi
+    # Use manjaro zsh prompt
+    if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
+        source /usr/share/zsh/manjaro-zsh-prompt
+    fi
+elif type starship > /dev/null 2>&1; then
+    eval "$(starship init zsh)"
+elif type starship > /dev/null 2>&1; then
     eval "$(starship init zsh)"
 fi
