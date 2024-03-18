@@ -85,6 +85,8 @@ echo Create ~/.ex
 #########################################################
 
 cat <<EOF >> $HOME/.ex
+# export MEMO_DIR="$HOME/docs/doc"
+# alias cdoc="cd $MEMO_DIR"
 # export TERM_COLOR_MODE='DARK'
 # export NVIM_COLOR_DARK='tokyonight'
 # export NVIM_COLOR_LIGHT='tokyonight-day'
