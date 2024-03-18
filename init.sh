@@ -43,6 +43,7 @@ echo "Add git config"
 cp $HOME/.config/git/config.template $HOME/.config/git/config
 git config --global ghq.root ~/src
 git config --global alias.st status
+git config --global alias.sw switch
 git config --global alias.co checkout
 git config --global alias.br branch
 git config --global alias.l "log --graph"

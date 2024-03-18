@@ -81,7 +81,7 @@ gitHist() {
 FZF-EOF" --preview-window=down:60%
 }
 
-gitCheckOut() {
+gitSwitch() {
   local s=$(
     git branch -a |
       tr -d " " |
@@ -90,7 +90,7 @@ gitCheckOut() {
       sed -e "s/^\*\s*//g" |
       perl -pe "s/remotes\/origin\///g"
   )
-  [[ "$s" ]] && git checkout $s
+  [[ "$s" ]] && git switch $s
 }
 
 gitBranchDelete() {
@@ -247,7 +247,7 @@ alias gad='gitAdd'
 alias gsta='gitStash'
 alias glog='gitLog'
 alias ghist='gitHist'
-alias gco="gitCheckOut"
+alias gsw="gitSwitch"
 alias gbrd="gitBranchDelete"
 alias giss="gitOpenIssue"
 alias gpr="gitOpenPr"
