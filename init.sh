@@ -16,7 +16,7 @@ if type pacman > /dev/null 2>&1;then
     yes | sudo pacman -S \
         yay \
         git base-devel coreutils \
-        github-cli curl wget tree tmux expect unarchiver shfmt xsel bash-completion git-delta
+        github-cli curl wget tree tmux expect unarchiver shfmt xsel bash-completion git-delta make
     sudo pacman -Scc
 fi
 
