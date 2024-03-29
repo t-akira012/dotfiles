@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+[ $# -eq 0 ] \
+    && echo 'trash 削除したいファイル' \
+    && exit 0
+
+if [ $(uname) == "Darwin" ];then
+    if ! type gmv >/dev/null 2>&1;then
+        echo require GNU mv
+    fi
+fi
+
+if [ -d ${HOME}/.Trash ]; then
+    gmv --backup=numbered --target-directory=${HOME}/.Trash $*
+    echo Trash $*
+else
+    echo 'Not exist $HOME/.Trash'
+fi
