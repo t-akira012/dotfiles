@@ -3,6 +3,8 @@ alias gg='git grep --break'
 alias gitgraph="git log --color=always --pretty='format:%C(auto)%h%d %C(green)%cd %C(reset)%s %C(cyan)[%an]' --date=iso --graph --date=format:'%Y/%m/%d %a'"
 # alias gap='echo "git fetch --all && git pull origin $(git rev-parse --abbrev-ref @)" && git fetch --all && git pull origin $(git rev-parse --abbrev-ref @)'
 # alias gpp='echo "git fetch --all --prune && git pull" && git fetch --all --prune && git pull'
+alias gcom='git commit -m'
+alias gpus='git push origin @'
 alias gcmm='git cmm'
 alias gbr='git branch'
 alias gst='git status'
