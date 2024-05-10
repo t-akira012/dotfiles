@@ -27,6 +27,8 @@ alias sls='serverless'
 start_tmux() {
   if [[ $__CFBundleIdentifier == 'com.microsoft.VSCode' ]]; then
     [[ -z "$(tmux ls | grep code)" ]] && tmux new -s 'code' || tmux a -t 'code'
+  elif [[ $THIS_ITERM2 == 'DOC' ]]; then
+    [[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
   elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
     [[ -z "$(tmux ls | grep iTerm)" ]] && tmux new -s 'iTerm' || tmux a -t 'iTerm'
   else
