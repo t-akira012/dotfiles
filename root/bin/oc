@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+
+get_cloudflare_id(){
+    cloudflare_id=$(npx wrangler whoami | grep 's Account' | awk -F '│' '{print $3}' | sed 's/ //g')
+}
+
+
+
+
+PROVIDER=$(cat <<EOF | fzf
+Cloudflare
+Cloudflare R2
+AWS
+EOF
+)
+
+if [[ $PROVIDER == "Cloudflare" ]];then
+    open https://dash.cloudflare.com/
+elif [[ $PROVIDER == "Cloudflare R2" ]];then
+    get_cloudflare_id
+    open "https://dash.cloudflare.com/$cloudflare_id/r2/"
+elif [[ $PROVIDER == "AWS" ]];then
+    open https://ap-northeast-1.console.aws.amazon.com/console/
+fi

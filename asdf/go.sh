@@ -30,3 +30,7 @@ git clone --depth 1 https://github.com/x-motemen/ghq $HOME/.local/repos/ghq \
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf \
     && $HOME/.local/repos/fzf/install
 
+# fzf
+[[ ! -d $HOME/.local/bin ]] && mkdir -p $HOME/.local/bin/
+curl -s https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-preview.sh -o $HOME/.local/bin/fzf-preview.sh
+chmod +x $HOME/.local/bin/fzf-preview.sh

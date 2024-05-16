@@ -120,7 +120,14 @@ __fzf-multi-move(){
   fi
 }
 
+__fzf-open-app(){
+    local file=$(unbuffer ls -lA --color | rg ^- | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}" | xargs echo)
+    local app=$(find /Applications -name "*.app" -type d -maxdepth 2 | fzf)
+    open -a "$app" "$file"
+}
+
 alias o='__fzf-open'
+alias oa='__fzf-open-app'
 alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
 alias vz='__fzf-find-vi'
