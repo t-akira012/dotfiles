@@ -5,10 +5,20 @@ if [[ ! -e "$MEMO_DIR" ]]; then
   exit 1
 fi
 
-DIR="$MEMO_DIR/daily"
-DATE=$(date "+%Y-%m-%d")
-HHMMSS=$(date "+%H-%M-%S")
 
-filename="${DIR}/$DATE.md"
+daily_note(){
+    local DIR="$MEMO_DIR/daily"
+    local DATE=$(date "+%Y-%m-%d")
+    local HHMMSS=$(date "+%H-%M-%S")
+    filename="${DIR}/$DATE.md"
+}
+
+memo_note(){
+    local DIR="$MEMO_DIR/"
+    filename="${DIR}/memo.md"
+}
+
+memo_note
+
 touch $filename
 open -a "/Applications/CotEditor.app" $filename
