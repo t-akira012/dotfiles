@@ -130,17 +130,75 @@ swap-main:
   key: up
 
 # Move focus to the n-th screen in the list; e.g., focus-screen-3 will move mouse focus to the 3rd screen. Note that the main window in the given screen will be focused.
-#focus-screen-n:
-focus-screen-<screen-number>:
+focus-screen-1:
+  mod: <NONE>
+  key: <NONE>
+focus-screen-2:
+  mod: <NONE>
+  key: <NONE>
+focus-screen-3:
+  mod: <NONE>
+  key: <NONE>
+focus-screen-4:
   mod: <NONE>
   key: <NONE>
 # Move the currently focused window to the n-th screen; e.g., throw-screen-3 will move the window to the 3rd screen.
-throw-screen-n:
-throw-screen-<screen-number>:
+throw-screen-1:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-2:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-3:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-4:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-5:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-6:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-7:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-8:
+  mod: <NONE>
+  key: <NONE>
+throw-screen-9:
   mod: <NONE>
   key: <NONE>
 # Move the currently focused window to the n-th space; e.g., throw-space-3 will move the window to the 3rd space.
-throw-space-<screen-number>:
+throw-space-1:
+  mod: <NONE>
+  key: <NONE>
+throw-space-2:
+  mod: <NONE>
+  key: <NONE>
+throw-space-3:
+  mod: <NONE>
+  key: <NONE>
+throw-space-4:
+  mod: <NONE>
+  key: <NONE>
+throw-space-5:
+  mod: <NONE>
+  key: <NONE>
+throw-space-6:
+  mod: <NONE>
+  key: <NONE>
+throw-space-7:
+  mod: <NONE>
+  key: <NONE>
+throw-space-8:
+  mod: <NONE>
+  key: <NONE>
+throw-space-9:
+  mod: <NONE>
+  key: <NONE>
+throw-space-10:
   mod: <NONE>
   key: <NONE>
 
@@ -291,3 +349,5 @@ restore-layouts-on-launch: true
 
 # true to display some optional debug information in the layout HUD (default false).
 debug-layout-info: false
+
+
