@@ -15,7 +15,7 @@ daily_note(){
 
 memo_note(){
     local DIR="$MEMO_DIR/"
-    filename="${DIR}/memo.md"
+    filename="${DIR}/draft.md"
 }
 
 memo_note
