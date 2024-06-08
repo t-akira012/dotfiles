@@ -1,4 +1,11 @@
 export TMUX_SESSION_NAME=$(tmux display-message -p '#S')
+if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
+	__toggle_tmux_popup() {
+		$HOME/bin/tmux-popup.sh
+	}
+	zle -N __toggle_tmux_popup
+	bindkey '^j' __toggle_tmux_popup
+fi
 
 export FILTER='fzf'
 if [[ $(command -v nvim) ]]; then

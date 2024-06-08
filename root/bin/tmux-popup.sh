@@ -35,12 +35,12 @@ right() {
 
 bottom() {
 	local width='100%'
-	local height='80%'
+	local height='60%'
 
 	if [[ $CURRENT_SESSION == *"${POPUP_SESSION}"* ]]; then
 		tmux detach-client
 	else
-		tmux popup -d '#{pane_current_path}' -xR -yC -w$width -h$height -E "tmux attach -t ${POPUP_SESSION} || tmux new -s ${POPUP_SESSION}"
+		tmux popup -d '#{pane_current_path}' -xC -y60 -w$width -h$height -E "tmux attach -t ${POPUP_SESSION} || tmux new -s ${POPUP_SESSION}"
 	fi
 }
 
