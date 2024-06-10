@@ -21,22 +21,22 @@ alias tree="tree -I node_modules"
 alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
 alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
 alias sls='serverless'
+alias pn=pnpm
+
 [[ -d "/opt/homebrew/opt/util-linux/bin/" ]] && alias cal='/opt/homebrew/opt/util-linux/bin/cal -m'
 
-
 start_tmux() {
-  if [[ $__CFBundleIdentifier == 'com.microsoft.VSCode' ]]; then
-    [[ -z "$(tmux ls | grep code)" ]] && tmux new -s 'code' || tmux a -t 'code'
-  elif [[ $THIS_ITERM2 == 'DOC' ]]; then
-    [[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
-  elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
-    [[ -z "$(tmux ls | grep iTerm)" ]] && tmux new -s 'iTerm' || tmux a -t 'iTerm'
-  else
-    [[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
-  fi
+	if [[ $__CFBundleIdentifier == 'com.microsoft.VSCode' ]]; then
+		[[ -z "$(tmux ls | grep code)" ]] && tmux new -s 'code' || tmux a -t 'code'
+	elif [[ $THIS_ITERM2 == 'DOC' ]]; then
+		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
+	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
+		[[ -z "$(tmux ls | grep iTerm)" ]] && tmux new -s 'iTerm' || tmux a -t 'iTerm'
+	else
+		[[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
+	fi
 }
 alias ta='start_tmux'
-
 
 # alias mp='multipass'
 # alias qqq='exit'
