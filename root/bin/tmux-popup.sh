@@ -1,10 +1,12 @@
 #!/bin/bash
 
+VIM_PID=$1
+
 # 現在のセッション名を取得
 CURRENT_SESSION=$(tmux display-message -p -F "#{session_name}")
 
 # POPセッション名
-POPUP_SESSION='term_on_vim'
+POPUP_SESSION="term_on_vim${VIM_PID}"
 
 # tmux popup windowをトグルする関数
 max() {
