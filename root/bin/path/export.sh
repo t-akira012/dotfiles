@@ -74,6 +74,12 @@ elif [[ $(command -v nodenv) ]]; then
 	eval "$(nodenv init -)"
 fi
 
+# bun completions & bun
+[ -s "$HOME/.bun/_bun" ] &&
+	source "$HOME/.bun/_bun" &&
+	export BUN_INSTALL="$HOME/.bun" &&
+	export PATH="$BUN_INSTALL/bin:$PATH"
+
 # fzf
 # https://github.com/junegunn/fzf/wiki/Color-schemes
 _gen_fzf_default_opts() {
