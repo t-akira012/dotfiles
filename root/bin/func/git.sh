@@ -213,7 +213,7 @@ __generateGitHttpsUrl() {
 		local httpsUrl="https://github.com/$repoName"
 		echo "$httpsUrl"
 	else
-		echo "$URL"
+		echo "$URL" | sed 's/.git$//'
 	fi
 }
 
