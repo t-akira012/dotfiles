@@ -19,8 +19,13 @@ alias ghp='open https://$(git remote -v | awk "NR==1 {print \$2}" | sed "s#.*/##
 alias hbr="gitViewWeb"
 alias branchname="git rev-parse --abbrev-ref HEAD"
 alias gdfc="git diff --cached"
-alias gp="git pull origin $(git rev-parse --abbrev-ref HEAD)"
+alias gp=gitPull
 alias gr="cdGitRoot"
+
+gitPull() {
+	echo "git pull origin $(git rev-parse --abbrev-ref HEAD)"
+	git pull origin $(git rev-parse --abbrev-ref HEAD)
+}
 
 cdGitRoot() {
 	local target=$(git rev-parse --show-toplevel)
