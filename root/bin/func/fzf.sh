@@ -126,6 +126,12 @@ __fzf-open-app(){
     open -a "$app" "$file"
 }
 
+
+__fzf-open-code-workspace(){
+    local workspace=$(ls -1 $HOME/dev | fzf)
+    [ -n $workspace ] && open $HOME/dev/$workspace
+}
+
 alias o='__fzf-open'
 alias oa='__fzf-open-app'
 alias z='__fzf-z-cd'
@@ -137,3 +143,4 @@ alias cdg='ghq-cd'
 alias fnamecopy='__fzf-filename-copy'
 alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
+alias dev='__fzf-open-code-workspace'
