@@ -129,7 +129,7 @@ __fzf-open-app(){
 
 __fzf-open-code-workspace(){
     local workspace=$(ls -1 $HOME/dev | fzf)
-    [ -n $workspace ] && open $HOME/dev/$workspace
+    [ -n "$workspace" ] && open $HOME/dev/$workspace
 }
 
 alias o='__fzf-open'
