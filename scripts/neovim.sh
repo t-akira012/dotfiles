@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #########################################################
-echo Install noevim.
+echo Install neovim.
 #########################################################
 
 if ! type nvim >/dev/null 2>&1; then
@@ -10,7 +10,7 @@ if ! type nvim >/dev/null 2>&1; then
     elif type apt >/dev/null 2>&1; then
         sudo apt update
         sudo apt install -y systemtap-sdt-dev gettext
-        ./_build_neovim_stable.sh
+        $HOME/dotfiles/_build_neovim_stable.sh
     elif type pacman >/dev/null 2>&1; then
         sudo pacman -Syy
         yes | sudo pacman -S neovim

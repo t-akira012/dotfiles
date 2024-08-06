@@ -20,5 +20,4 @@ cargo install \
     ripgrep \
     exa \
     bat \
-    fd-find \
-    alacritty
+    fd-find
