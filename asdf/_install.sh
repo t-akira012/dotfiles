@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+cd $(dirname $0)
 
 if [[ ! -d $HOME/.asdf ]];then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
