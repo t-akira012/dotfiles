@@ -8,7 +8,6 @@ if type apt > /dev/null 2>&1;then
         git build-essential coreutils \
         cmake gettext fontconfig \
         gh curl wget tree tmux watch expect unar shfmt xsel bash-completion
-    [[ -e $HOME/.bashrc ]] && mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
 fi
 
 if type pacman > /dev/null 2>&1;then
