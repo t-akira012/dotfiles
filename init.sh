@@ -22,7 +22,7 @@ fi
 
 if [[ $(uname) == "Darwin" ]];then
     echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
-    bash -c ./_brew.sh
+    bash -c ./homebrew_for_mac.sh
 fi
 
 #########################################################
