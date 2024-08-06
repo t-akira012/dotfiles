@@ -11,9 +11,7 @@ go install github.com/google/yamlfmt/cmd/yamlfmt@latest
 
 [[ ! -d $HOME/.local/repos ]] && mkdir $HOME/.local/repos
 
-git clone --depth 1 https://github.com/x-motemen/ghq $HOME/.local/repos/ghq \
-    && cd $HOME/.local/repos/ghq/ \
-    && make install
+go install github.com/x-motemen/ghq@latest
 
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf \
     && $HOME/.local/repos/fzf/install
