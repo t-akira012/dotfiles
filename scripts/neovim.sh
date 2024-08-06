@@ -28,3 +28,5 @@ if which ghq >>/dev/null 2>&1 ;then
 else
     echo "require ghq"
 fi
+
+[[ ! -d /usr/share/dict/words ]] && curl https://users.cs.duke.edu/~ola/ap/linuxwords -o /usr/share/dict/words
