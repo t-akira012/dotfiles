@@ -11,13 +11,26 @@ else
     exit 1
 fi
 
-asdf plugin add golang
-asdf plugin add ruby
-asdf plugin add python
-asdf plugin add nodejs
+if ! type go > /dev/null 2>&1;then
+  asdf plugin add golang
+  ./asdf/go.sh
+fi
+if ! type ruby > /dev/null 2>&1;then
+  asdf plugin add ruby
+  ./asdf/ruby.sh
+fi
+if ! type python > /dev/null 2>&1;then
+  asdf plugin add python
+  ./asdf/python.sh
+fi
 
-./asdf/go.sh
-./asdf/python.sh
-./asdf/ruby.sh
-./asdf/rust.sh
-./asdf/nodejs.sh
+if ! type node > /dev/null 2>&1;then
+  asdf plugin add nodejs
+  ./asdf/nodejs.sh
+fi
+
+if ! type cargo > /dev/null 2>&1;then
+  ./asdf/rust.sh
+fi
+
+./_install_tools.sh

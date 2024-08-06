@@ -10,14 +10,3 @@ if ! type rustup > /dev/null 2>&1 ;then
 else
     echo "Rust already installed."
 fi
-
-
-#########################################################
-echo Install rust tools
-#########################################################
-source "$HOME/.cargo/env"
-cargo install \
-    ripgrep \
-    exa \
-    bat \
-    fd-find
