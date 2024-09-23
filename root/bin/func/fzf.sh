@@ -26,7 +26,7 @@ __fzf-find-vi() {
   else
     local selected=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | sort | sed 's?^./??' | fzf -q $*)
   fi
-  [[ -n $selected ]] && echo $selected && $EDITOR "$selected"
+  [[ -n $selected ]] && echo $selected && start_nvim "$selected"
 }
 
 __fzf-ghq-web() {

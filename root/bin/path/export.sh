@@ -8,17 +8,6 @@ if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 fi
 
 export FILTER='fzf'
-if [[ $(command -v nvim) ]]; then
-	export EDITOR="nvim"
-	alias vimdiff='nvim -d'
-else
-	export EDITOR="vim"
-fi
-
-alias v="$EDITOR"
-alias vi="$EDITOR"
-alias vim="$EDITOR"
-
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # coreutils

@@ -38,6 +38,23 @@ start_tmux() {
 }
 alias ta='start_tmux'
 
+if [[ $(command -v nvim) ]]; then
+	export EDITOR="nvim"
+	alias vimdiff='nvim -d'
+else
+	export EDITOR="vim"
+fi
+start_nvim() {
+  if [[ $TMUX_SESSION_NAME == *"term_on_vim"* ]]; then
+    echo "This terminal on tmux pop window."
+  else
+    $EDITOR $*
+  fi
+}
+alias v='start_nvim'
+alias vi='start_nvim'
+alias vim='start_nvim'
+
 # alias mp='multipass'
 # alias qqq='exit'
 # alias bd='cd ../'
