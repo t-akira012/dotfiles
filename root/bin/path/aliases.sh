@@ -22,6 +22,7 @@ alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
 alias shfmt="$(which shfmt) -i 2 -ci -bn -s"
 alias sls='serverless'
 alias pn=pnpm
+alias va='. .venv/bin/activate'
 
 [[ -d "/opt/homebrew/opt/util-linux/bin/" ]] && alias cal='/opt/homebrew/opt/util-linux/bin/cal -m'
 
