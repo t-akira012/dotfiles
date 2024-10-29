@@ -25,7 +25,6 @@ if [[ $(uname) == "Darwin" ]];then
 fi
 
 ./create_symlink.sh
-./add_git_config.sh
 ./download_git_completion.sh
 cp ./.ex $HOME/.ex
 
