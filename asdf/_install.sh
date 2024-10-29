@@ -14,24 +14,24 @@ fi
 
 if ! type go > /dev/null 2>&1;then
   asdf plugin add golang
-  ./asdf/go.sh
+  ./go.sh
 fi
 if ! type ruby > /dev/null 2>&1;then
   asdf plugin add ruby
-  ./asdf/ruby.sh
+  ./ruby.sh
 fi
 if ! type python > /dev/null 2>&1;then
   asdf plugin add python
-  ./asdf/python.sh
+  ./python.sh
 fi
 
 if ! type node > /dev/null 2>&1;then
   asdf plugin add nodejs
-  ./asdf/nodejs.sh
+  ./nodejs.sh
 fi
 
 if ! type cargo > /dev/null 2>&1;then
-  ./asdf/rust.sh
+  ./rust.sh
 fi
 
 ./_install_tools.sh

@@ -7,7 +7,7 @@ if type apt > /dev/null 2>&1;then
         sudo apt install -y \
         git build-essential coreutils \
         cmake gettext fontconfig \
-        gh curl wget tree tmux watch expect unar shfmt xsel wl-clipboard bash-completion
+        gh curl wget tree tmux watch expect unar shfmt xsel wl-clipboard bash-completion zsh
 fi
 
 if type pacman > /dev/null 2>&1;then
@@ -24,6 +24,7 @@ if [[ $(uname) == "Darwin" ]];then
     bash -c ./homebrew_for_mac.sh
 fi
 
+./add_git_config.sh
 ./create_symlink.sh
 ./download_git_completion.sh
 cp ./.ex $HOME/.ex
