@@ -56,6 +56,10 @@ alias v='start_nvim'
 alias vi='start_nvim'
 alias vim='start_nvim'
 
+if [[ $WAYLAND_DISPLAY == "wayland-"* ]];then
+  alias pbcopy='wl-copy'
+  alias pbpaste='wl-paste'
+fi
 # alias mp='multipass'
 # alias qqq='exit'
 # alias bd='cd ../'

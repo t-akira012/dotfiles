@@ -7,7 +7,7 @@ if type apt > /dev/null 2>&1;then
         sudo apt install -y \
         git build-essential coreutils \
         cmake gettext fontconfig \
-        gh curl wget tree tmux watch expect unar shfmt xsel bash-completion
+        gh curl wget tree tmux watch expect unar shfmt xsel wl-clipboard bash-completion
 fi
 
 if type pacman > /dev/null 2>&1;then
@@ -15,7 +15,7 @@ if type pacman > /dev/null 2>&1;then
     yes | sudo pacman -S \
         yay \
         git base-devel coreutils \
-        github-cli curl wget tree tmux expect unarchiver shfmt xsel bash-completion git-delta make
+        github-cli curl wget tree tmux expect unarchiver shfmt xsel wl-clipboard bash-completion git-delta make
     sudo pacman -Scc
 fi
 
