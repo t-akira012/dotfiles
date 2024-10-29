@@ -35,3 +35,4 @@ cd $HOME/.config/zsh/repos/pure
 ln -s "$PWD/pure.zsh" $HOME/.config/zsh/zfunc/prompt_pure_setup
 ln -s "$PWD/async.zsh" $HOME/.config/zsh/zfunc/async
 
+chsh -s $(which zsh)
