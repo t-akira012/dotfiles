@@ -11,7 +11,7 @@ fi
 if [[ $TMUX_WINDOW_NAME = 'doc' ]]; then
   cd $HOME/docs/doc
   if [[ $TMUX_WINDOW_PANES -eq 1 ]]; then
-    nvim
+    nvim $HOME/docs/doc/DRAFT.md
   fi
 fi
 
