@@ -14,4 +14,19 @@ ln -si $BASEPATH/bin $HOME/bin
 ln -si $BASEPATH/.tmux.conf $HOME/.tmux.conf
 ln -si $BASEPATH/.config/git $HOME/.config/git
 ln -si $BASEPATH/.config/starship.toml $HOME/.config/starship.toml
-ln -si $BASEPATH/root/.config/amethyst $HOME/.config/amethyst
+
+for_darwin(){
+  ln -si $BASEPATH/root/.config/amethyst $HOME/.config/amethyst
+}
+
+for_linux(){
+  ln -si $BASEPATH/root/.config/xremap $HOME/.config/xremap
+}
+
+if [[ $(uname) == "Darwin"]];then
+  for_darwin
+fi
+
+if [[ $(uname) == "Linux"]];then
+  for_linux
+fi

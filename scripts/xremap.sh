@@ -1,9 +1,24 @@
-if [[ ! -e "~/.local/share/gnome-shell/extensions/xremap@k0kubun.com" ]]
-    git clone https://github.com/xremap/xremap-gnome ~/.local/share/gnome-shell/extensions/xremap@k0kubun.com
-fi
+#!/usr/bin/env bash
+set -eux
 
-if ! type xremap 2>&1 ;then
-    cargo install xremap --features gnome
+gnome(){
+  if [[ ! -e "~/.local/share/gnome-shell/extensions/xremap@k0kubun.com" ]];then
+      git clone https://github.com/xremap/xremap-gnome ~/.local/share/gnome-shell/extensions/xremap@k0kubun.com
+  fi
+
+  if ! type xremap 2>&1 ;then
+      cargo install xremap --features gnome
+  fi
+}
+
+kde(){
+  if ! type xremap 2>&1 ;then
+      cargo install xremap --features kde
+  fi
+}
+
+if [[ $XDG_CURRENT_DESKTOP == "KDE" ]];then
+  kde
 fi
 
 if ! type xremap-ruby 2>&1 ;then
