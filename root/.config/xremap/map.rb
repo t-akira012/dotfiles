@@ -45,7 +45,9 @@
 
 # mac likeにする
 # window class_not: 'Alacritty' do
-window class_only: ['google-chrome', 'firefox'] do
+# window class_not: ['Alacritty', 'konsole'] do
+
+window class_only: ['google-chrome', 'firefox', 'skype', 'slack'] do
   remap 'C-b', to: 'Left'
   remap 'C-f', to: 'Right'
   remap 'C-p', to: 'Up'
@@ -76,6 +78,7 @@ window class_only: ['google-chrome', 'firefox'] do
   # end
 
   remap 'Super-Enter', to: 'M-Enter'
+  remap 'Super-Ctrl-Enter', to: 'Super-Ctrl-Enter'
   remap 'Super-Equal', to: 'Ctrl-Equal'
   remap 'Super-Minus', to: 'Ctrl-Minus'
 
