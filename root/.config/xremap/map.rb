@@ -44,7 +44,8 @@
 # end
 
 # mac likeにする
-window class_only: 'google-chrome' do
+# window class_not: 'Alacritty' do
+window class_only: ['google-chrome', 'firefox'] do
   remap 'C-b', to: 'Left'
   remap 'C-f', to: 'Right'
   remap 'C-p', to: 'Up'
