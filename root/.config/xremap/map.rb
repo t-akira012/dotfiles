@@ -7,6 +7,8 @@
 # end
 
 # mac likeにする
+#
+remap 'CAPSLOCK', to: 'ZENKAKUHANKAKU'
 window class_only: ['Alacritty', 'konsole'] do
   remap 'Super-Equal', to: 'Ctrl-Equal'
   remap 'Super-Minus', to: 'Ctrl-Minus'
