@@ -20,6 +20,7 @@ setopt IGNOREEOF
 [[ -f $HOME/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
 # z
 type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
+[[ -e $HOME/.local/bin/z.sh ]] && . $HOME/.local/bin/z.sh
 unalias z 2> /dev/null
 
 
