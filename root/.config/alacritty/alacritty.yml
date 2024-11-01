@@ -1,0 +1,47 @@
+env:
+  TERM: xterm-256color
+
+window:
+  dimensions:
+    columns: 220
+    lines: 65
+  padding:
+    x: 10
+    y: 2
+  dynamic_padding: false
+
+  # Window decorations
+  #
+  # Values for `decorations`:
+  #     - full: Borders and title bar
+  #     - none: Neither borders nor title bar
+  #
+  # Values for `decorations` (macOS only):
+  #     - transparent: Title bar, transparent background and title bar buttons
+  #     - buttonless: Title bar, transparent background, but no title bar buttons
+  decorations: buttonless
+  # Values for `startup_mode`:
+  #   - Windowed
+  #   - Maximized
+  #   - Fullscreen
+  #
+  # Values for `startup_mode` (macOS only):
+  #   - SimpleFullscreen
+  startup_mode: SimpleFullscreen
+  title: Alacritty
+  opacity: 0.9
+
+scrolling:
+  history: 10000
+font:
+  normal:
+    family: Cica
+  size: 14
+draw_bold_text_with_bright_colors: true
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  save_to_clipboard: true
+dynamic_title: true
+cursor:
+  style: Block
+working_directory: None
