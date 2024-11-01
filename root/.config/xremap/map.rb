@@ -45,7 +45,16 @@
 
 # mac likeにする
 # window class_not: 'Alacritty' do
-# window class_not: ['Alacritty', 'konsole'] do
+
+window class_only: ['Alacritty', 'konsole'] do
+  remap 'Super-Equal', to: 'Ctrl-Equal'
+  remap 'Super-Minus', to: 'Ctrl-Minus'
+
+  remap 'Ctrl-Equal', to: 'Super-Equal'
+  remap 'Ctrl-Minus', to: 'Super-Minus'
+
+  remap 'Super-0', to: 'Ctrl-0'
+end
 
 window class_only: ['google-chrome', 'firefox', 'skype', 'slack'] do
   remap 'C-b', to: 'Left'
