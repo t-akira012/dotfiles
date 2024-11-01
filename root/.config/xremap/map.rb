@@ -69,9 +69,10 @@ window class_only: 'google-chrome' do
     remap "Super-Shift-#{key}", to: "C-#{key}"
   end
 
-  (0..9).each do |key|
-    remap "Super-#{key}", to: "C-#{key}"
-  end
+  # 0..9 をタブ移動にする / off
+  # (0..9).each do |key|
+  #   remap "Super-#{key}", to: "C-#{key}"
+  # end
 
   remap 'Super-Enter', to: 'M-Enter'
   remap 'Super-Equal', to: 'Ctrl-Equal'
