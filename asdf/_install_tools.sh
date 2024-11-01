@@ -14,7 +14,7 @@ go install github.com/google/yamlfmt/cmd/yamlfmt@latest
 go install github.com/x-motemen/ghq@latest
 
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf \
-    && $HOME/.local/repos/fzf/install
+    && cp $HOME/.local/repos/fzf/bin/fzf $HOME/.local/bin/fzf
 
 # fzf
 [[ ! -d $HOME/.local/bin ]] && mkdir -p $HOME/.local/bin/
