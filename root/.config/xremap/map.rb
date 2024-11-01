@@ -19,7 +19,7 @@ window class_only: ['Alacritty', 'konsole'] do
   remap 'Super-0', to: 'Ctrl-0'
 end
 
-window class_only: ['google-chrome', 'firefox', 'firefox-aurora', 'skype', 'slack'] do
+window class_only: ['google-chrome', 'firefox', 'firefox-aurora', 'skype', 'slack', 'dolphin'] do
   remap 'C-b', to: 'Left'
   remap 'C-f', to: 'Right'
   remap 'C-p', to: 'Up'

@@ -15,5 +15,12 @@ if [[ $TARGET_WINDOW -ne $CURRENT_WINDOW ]]; then
 	fi
 else
 	LATEST_WINDOW=$(cat $HOME/.tmux_toggle_window)
-	tmux select-window -t $LATEST_WINDOW
+  # 前回のWindowの存在チェック
+  if tmux list-windows -F "#{window_index}" | rg -e "^${LATEST_WINDOW}$" > /dev/null 2&>1 ;then
+    # 前回のWindowに移動
+    tmux select-window -t $LATEST_WINDOW > /dev/null 2&>1
+  else
+    # 最初のWindowに遷移
+    tmux select-window -t $(tmux list-windows -F "#{window_index}" | head -n 1)
+  fi
 fi
