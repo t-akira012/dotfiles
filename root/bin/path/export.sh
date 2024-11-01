@@ -1,5 +1,6 @@
 export TMUX_SESSION_NAME=$(tmux display-message -p '#S')
 export TMUX_WINDOW_NAME=$(tmux display-message -p '#W')
+export TMUX_WINDOW_PANES=$(tmux display-message -p '#{window_panes}')
 if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 	__toggle_tmux_popup() {
 		$HOME/bin/tmux-popup.sh
@@ -9,6 +10,9 @@ if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 fi
 if [[ $TMUX_WINDOW_NAME = 'doc' ]]; then
   cd $HOME/docs/doc
+  if [[ $TMUX_WINDOW_PANES -eq 1 ]]; then
+    nvim
+  fi
 fi
 
 export FILTER='fzf'
