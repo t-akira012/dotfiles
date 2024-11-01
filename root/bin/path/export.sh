@@ -1,10 +1,14 @@
 export TMUX_SESSION_NAME=$(tmux display-message -p '#S')
+export TMUX_WINDOW_NAME=$(tmux display-message -p '#W')
 if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 	__toggle_tmux_popup() {
 		$HOME/bin/tmux-popup.sh
 	}
 	zle -N __toggle_tmux_popup
 	bindkey '^j' __toggle_tmux_popup
+fi
+if [[ $TMUX_WINDOW_NAME = 'doc' ]]; then
+  cd $HOME/docs/doc
 fi
 
 export FILTER='fzf'
