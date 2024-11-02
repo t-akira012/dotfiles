@@ -25,7 +25,7 @@ edit_copy_contextmenu_out=none
 edit_find=Ctrl+Shift+F
 edit_find_next=F3
 edit_find_prev=Shift+F3
-edit_paste=Ctrl+Shift+V; Shift+Ins
+edit_paste=Ctrl+Shift+V; Meta+V
 enlarge-font=Ctrl++; Ctrl+=
 equal-size-view=Ctrl+Shift+\\
 expand-active-view=Ctrl+Shift+]
@@ -70,7 +70,7 @@ options_configure_keybinding=Ctrl+Alt+,
 options_configure_notifications=none
 options_configure_toolbars=none
 options_show_menubar=Ctrl+Shift+M; F12
-paste-selection=Meta+V
+paste-selection=none
 previous-tab=Shift+Left; Ctrl+PgUp
 rename-session=Ctrl+Alt+S
 reset-font-size=Ctrl+Alt+0
