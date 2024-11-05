@@ -16,9 +16,16 @@ kde(){
       cargo install xremap --features kde
   fi
 }
+x11(){
+      cargo install xremap --features x11
+}
 
-if [[ $XDG_CURRENT_DESKTOP == "KDE" ]];then
+if [[ $XDG_SESSION_TYPE == "KDE" ]];then
+  x11
+elif [[ $XDG_CURRENT_DESKTOP == "KDE" ]];then
   kde
+elif [[ $XDG_CURRENT_DESKTOP == "Gnome" ]];then
+  gnome
 fi
 
 if ! type xremap-ruby 2>&1 ;then
