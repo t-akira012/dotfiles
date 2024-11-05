@@ -57,7 +57,7 @@ alias vi='start_nvim'
 alias vim='start_nvim'
 
 if [[ $XDG_SESSION_TYPE == "x11" ]];then
-  alias pbcopy='xsel'
+  alias pbcopy='xsel -bi'
   alias pbpaste='xsel -b'
 fi
 if [[ $WAYLAND_DISPLAY == "wayland-"* ]];then
