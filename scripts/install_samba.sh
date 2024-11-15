@@ -24,7 +24,7 @@ path = /mnt/storage
 writable = yes
 guest ok = No
 guest only = No
-force user = aki
+force user = $USER
 EOF
 
 sudo smbpasswd -a $USER
