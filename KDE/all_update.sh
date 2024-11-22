@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-sudo apt update -y
-sudo apt upgrade -y
-sudo apt autoremove
-sudo $HOME/dotfiles/scripts/install_firefox_dev.sh
-sudo $HOME/dotfiles/scripts/_build_neovim_stable.sh
+# crontab -e
+SCRIPT_DIR=$(dirname $0)
+
+if [[ $(whoami) != "root" ]];then
+  echo require sudo
+  exit 0
+fi
+
+apt update -y
+apt upgrade -y
+apt autoremove
+$SCRIPT_DIR/../scripts/install_firefox_dev.sh
+$SCRIPT_DIR/../scripts/_build_neovim_stable.sh
