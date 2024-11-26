@@ -48,9 +48,7 @@ if [[ $(uname) == "Darwin" ]]; then
 	brew install --cask alt-tab
 	brew install --cask slack
 
-	brew tap homebrew/cask-fonts
-	brew install font-plemol-jp
-	brew install font-plemol-jp-nf
-	brew install font-plemol-jp-hs
-	brew install font-hackgen font-hackgen-nerd
+  brew install --cask font-plemol-jp
+  brew install --cask font-plemol-jp-nf
+  brew install --cask font-plemol-jp-hs
 fi
