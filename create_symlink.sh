@@ -25,6 +25,7 @@ for_all(){
 symlink(){
   if [[ ! -e $2 ]];then
     ln -si $1 $2
+    echo "create symlink $1 to $2"
   else
     echo "$2 is already exist"
     [[ ! -L $2 ]] && echo "$2 がシンボックリンクではありません"
