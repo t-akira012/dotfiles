@@ -27,6 +27,7 @@ symlink(){
     ln -si $1 $2
   else
     echo "$2 is already exist"
+    [[ ! -L $2 ]] && echo "$2 がシンボックリンクではありません"
   fi
 }
 
@@ -40,5 +41,5 @@ for_linux(){
 
 for_all
 
-[ "$(uname)" == "Darwin" ] && for_linux
+[ "$(uname)" == "Darwin" ] && for_darwin
 [ "$(uname)" == "Linux" ] && for_linux

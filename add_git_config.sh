@@ -3,6 +3,9 @@
 echo "Add git config"
 #########################################################
 
+if [[ ! -L $HOME/.config/git ]];then
+  echo "$HOME/.config/git がシンボリックリンクではありません"
+fi
 cp $HOME/.config/git/config.template $HOME/.config/git/config
 git config --global ghq.root ~/src
 git config --global alias.st status

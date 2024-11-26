@@ -24,11 +24,6 @@ if [[ $(uname) == "Darwin" ]];then
     bash -c ./homebrew_for_mac.sh
 fi
 
-./add_git_config.sh
-./create_symlink.sh
-./download_git_completion.sh
-cp ./.ex $HOME/.ex
-
 
 echo 'init.sh 終了'
 echo '次は init_2.sh を実行'

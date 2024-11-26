@@ -8,6 +8,7 @@ echo Install Go packages
 go install golang.org/x/tools/cmd/goimports@latest
 go install golang.org/x/tools/gopls@latest
 go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+go install github.com/x-motemen/ghq@latest
 
 [[ ! -d $HOME/.local/repos ]] && mkdir $HOME/.local/repos
 
