@@ -2,7 +2,7 @@
 # pre-push
 
 mkdir $HOME/.config/git-hooks
-cat EOF<< > $HOME/.config/git-hooks/pre-push
+cat <<EOF > "$HOME/.config/git-hooks/pre-push"
 #!/bin/bash
 
 _exec_localhook(){
