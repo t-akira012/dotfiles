@@ -35,4 +35,4 @@ echo "========================================================="
 EOF
 
 chmod +x $HOME/.config/git-hooks/pre-push
-git config --global core.hooksPath .config/git-hooks
+git config --global core.hooksPath $HOME/.config/git-hooks
