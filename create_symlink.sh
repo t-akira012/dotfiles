@@ -32,7 +32,7 @@ symlink(){
 }
 
 for_darwin(){
-  :
+  symlink $BASEPATH/.config/karabiner/ $HOME/.config/karabiner
 }
 
 for_linux(){
