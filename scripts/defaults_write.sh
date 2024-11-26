@@ -1,28 +1,71 @@
-# for macOS
+#!/usr/bin/env bash
+#
+if [ $(uname) != "Darwin" ] ; then
+	echo "Not MacOS!"
+	exit 0
+fi
 
-# .DS_Storeを生成しない
-defaults write com.apple.desktopservices DSDontWriteNetworkStores true
-# 日付と時刻のフォーマット（24時間表示、秒表示あり、日付・曜日を表示）
-defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)  H:mm:ss"
-# バッテリーをパーセント表示にする
+# .DS_Storeの読み取り無効化 - https://support.apple.com/ja-jp/102064
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool "true"
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool "true"
+# 日付と時刻のフォーマット
+defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)  H:mm"
+
+# Battery
+## バッテリーをパーセント表示にする
 defaults write com.apple.menuextra.battery ShowPercent -string "YES"
 
-# Finder
-# 名前で入れ替えた時、ディレクトリが先頭に来るようにする
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-# 不可視ファイルの表示
-defaults write com.apple.finder AppleShowAllFiles true
-# Show Status bar in Finder （ステータスバーを表示）
-defaults write com.apple.finder ShowStatusBar -bool true 
-# Show Path bar in Finder （パスバーを表示）
-defaults write com.apple.finder ShowPathbar -bool true 
-# Show Tab bar in Finder （タブバーを表示）
-defaults write com.apple.finder ShowTabView -bool true
-# 全ての拡張子のファイルを表示する
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-# クイックルックでテキスト選択可能にする
-defaults write com.apple.finder QLEnableTextSelection -bool true
+# Dock
+## Dockからすべてのアプリを消す
+defaults write com.apple.dock persistent-apps -array
+## Dockのサイズ
+defaults write com.apple.dock "tilesize" -int "36"
+## 最近起動したアプリを非表示
+defaults write com.apple.dock "show-recents" -bool "false"
+## アプリをしまうときのアニメーション
+defaults write com.apple.dock "mineffect" -string "scale"
+## 使用状況に基づいてデスクトップの順番を入れ替え
+defaults write com.apple.dock "mru-spaces" -bool "false"
 
+# ScreenCapture
+## 画像の影を無効化
+defaults write com.apple.screencapture "disable-shadow" -bool "true"
+# 保存場所
+if [[ ! -d "$HOME/capture" ]]; then
+    mkdir -p "$HOME/capture"
+fi
+defaults write com.apple.screencapture "location" -string "~/capture"
+## 撮影時のサムネイル表示
+defaults write com.apple.screencapture "show-thumbnail" -bool "true"
+## 保存形式
+defaults write com.apple.screencapture "type" -string "png"
+
+# Finder
+## ステータスバーを表示
+defaults write com.apple.finder ShowStatusBar -bool "true"
+## 拡張子まで表示
+defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
+## 隠しファイルを表示
+defaults write com.apple.Finder "AppleShowAllFiles" -bool "true"
+## パスバーを表示
+defaults write com.apple.finder ShowPathbar -bool "true"
+## タイトルをフルパス化
+defaults write com.apple.finder _FXShowPosixPathInTitle -boolean "true"
+## Finder 警告音を無効化
+defaults write com.apple.finder FinderSounds -bool no
+## 未確認ファイルを開くときの警告
+defaults write com.apple.LaunchServices LSQuarantine -bool "false"
+## ゴミ箱を空にするときの警告
+defaults write com.apple.finder WarnOnEmptyTrash -bool "true"
+## 名前で入れ替えた時、ディレクトリが先頭に来るようにする
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+## クイックルックでテキスト選択可能にする
+defaults write com.apple.finder QLEnableTextSelection -bool "true"
+
+# Trackpad
+## タップでクリック
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool "true"
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool "true"
 
 # Dock
 # アイコンサイズの設定
@@ -35,10 +78,8 @@ defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock persistent-apps -array
 
 # 各種無効化
-# ダウンロードしたファイルを初めて開く際に表示される警告ダイアログを無効
-defaults write com.apple.LaunchServices LSQuarantine -bool false
 # クラッシュリポーター無効
-defaults write com.apple.CrashReporter DialogType none 
+defaults write com.apple.CrashReporter DialogType none
 # キャプチャに影を付けない
 defaults write com.apple.screencapture disable-shadow -boolean true
 # Mission Controlを無効にする
@@ -46,33 +87,29 @@ defaults write com.apple.screencapture disable-shadow -boolean true
 
 # アニメーション高速化
 # ツールチップ表示までのタイムラグをなくす
-defaults write -g NSInitialToolTipDelay -integer 0
+# defaults write -g NSInitialToolTipDelay -integer 0
 # ダイアログ表示やウィンドウリサイズ速度を高速化する
-defaults write -g NSWindowResizeTime 0.1
+# defaults write -g NSWindowResizeTime 0.1
 # フォルダを開くときのアニメーション無効
-defaults write com.apple.finder AnimateWindowZoom -bool false 
+# defaults write com.apple.finder AnimateWindowZoom -bool false 
 # ファイルを開くときのアニメーション無効
-defaults write -g NSAutomaticWindowAnimationsEnabled -bool false 
+# defaults write -g NSAutomaticWindowAnimationsEnabled -bool false 
 # Dockが表示されるまでの待ち時間を無効
-defaults write com.apple.dock autohide-delay -float 0 
+# defaults write com.apple.dock autohide-delay -float 0 
 # Dockを自動で隠すまでの待ち時間無効
-defaults write com.apple.dock autohide-time-modifier -float 0
+# defaults write com.apple.dock autohide-time-modifier -float 0
 
 
 # key repeat 高速化
 # normal minimum is 15 (225 ms)
-defaults write -g InitialKeyRepeat -int 12
+defaults write -g InitialKeyRepeat -int 10
 # normal minimum is 2 (30 ms)
 defaults write -g KeyRepeat -int 1
+# KeyRepeatで連続入力を可能とする
+defaults write -g ApplePressAndHoldEnabled -bool false
 
 # 合字非表示
 # defaults write -g ApplePressAndHoldEnabled -bool false
-
-# Finder Title を Full path
-defaults write com.apple.finder _FXShowPosixPathInTitle -boolean true
-
-# Finder 警告音を無効化
-defaults write com.apple.finder FinderSounds -bool no
 
 # 再起動して設定を反映
 echo "Finder,Dock,SystemUIServerを再起動"
