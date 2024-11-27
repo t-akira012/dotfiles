@@ -12,21 +12,33 @@ _exec_localhook(){
   fi
 }
 
-REMOTE_URL=$(git config --get remote.origin.url)
-ALLOW_PUSH_ORGS=(xxx)
-
-echo "========================================================="
-for org in "${ALLOW_PUSH_ORGS[@]}"; do
-  if [[ $REMOTE_URL == "https://github.com/${org}/"* ]];then
+allow_push(){
+    org=$1
+    REMOTE_URL=$2
+    echo "========================================================="
     echo "[Allow push: ${org}"]
     echo "Remote url is $REMOTE_URL"
     echo "========================================================="
     _exec_localhook
     exit 0
+}
+
+deny_push(){
+    REMOTE_URL=$1
+    echo "========================================================="
+    echo "[Deny push]"
+    echo "Remote url is $REMOTE_URL"
+    echo "========================================================="
+    exit 1
+}
+
+REMOTE_URL=$(git config --get remote.origin.url)
+ALLOW_PUSH_ORGS=(xxx)
+
+for org in "${ALLOW_PUSH_ORGS[@]}"; do
+  if [[ $REMOTE_URL == "https://github.com/${org}/"* ]];then
+    allow_push $org $REMOTE_URL
   fi
 done
 
-echo "[Deny push]"
-echo "Remote url is $REMOTE_URL"
-exit 1
-echo "========================================================="
+deny_push $REMOTE_URL
