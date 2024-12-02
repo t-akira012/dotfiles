@@ -1,4 +1,4 @@
-export TMUX_SESSION_NAME=$(tmux display-message -p '#S')
+export  MUX_SESSION_NAME=$(tmux display-message -p '#S')
 export TMUX_WINDOW_NAME=$(tmux display-message -p '#W')
 export TMUX_WINDOW_PANES=$(tmux display-message -p '#{window_panes}')
 if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
@@ -8,11 +8,15 @@ if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 	zle -N __toggle_tmux_popup
 	bindkey '^j' __toggle_tmux_popup
 fi
-if [[ $TMUX_WINDOW_NAME = 'doc' ]]; then
+
+open_draft(){
   cd $HOME/docs/doc
   if [[ $TMUX_WINDOW_PANES -eq 1 ]]; then
     nvim $HOME/docs/doc/DRAFT.md
   fi
+}
+if [[ "$TMUX_WINDOW_NAME" == "doc" ]]; then
+  open_draft
 fi
 
 export FILTER='fzf'
