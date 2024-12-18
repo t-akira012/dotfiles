@@ -17,7 +17,7 @@ open_draft(){
 }
 
 # ttyがtmuxの中にいるかを判定する
-[[ $(tty) == $(tmux list-panes -F '#{pane_tty}' ]] && open_draft
+[[ $(tty) == $(tmux list-panes -F '#{pane_tty}') ]] && open_draft
 
 export FILTER='fzf'
 export HOMEBREW_NO_AUTO_UPDATE=1
