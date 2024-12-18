@@ -11,17 +11,13 @@ fi
 
 open_draft(){
   cd $HOME/docs/doc
-  if [[ $TMUX_WINDOW_PANES -eq 1 ]]; then
+  if [[ $TMUX_WINDOW_PANES -eq 1 ]] && [[ "$TMUX_WINDOW_NAME" == "doc" ]] ; then
     nvim $HOME/docs/doc/DRAFT.md
   fi
 }
 
-if [[ $(tmux display-message -p '#S') == 'iTerm' ]];then
-  if [[ "$TMUX_WINDOW_NAME" == "doc" ]]; then
-    open_draft
-  fi
-fi
-
+# ttyがtmuxの中にいるかを判定する
+[[ $(tty) == $(tmux list-panes -F '#{pane_tty}' ]] && open_draft
 
 export FILTER='fzf'
 export HOMEBREW_NO_AUTO_UPDATE=1
