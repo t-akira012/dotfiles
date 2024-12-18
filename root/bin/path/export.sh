@@ -15,9 +15,13 @@ open_draft(){
     nvim $HOME/docs/doc/DRAFT.md
   fi
 }
-if [[ "$TMUX_WINDOW_NAME" == "doc" ]]; then
-  open_draft
+
+if [[ $(tmux display-message -p '#S') == 'iTerm' ]];then
+  if [[ "$TMUX_WINDOW_NAME" == "doc" ]]; then
+    open_draft
+  fi
 fi
+
 
 export FILTER='fzf'
 export HOMEBREW_NO_AUTO_UPDATE=1
