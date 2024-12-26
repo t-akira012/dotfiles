@@ -36,7 +36,7 @@ REMOTE_URL=$(git config --get remote.origin.url)
 ALLOW_PUSH_ORGS=(xxx)
 
 for org in "${ALLOW_PUSH_ORGS[@]}"; do
-  if [[ $REMOTE_URL == *"github.com/${org}/"* ]];then
+  if [[ $REMOTE_URL == "https://github.com/${org}/"* ]] || [[ $REMOTE_URL == "git@github.com:${org}/"* ]];then
     allow_push $org $REMOTE_URL
   fi
 done
