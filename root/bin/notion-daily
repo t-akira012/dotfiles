@@ -1,31 +1,31 @@
 #!/bin/bash
 
 # Alfredの入力からメモの内容を取得。引数がない場合はデフォルトのタイトルを設定
-NEW_MEMO_TITLE=${1:-Untitled}
+NEW_MEMO_TITLE=$(echo "$*" | tr '\n' ' ' | sed 's/"/\\"/g')
 
 # 必要なAPIトークンとデータベースIDを設定
-API_TOKEN="$(cat $HOME/.notion/inbox/token)"
-DATABASE_ID="$(cat $HOME/.notion/inbox/db)"
+API_TOKEN="$(cat $HOME/.notion/daily/token)"
+DATABASE_ID="$(cat $HOME/.notion/daily/db)"
 
 # APIリクエストを実行して新しいページを作成
 RESPONSE=$(curl -s -X POST "https://api.notion.com/v1/pages" \
     -H "Authorization: Bearer $API_TOKEN" \
     -H "Content-Type: application/json" \
     -H "Notion-Version: 2022-06-28" \
-    -d '{
-        "parent": { "database_id": "'$DATABASE_ID'" },
-        "properties": {
-            "タイトル": {
-                "title": [
+    -d "{
+        \"parent\": { \"database_id\": \"$DATABASE_ID\" },
+        \"properties\": {
+            \"タイトル\": {
+                \"title\": [
                     {
-                        "text": {
-                            "content": "'$NEW_MEMO_TITLE'"
+                        \"text\": {
+                            \"content\": \"$NEW_MEMO_TITLE\"
                         }
                     }
                 ]
             }
         }
-    }')
+    }")
 
 # レスポンスを表示して確認
 echo "API Response: $RESPONSE" >&2
