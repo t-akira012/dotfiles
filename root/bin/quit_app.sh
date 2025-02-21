@@ -1,6 +1,6 @@
 #!/bin/bash
 # 除外したいアプリケーション名を配列で指定
-excludedApps=("iTerm2" "Notion" "Arc" "Finder")
+excludedApps=("iTerm2" "Notion" "Arc" "Finder" "firefox")
 
 # AppleScriptで、背景アプリ以外のプロセス一覧を取得
 appList=$(osascript -e 'tell application "System Events" to get name of every process whose background only is false')
