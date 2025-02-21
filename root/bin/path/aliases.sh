@@ -7,7 +7,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ln='ln -i'
 alias o.='open .'
-alias qa='$HOME/aki012/sandbox/quit_app.sh'
+alias qa='$HOME/bin/quit_app.sh'
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
