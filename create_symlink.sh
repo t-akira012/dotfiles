@@ -20,6 +20,7 @@ for_all(){
   symlink $BASEPATH/.config/git $HOME/.config/git
   symlink $BASEPATH/.config/starship.toml $HOME/.config/starship.toml
   symlink $BASEPATH/.config/alacritty/ $HOME/.config/alacritty
+  symlink $BASEPATH/.config/claude_desktop_config.json "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
 }
 
 symlink(){
