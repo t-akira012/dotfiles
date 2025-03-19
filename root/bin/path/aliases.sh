@@ -8,6 +8,7 @@ alias mv='mv -i'
 alias ln='ln -i'
 alias o.='open .'
 alias qa='$HOME/bin/quit_app.sh'
+alias br='cd ..'
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
