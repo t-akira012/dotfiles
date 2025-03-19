@@ -1,0 +1,36 @@
+#!/bin/bash
+
+filename="$*"
+
+if [[ ! -f $filename ]]; then
+  echo "$filename is not found."
+  exit 1
+fi
+
+# 一時ファイルを作成
+tempfile=$(mktemp /tmp/newname.XXXXXX)
+
+echo $filename > $tempfile
+
+# vim を起動して入力を受け付ける
+# 1行目: new filename, 2行目: new ext
+nvim "$tempfile"
+
+new_filename=$(sed -n '1p' "$tempfile")
+
+# 一時ファイルを削除
+rm "$tempfile"
+
+echo "Current filename: $filename"
+echo "New filename: $new_filename"
+
+if [[ -z $new_filename ]]; then
+  echo "exit"
+  exit 1
+fi
+
+mv -i "$filename" "$new_filename"
+
+ls -a "$new_filename"
+
+echo "finished."
