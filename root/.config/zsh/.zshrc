@@ -123,7 +123,7 @@ __fzf-history() {
   zle reset-prompt
 }
 __fzf-la() {
-  local SELECTED=$(unbuffer ls -lA --color | fzf --ansi --preview="[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  local SELECTED=$(unbuffer ls -lA --color | fzf --ansi --bind='ctrl-o:execute(open $PWD/{})' --preview="[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
   if [[ -n $SELECTED ]]; then
     BUFFER="${BUFFER}\"$SELECTED\""
     CURSOR=${#BUFFER}

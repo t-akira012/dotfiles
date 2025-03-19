@@ -1,6 +1,6 @@
 ## functions
 __fzf-open() {
-  local SELECTED=$(unbuffer ls -lA --color | rg ^- | fzf --ansi --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  local SELECTED=$(unbuffer ls -lA --color | rg ^- | fzf --ansi --bind='ctrl-o:execute(open {9})' --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
   [[ -f "$SELECTED" ]] && open "$SELECTED"
 }
 
@@ -10,7 +10,7 @@ __fzf-z-cd() {
 }
 
 __fzf-la-cd() {
-  local selected=$(unbuffer ls -lA --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}" | xargs echo) 
+  local selected=$(unbuffer ls -lA --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --bind='ctrl-o:execute(open {})' --preview "exa -T {}" | xargs echo) 
   [[ -n $selected ]] && cd $selected 
 }
 

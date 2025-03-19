@@ -95,7 +95,7 @@ _gen_fzf_default_opts() {
 	else
 		export COLOR_OPTS="$FZF_DARK"
 	fi
-	local OPTS="--height 70% --layout=reverse --preview-window=right --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
+	local OPTS="--bind='ctrl-o:execute(open {})' --height 70% --layout=reverse --preview-window=right --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
 	export FZF_DEFAULT_OPTS="$COLOR_OPTS $OPTS"
 	export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!.git/*"'
 	export FZF_TMUX_OPTS="-p 80%"
