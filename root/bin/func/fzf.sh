@@ -1,6 +1,6 @@
 ## functions
 __fzf-open() {
-  local SELECTED=$(unbuffer ls -lA --color | rg ^- | fzf --ansi --preview="" | awk '{print substr($0,index($0,$9))}' | xargs echo)
+  local SELECTED=$(unbuffer ls -lA --color | rg ^- | fzf --ansi --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
   [[ -f "$SELECTED" ]] && open "$SELECTED"
 }
 
