@@ -98,7 +98,7 @@ __fzf-multi-move(){
           local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
           local TARGET_DIR=$(tree -i -d -n -N -L $DEPTH -f -a -I node_modules -I .git | fzf)
       fi
-      if [[ $DIR_SELECT_MODE == 'current_dir' ]];then
+      if [[ $DIR_SELECT_MODE == 'CURRENT_DIR' ]];then
           local TARGET_DIR="$PWD/$(unbuffer ls -la --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --preview "exa -T {}")"
       fi
       if [[ $DIR_SELECT_MODE == 'Dropbox' ]];then
