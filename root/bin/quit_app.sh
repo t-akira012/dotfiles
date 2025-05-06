@@ -26,9 +26,9 @@ for app in "${apps[@]}"; do
         osascript -e "tell application \"$app\" to quit" 2>/dev/null
     fi
 
-    # 除外リストは最小化
-    if [ "$skip" = true ]; then
-      echo "Minimizing: $app"
-      osascript -e "tell application \"$app\" to set miniaturized of every window to true" &
-    fi
+    # # 除外リストは最小化
+    # if [ "$skip" = true ]; then
+    #   echo "Minimizing: $app"
+    #   osascript -e "tell application \"$app\" to set miniaturized of every window to true" &
+    # fi
 done
