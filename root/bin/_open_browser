@@ -1,6 +1,10 @@
 #!/bin/bash
 if [[ $(uname) == "Darwin" ]]; then
-  open -a /Applications/Arc.app/ "$*"
-else
-  nohup firefox "$*" > /dev/null 2>&1 &
+  if [[ -e "/Applications/Arc.app" ]];then
+    open -a /Applications/Arc.app/ "$*"
+  elif [[ -e "/Applications/Google\ Chrome.app" ]];then
+    open -a /Applications/Google\ Chrome.app/ "$*"
+  else
+    nohup firefox "$*" > /dev/null 2>&1 &
+  fi
 fi
