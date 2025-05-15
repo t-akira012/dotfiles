@@ -9,8 +9,14 @@ if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 	bindkey '^j' __toggle_tmux_popup
 fi
 
-# ttyがtmuxの中にいるかを判定する
-# [[ $(tty) == $(tmux list-panes -F '#{pane_tty}') ]] && open_draft
+# docウィンドウなら、docs/docを開く
+change_dir_doc(){
+  if [[ $(tty) == $(tmux list-panes -F '#{pane_tty}') ]] && [[ $TMUX_WINDOW_PANES -eq 1 ]] && [[ "$TMUX_WINDOW_NAME" == "doc" ]] ; then
+    cd $HOME/docs/doc
+  fi
+}
+
+change_dir_doc
 
 export FILTER='fzf'
 export HOMEBREW_NO_AUTO_UPDATE=1
