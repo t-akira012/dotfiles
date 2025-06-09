@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Get the current TTY name and sanitize it for filename
+TTY_NAME=$(tty | sed 's/\//_/g' | sed 's/^_//')
+
+# Check if CLAUDE_CODE_STDOUT_LOG is set
+if [ -z "$CLAUDE_CODE_STDOUT_LOG" ]; then
+    echo "Error: CLAUDE_CODE_STDOUT_LOG environment variable is not set" >&2
+    exit 1
+fi
+
+# Create log directory if it doesn't exist
+mkdir -p "$CLAUDE_CODE_STDOUT_LOG"
+
+# Construct log file path
+LOG_FILE="$CLAUDE_CODE_STDOUT_LOG/${TTY_NAME}.log"
+
+# Add timestamp and separator to log file
+echo "=================================================================================" >> "$LOG_FILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Command: claude $*" >> "$LOG_FILE"
+echo "=================================================================================" >> "$LOG_FILE"
+
+# Execute claude command and pipe through tee
+claude -p "$@" 2>&1 | tee -a "$LOG_FILE"
+
+# Capture exit status of claude command
+EXIT_STATUS=${PIPESTATUS[0]}
+
+# Add completion timestamp
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Command completed with exit status: $EXIT_STATUS" >> "$LOG_FILE"
+echo "" >> "$LOG_FILE"
+
+# Exit with the same status as claude
+exit $EXIT_STATUS
