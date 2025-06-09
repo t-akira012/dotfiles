@@ -1,4 +1,12 @@
-# 参考
+# Claude Code
+
+## deploy
+
+```
+./deploy.sh
+```
+
+## 参考
 
 * [Claude Code 概要 - Anthropic](https://docs.anthropic.com/ja/docs/claude-code/overview)
 * [おすすめ Claude Code 設定・運用まとめ | Wantedly Engineer Blog](https://www.wantedly.com/companies/wantedly/post_articles/981006)
