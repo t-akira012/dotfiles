@@ -1,0 +1,36 @@
+{
+  "ignorePatterns": [
+    "node_modules/**",
+    ".venv/**",
+    "*.pyc",
+    "__pycache__/**"
+  ],
+  "autoAccept": {
+    "readFile": true,
+    "writeFile": true,
+    "executeCommand": false
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Read(~/.zshrc)",
+      "Write(*.sh)",
+      "Write(*.py)",
+      "Write(*.md)",
+      "Read(*)",
+      "Bash(make *)",
+      "Bash(python manage.py *)"
+    ],
+    "deny": [
+      "Bash(rm *)",
+      "Bash(curl *)",
+      "Write(/etc/*)",
+      "Write(~/.ssh/*)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp"
+  }
+}
