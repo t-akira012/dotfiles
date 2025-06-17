@@ -5,3 +5,7 @@ Thumbs.db
 .memo*
 .php-cs-fixer.cache
 .idea/
+
+**/.claude/settings.local.json
+
+**/CLAUDE.local.md

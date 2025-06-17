@@ -1,4 +1,4 @@
-export  MUX_SESSION_NAME=$(tmux display-message -p '#S')
+export TMUX_SESSION_NAME=$(tmux display-message -p '#S')
 export TMUX_WINDOW_NAME=$(tmux display-message -p '#W')
 export TMUX_WINDOW_PANES=$(tmux display-message -p '#{window_panes}')
 if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
@@ -20,6 +20,15 @@ change_dir_doc
 
 export FILTER='fzf'
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+alias claude="$HOME/.claude/local/claude"
 
 # coreutils
 # [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]] && export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"

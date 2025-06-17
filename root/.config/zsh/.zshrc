@@ -190,14 +190,4 @@ if [[ -e /etc/arch-release ]]; then
     fi
 elif type starship > /dev/null 2>&1; then
     eval "$(starship init zsh)"
-elif type starship > /dev/null 2>&1; then
-    eval "$(starship init zsh)"
 fi
-
-# pnpm
-export PNPM_HOME="/Users/t-akira012/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
