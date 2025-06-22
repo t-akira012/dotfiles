@@ -28,7 +28,7 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-alias claude="$HOME/.claude/local/claude"
+# alias claude="$HOME/.claude/local/claude"
 
 # coreutils
 # [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]] && export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
