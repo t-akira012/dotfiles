@@ -1,3 +1,4 @@
+alias bd='cd ../'
 alias ls='ls -FG --color'
 alias ll='ls -lFG --color'
 alias la='ls -alFG --color'
@@ -67,27 +68,3 @@ if [[ $WAYLAND_DISPLAY == "wayland-"* ]];then
   alias pbcopy='wl-copy'
   alias pbpaste='wl-paste'
 fi
-
-# alias mp='multipass'
-# alias qqq='exit'
-# alias bd='cd ../'
-# alias ranger='TERM=xterm-256color && ranger'
-# alias r='[ -z "$TMUX" ] && ranger || echo "in TMUX"'
-
-# alias statf="stat --format='%a %U %G %n'"
-# alias treed="tree -d -I node_modules"
-# alias a='OPENAPP=$(unbuffer fd -d 3 '^*.app$' /Applications/ | fzf --ansi) && open "$OPENAPP"'
-# alias t='date +"%Y/%m/%d %a %H:%M:%S"'
-
-# start_zellij() {
-#   if [[ -z "$ZELLIJ" ]];then
-#     if [[ "$TERM_COLOR_MODE" == "LIGHT" ]];then
-#       zellij options --theme "$ZELLIJ_COLOR_LIGHT"
-#     else
-#       zellij options --theme "$ZELLIJ_COLOR_DARK"
-#     fi
-#   else
-#     echo zellij is aready running.
-#   fi
-# }
-# alias zz='start_zellij'
