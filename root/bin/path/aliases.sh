@@ -35,7 +35,7 @@ start_tmux() {
 	elif [[ $THIS_ITERM2 == 'DOC' ]]; then
 		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
 	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
-		[[ -z "$(tmux ls | grep iTerm)" ]] && tmux new -s 'iTerm' || tmux a -t 'iTerm'
+		[[ -z "$(tmux ls | grep iTerm)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'iTerm'
 	else
 		[[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
 	fi
