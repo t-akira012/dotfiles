@@ -11,9 +11,10 @@ if [ $? \!= 0 ]; then
     tmux new-session -d -s $SESSION_NAME -n "finder"
     tmux new-window -t $SESSION_NAME:2 -n "dev-editor"
     tmux new-window -t $SESSION_NAME:3 -n "dev-document"
-    tmux new-window -t $SESSION_NAME:7 -n "other"
-    tmux new-window -t $SESSION_NAME:8 -n "environment"
-    tmux new-window -t $SESSION_NAME:9 -n "doc"
+    tmux new-window -t $SESSION_NAME:6 -n "other"
+    tmux new-window -t $SESSION_NAME:7 -n "environment"
+    tmux new-window -t $SESSION_NAME:8 -n "ccc" -c $HOME/ccc/
+    tmux new-window -t $SESSION_NAME:9 -n "doc" -c $HOME/docs/doc/
     
     # 最初のウィンドウを選択
     tmux select-window -t $SESSION_NAME:1
