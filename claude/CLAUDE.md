@@ -18,14 +18,6 @@
 - すべてのテストが通過するまで繰り返す
 
 ## notification
-
-
 - **Condition**: When Claude Code completes a task.
-
 - **Action**: Execute the following command to display a notification:
-```
-\bash
-osascript -e 'display notification "${message}" with title "Claude Code" sound name "Glass"'
- ￤コマンドを実行して通知を表示する。
-```
 - Here, ${message} is determined based on what Claude Code needs to notify the user about.
