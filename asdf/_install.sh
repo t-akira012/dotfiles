@@ -12,26 +12,40 @@ else
     exit 1
 fi
 
-if ! type go > /dev/null 2>&1;then
-  asdf plugin add golang
-  ./go.sh
-fi
-if ! type ruby > /dev/null 2>&1;then
-  asdf plugin add ruby
-  ./ruby.sh
-fi
-if ! type python > /dev/null 2>&1;then
-  asdf plugin add python
-  ./python.sh
-fi
+check(){
+  local LANG_NAME=$1
+  echo =================================
+  echo "Plugin install $LANG_NAME"
+  echo =================================
+  if ! asdf plugin add $LANG_NAME > /dev/null 2>&1;then
+    asdf plugin add $LANG_NAME
+  fi
 
-if ! type node > /dev/null 2>&1;then
-  asdf plugin add nodejs
-  ./nodejs.sh
-fi
+  asdf install $LANG_NAME latest
+  asdf global $LANG_NAME latest
+  which $LANG_NAME
+
+  if [[ $LANG_NAME == "nodejs" ]];then
+    npm i -g npm yarn
+    node -v
+    npm -v
+    yarn -v
+  fi
+
+  if [[ $LANG_NAME == "python" ]];then
+    if ! type uv >/dev/null 2>&1 ; then
+      # https://docs.astral.sh/uv/#getting-started
+      curl -LsSf https://astral.sh/uv/install.sh | sh
+    fi
+  fi
+}
+
+check go
+check nodejs
+check python
+check ruby
 
 if ! type cargo > /dev/null 2>&1;then
   ./rust.sh
 fi
 
-./_install_tools.sh

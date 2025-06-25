@@ -6,5 +6,6 @@ cp ./.ex $HOME/.ex
 
 ./scripts/forzsh.sh
 ./asdf/_install.sh
+./asdf/_install_tools.sh
 
 # ./scripts/neovim.sh
