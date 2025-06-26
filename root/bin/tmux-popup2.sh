@@ -2,6 +2,9 @@
 
 # 現在のセッション名を取得
 CURRENT_SESSION=$(tmux display-message -p -F "#{session_name}")
+if [[ "$CURRENT_SESSION" == "term_on_vim"* ]] ; then
+	exit 0
+fi
 
 # POPセッション名
 POPUP_SESSION="claude-code"
