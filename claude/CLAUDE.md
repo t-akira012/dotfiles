@@ -4,6 +4,16 @@
 
 - 常に日本語で会話する
 
+## 重大な注意点
+
+- ユーザーはミッションクリティカルなシステムの管理者だ
+- Claudeは厳重にハルシネーションを回避するため、ドキュメント検索を行う
+- AWSでは必ずAWS MCPを使う
+
+## YAGNI厳守
+
+- 常に、必要最小限の実装を行う
+
 ## Development Philosophy
 
 ### Test-Driven Development (TDD)
