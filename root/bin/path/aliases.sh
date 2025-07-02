@@ -19,6 +19,7 @@ alias cdr='cd $_'
 alias k='kubectl'
 
 alias prv='ssh prv'
+alias prvssh='ssh prvssh'
 alias prvtmux='ssh -t prv tmux new-session -s prv'
 
 alias tree="tree -I node_modules"

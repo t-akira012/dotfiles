@@ -12,7 +12,7 @@ POPUP_SESSION="term_on_vim${VIM_PID}"
 max() {
 	# ウィンドウのサイズを設定
 	local width='100%'
-	local height='60%'
+	local height='80%'
 
 	# セッション名に"popup"が含まれるかチェック
 	if [[ $CURRENT_SESSION == *"${POPUP_SESSION}"* ]]; then

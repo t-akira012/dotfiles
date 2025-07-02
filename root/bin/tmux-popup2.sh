@@ -11,7 +11,7 @@ POPUP_SESSION="claude-code"
 
 create() {
 	# ウィンドウのサイズを設定
-	local width='70%'
+	local width='96%'
 	local height='100%'
 
 	# セッション名に"popup"が含まれるかチェック
