@@ -20,7 +20,7 @@ alias ccc=run_cloud_code_container
 
 run_cloud_code_log(){
 	cd $HOME/ccc/.ccl
-	make
+	docker compose up -d
 	cd -
 }
 alias ccl=run_cloud_code_log
