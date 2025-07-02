@@ -11,6 +11,16 @@ alias o.='open .'
 alias qa='$HOME/bin/quit_app.sh'
 alias br='cd ..'
 
+run_cloud_code_container(){
+	cd $HOME/ccc/.ccc
+	make
+	cd -
+}
+
+
+
+alias ccc=run_cloud_code_container
+
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
 alias cdot='cd $HOME/dotfiles'
