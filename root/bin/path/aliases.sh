@@ -16,10 +16,14 @@ run_cloud_code_container(){
 	make
 	cd -
 }
-
-
-
 alias ccc=run_cloud_code_container
+
+run_cloud_code_log(){
+	cd $HOME/ccc/.log
+	make
+	cd -
+}
+alias ccl=run_cloud_code_log
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
