@@ -19,7 +19,7 @@ run_cloud_code_container(){
 alias ccc=run_cloud_code_container
 
 run_cloud_code_log(){
-	cd $HOME/ccc/.log
+	cd $HOME/ccc/.ccl
 	make
 	cd -
 }
