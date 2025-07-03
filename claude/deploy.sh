@@ -1,4 +1,5 @@
-#!/usr/bin/env bash -eux
+#!/usr/bin/env bash
+set -eux
 cd $(dirname $0)
 
 ln -si "$PWD" $HOME/.claude
