@@ -27,23 +27,27 @@
 
 ### 通知
 
-- Claudeはコンテナで動作している、ユーザーは内部ファイルを永久に確認しない
-- こで、Claudeはユーザーに成果物を、メール通知する
+- Claudeはコンテナで動作している、ユーザーは回答や、内部ファイルを永久に確認しない
+- そのため、Claudeはユーザーに結果を、常に、メール通知＆ファイル保存する（/usr/bin/dual_save）
 
 - 厳守: 添付ファイルは利用禁止。本文に全てを記載
-- 厳守: 発言は常に mail_notify で通知をする
+- 厳守: 発言は常に dual_save でメール通知・ファイル保存をする
 - 厳守: Markdownファイルなどの成果物自体を全文をメール本文に記載
 
 ```
-function SEND_EMAIL_NOTIFICATION(content){
-  // 1. 全文(要約禁止) を temp_file.txt に出力
-  echo '全文' > temp_file.txt
+function SEND_EMAIL_NOTIFICATION_AND_FILE_SAVE(content){
+  // 1. 全文(要約禁止) を $(mktemp) に出力
+  TEMP_FILE_PATH=$(mktemp)
+  echo '全文' > $TEMP_FILE_PATH
 
-  // 2. 通知に相応しいシンプルで前向きなタイトルを生成
-  title = generateSimpleTitle(content)
+  // 2. メール通知に相応しいシンプルで前向きなタイトルを生成
+  mail_title = generateMailTitle(content)
 
-  // 3. メール通知を実行
-  execute(`/usr/bin/mail_notify "${title}" --file temp_file.txt`)
+  // 3. ファイル名に利用できるASCII文字のタイトルを生成
+  file_title = generateFileTitle(content)
+
+  // 4. dual_save （メール通知 & ファイル保存）を実行
+  execute(`/usr/bin/dual_save "${mail_title}" ${file_title} ${TEMP_FILE_PATH} `)
 }
 
 function ENSURE_FULL_CONTENT_DELIVERY(){
