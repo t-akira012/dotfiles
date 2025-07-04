@@ -7,10 +7,9 @@ if [[ "$CURRENT_SESSION" == "term_on_vim"* ]] ; then
 fi
 
 
-if [[ $(whoami) != "t-akira012" ]] ; then
+if [[ $(whoami) != "t-akira012" ]] && [[  $(whoami) != "aki" ]]; then
 	exit 0
 fi
-
 
 # POPセッション名
 POPUP_SESSION="ssh-prv"
