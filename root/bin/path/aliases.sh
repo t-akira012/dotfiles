@@ -70,7 +70,7 @@ start_tailscale(){
 	# 	fi
 	# fi
 	if command -v tailscale >/dev/null;then
-		if [[ -n $SSH_CONNECTION ]];then
+		if [[ -z $SSH_CONNECTION ]];then
 			start_tmux
 		fi
 	fi
