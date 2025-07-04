@@ -3,3 +3,6 @@ projects/
 statsig/
 todos/
 .credentials.json
+.claude.json
+.claude.json.backup
+*.json*
