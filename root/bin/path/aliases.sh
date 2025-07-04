@@ -53,6 +53,8 @@ start_tmux() {
 		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
 	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
 		[[ -z "$(tmux ls | grep iTerm)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'iTerm'
+	elif [[ -n $SSH_CONNECTION ]]; then
+		[[ -z "$(tmux ls | grep ssh-prv)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'ssh-prv'
 	else
 		[[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
 	fi
@@ -68,7 +70,7 @@ start_tailscale(){
 	# 	fi
 	# fi
 	if command -v tailscale >/dev/null;then
-		if [[ -z $TMUX ]] && [[ -n $SSH_CONNECTION ]];then
+		if [[ -n $SSH_CONNECTION ]];then
 			start_tmux
 		fi
 	fi
