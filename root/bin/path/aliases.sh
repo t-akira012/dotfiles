@@ -54,7 +54,7 @@ start_tmux() {
 	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
 		[[ -z "$(tmux ls | grep iTerm)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'iTerm'
 	elif [[ -n $SSH_CONNECTION ]]; then
-		[[ -z "$(tmux ls | grep ssh-prv)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'ssh-prv'
+		[[ -z "$(tmux ls | grep ssh-prv)" ]] && tmux a -t 'ssh-prv'
 	else
 		[[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
 	fi
