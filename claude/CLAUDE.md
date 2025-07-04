@@ -37,8 +37,7 @@
 ```
 function SEND_EMAIL_NOTIFICATION_AND_FILE_SAVE(content){
   // 1. 全文(要約禁止) を $(mktemp) に出力
-  TEMP_FILE_PATH=$(mktemp)
-  echo '全文' > $TEMP_FILE_PATH
+  echo '全文' > /tmp/out.txt
 
   // 2. メール通知に相応しいシンプルで前向きなタイトルを生成
   mail_title = generateMailTitle(content)
@@ -47,7 +46,7 @@ function SEND_EMAIL_NOTIFICATION_AND_FILE_SAVE(content){
   file_title = generateFileTitle(content)
 
   // 4. dual_save （メール通知 & ファイル保存）を実行
-  execute(`/usr/bin/dual_save "${mail_title}" ${file_title} ${TEMP_FILE_PATH} `)
+  execute(`/usr/bin/dual_save "${mail_title}" ${file_title} /tmp/out.txt `)
 }
 
 function ENSURE_FULL_CONTENT_DELIVERY(){
