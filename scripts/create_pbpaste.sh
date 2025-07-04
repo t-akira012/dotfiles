@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# 
+# pbpaste を、macOS -> SSH -> Linux で再現する
+# 設定方法
+#  1. macOS 端末に Linux 端末で ssh 接続可能にする
+#  2. このファイルで /usr/local/bin/pbpaste を作る
+#  3. ssh接続 で pbpaste を再現する
 read -p "port番号は？" 'PORT'
 read -p "ユーザー名は？" 'USER_NAME'
 read -p "SSHファイル名は？" 'SSH_NAME'

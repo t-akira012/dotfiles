@@ -60,10 +60,17 @@ start_tmux() {
 alias ta='start_tmux'
 
 start_tailscale(){
+	# if command -v tailscale >/dev/null;then
+	# 	local TAILSCALE_IP=$(tailscale status|head -n 1|awk '{print $1}')
+	# 	local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
+	# 	if [[ ${CURRENT_SSH_IP} == ${TAILSCALE_IP} ]];then
+	# 		start_tmux
+	# 	fi
+	# fi
 	if command -v tailscale >/dev/null;then
 		local TAILSCALE_IP=$(tailscale status|head -n 1|awk '{print $1}')
 		local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
-		if [[ ${CURRENT_SSH_IP} == ${TAILSCALE_IP} ]];then
+		if [[ -n $SSH_CONNECTION ]];then
 			start_tmux
 		fi
 	fi
