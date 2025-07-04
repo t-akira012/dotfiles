@@ -59,6 +59,16 @@ start_tmux() {
 }
 alias ta='start_tmux'
 
+start_tailscale(){
+    command -v tailscale >/dev/null && \
+        local TAILSCALE_IP=$(tailscale status|head -n 1|awk '{print $1}')
+    local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
+    if [[ ${CURRENT_SSH_IP} == ${TAILSCALE_IP} ]];then
+        start_tmux
+    fi
+}
+start_tailscale
+
 if [[ $(command -v nvim) ]]; then
 	export EDITOR="nvim"
 	alias vimdiff='nvim -d'
