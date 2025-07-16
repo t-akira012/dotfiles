@@ -59,7 +59,7 @@ main(){
 
     # commit & push
     if [[ "$IS_GIT" = "1" ]];then
-        if ! git status --porcelain; then
+        if ! git status --porcelain >> /dev/null 2>&1; then
             exit
         fi
         git add "$FILE_PATH" \

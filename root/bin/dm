@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# home.mdを開く
-if [[ ! -e "$MEMO_DIR" ]]; then
-  echo '$MEMO_DIR set at .ex'
-  exit 1
-fi
-$HOME/bin/memo-controller.sh $MEMO_DIR "" "home"

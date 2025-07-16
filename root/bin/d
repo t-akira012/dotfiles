@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-$HOME/bin/memo-controller.sh $MEMO_DIR "Notes/" "$*"
+$HOME/bin/memo-controller.sh $MEMO_DIR "/" "$*"
