@@ -9,10 +9,10 @@ if [ $? \!= 0 ]; then
     # セッションが存在しない場合、新規作成
     
     tmux new-session -d -s $SESSION_NAME -n "finder"
-    tmux new-window -t $SESSION_NAME:2 -n "dev-editor"
-    tmux new-window -t $SESSION_NAME:3 -n "dev-document"
-    tmux new-window -t $SESSION_NAME:6 -n "ccc"
-    tmux new-window -t $SESSION_NAME:7 -n "other"
+    tmux new-window -t $SESSION_NAME:2 -n "dev"
+    tmux new-window -t $SESSION_NAME:3 -n "doc"
+    tmux new-window -t $SESSION_NAME:6 -n "other"
+    tmux new-window -t $SESSION_NAME:7 -n "vibe"
     tmux new-window -t $SESSION_NAME:8 -n "env"
     tmux new-window -t $SESSION_NAME:9 -n "doc" -c $HOME/docs/doc/
     
