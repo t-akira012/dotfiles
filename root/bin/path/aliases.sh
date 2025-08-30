@@ -12,18 +12,11 @@ alias qa='$HOME/bin/quit_app.sh'
 alias br='cd ..'
 
 run_cloud_code_container(){
-	cd $HOME/ccc/.ccc
+	cd  $HOME/src/github.com/t-akira012/ccc/
 	make
 	cd -
 }
 alias ccc=run_cloud_code_container
-
-run_cloud_code_log(){
-	cd $HOME/ccc/.ccl/.ccc
-	make
-	cd -
-}
-alias ccl=run_cloud_code_log
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
