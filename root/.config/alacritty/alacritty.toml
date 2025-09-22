@@ -8,12 +8,13 @@ style = "Block"
 
 [env]
 TERM = "xterm-256color"
+IS_ALACRITTY = "TRUE"
 
 [font]
 size = 14
 
 [font.normal]
-family = "Cica"
+family = "PlemolJP Console NF"
 
 [scrolling]
 history = 10000
@@ -40,3 +41,29 @@ y = 0
 bindings = [
   { key = "V",        mods = "Super", action = "Paste" },
 ]
+# Default colors
+[colors.primary]
+background = '#2d353b'
+foreground = '#d3c6aa'
+
+# Normal colors
+[colors.normal]
+black = '#475258'
+red = '#e67e80'
+green = '#a7c080'
+yellow = '#dbbc7f'
+blue = '#7fbbb3'
+magenta = '#d699b6'
+cyan = '#83c092'
+white = '#d3c6aa'
+
+# Bright colors
+[colors.bright]
+black = '#475258'
+red = '#e67e80'
+green = '#a7c080'
+yellow = '#dbbc7f'
+blue = '#7fbbb3'
+magenta = '#d699b6'
+cyan = '#83c092'
+white = '#d3c6aa'

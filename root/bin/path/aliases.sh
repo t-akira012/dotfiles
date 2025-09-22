@@ -48,6 +48,8 @@ start_tmux() {
 		[[ -z "$(tmux ls | grep iTerm)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'iTerm'
 	elif [[ -n $SSH_CONNECTION ]]; then
 		[[ -z "$(tmux ls | grep ssh-prv)" ]] && tmux new -s 'ssh-prv' || tmux a -t 'ssh-prv'
+	elif [[ $ALACRITTY_SOCKET ]]; then
+		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
 	else
 		[[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
 	fi
