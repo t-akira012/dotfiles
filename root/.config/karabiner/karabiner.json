@@ -192,7 +192,6 @@
                     },
                     {
                         "description": "Emacs key bindings [C-x key strokes] (rev 2)",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -281,6 +280,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.jwilm\\.Alacritty$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -387,7 +387,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -444,7 +444,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -501,7 +501,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -603,7 +603,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -660,7 +660,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -717,7 +717,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -774,7 +774,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
@@ -831,7 +831,7 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
-                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^org\\.vim\\.",
                                             "^com\\.qvacua\\.VimR$",
