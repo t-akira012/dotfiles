@@ -6,6 +6,7 @@ $directory\
 $git_branch\
 $git_state\
 $git_status\
+${custom.export_aws_accesskey}\
 $cmd_duration\
 $line_break\
 $python\
@@ -55,3 +56,11 @@ format = '[\[ $time \]]($style) '
 time_format = '%T'
 utc_time_offset = '+9'
 time_range = '0:00:00-24:00:00'
+
+[custom.export_aws_accesskey]
+description = "show aws access key"
+command = "echo ${AWS_ACCESS_KEY_ID:0:3}..."
+symbol = 'AWS:'
+style = "purple"
+format = "[$symbol$output]($style) "
+when = "[ $(echo $AWS_ACCESS_KEY_ID) ]"
