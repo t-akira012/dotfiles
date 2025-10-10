@@ -12,9 +12,13 @@ alias qa='$HOME/bin/quit_app.sh'
 alias br='cd ..'
 
 run_cloud_code_container(){
-	cd  $HOME/src/github.com/t-akira012/ccc/
-	make
-	cd -
+	if [[ -n $CCC_DIR ]];then
+		cd $CCC_DIR
+		make
+		cd -
+	else
+		echo '$CCC_DIR required.'
+	fi
 }
 alias ccc=run_cloud_code_container
 
