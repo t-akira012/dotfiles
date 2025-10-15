@@ -20,7 +20,7 @@ create_agent_popup_window() {
 		tmux detach-client
 	else
 		# popupセッションでないなら、新しいポップアップウィンドウを表示
-		tmux popup -d '#{pane_current_path}' -xC -yC -w$width -h$height -E "tmux attach-session -t ${POPUP_SESSION} || tmux new -s ${POPUP_SESSION}"
+		tmux popup -d '#{pane_current_path}' -xC -yC -w$width -h$height -E "tmux attach-session -t ${POPUP_SESSION} || tmux new -s ${POPUP_SESSION} -c '$HOME/dev'"
 	fi
 }
 
