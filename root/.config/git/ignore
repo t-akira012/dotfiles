@@ -10,6 +10,7 @@ Thumbs.db
 
 **/CLAUDE.local.md
 .ccc
+.claude-code
 
 TF_VAR*
 .env

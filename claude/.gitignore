@@ -6,3 +6,5 @@ todos/
 .claude.json
 .claude.json.backup
 *.json*
+debug/
+shell-snapshots/
