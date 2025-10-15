@@ -7,6 +7,7 @@ $git_branch\
 $git_state\
 $git_status\
 ${custom.export_aws_accesskey}\
+${custom.export_aws_profile}\
 $cmd_duration\
 $line_break\
 $python\
@@ -64,3 +65,12 @@ symbol = 'AWS:'
 style = "purple"
 format = "[$symbol$output]($style) "
 when = "[ $(echo $AWS_ACCESS_KEY_ID) ]"
+
+
+[custom.export_aws_profile]
+description = "show aws profile"
+command = "echo ${AWS_PROFILE}"
+symbol = 'PROFILE:'
+style = "purple"
+format = "[$symbol$output]($style) "
+when = "[ $(echo $AWS_PROFILE) ]"
