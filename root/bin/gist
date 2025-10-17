@@ -9,6 +9,8 @@
 #   gist pull [filename]      - Pull gist to file (fzf selector if no filename)
 #   gist edit [filename]      - Update existing gist (fzf selector if no filename)
 #   gist edit-filename <name> - Update existing gist by filename
+#   gist delete [filename]    - Delete gist (fzf selector if no filename)
+#   gist delete-filename <name> - Delete gist by filename
 #   gist url [filename]       - Open gist URL in browser (fzf selector if no filename)
 #   gist show-url <filename>  - Open gist URL in browser by filename
 #   gist list                 - Show index
@@ -25,20 +27,6 @@
 #   source gist.sh to use gist-fzf function in your shell
 
 set -euo pipefail
-
-# Markdownインデックス行をパース: - [filename](url)
-# 引数1: パースする行
-# 出力: filename<TAB>url
-parse_index_line() {
-  local line="$1"
-  local filename
-  local url
-
-  filename=$(echo "$line" | sed -n 's/^- \[\(.*\)\](.*/\1/p')
-  url=$(echo "$line" | sed -n 's/.*(\(.*\))/\1/p')
-
-  echo "$filename	$url"
-}
 
 # ファイル名からURLを取得
 # 引数1: ファイル名
@@ -127,10 +115,9 @@ create_gist() {
 # gist更新 (認証必要)
 update_gist() {
   local gist_id="$1"
-  local filename="$2"
 
-  # gh gist edit を使用
-  gh gist edit "$gist_id" "$filename"
+  # gh gist edit を使用（gist IDのみ指定）
+  gh gist edit "$gist_id"
 }
 
 # インデックス更新 (認証必要)
@@ -293,15 +280,44 @@ cmd_edit_filename() {
   local gist_id
   gist_id=$(basename "$url")
 
-  # 自分のgistかチェック
-  if ! is_gist_owner "$url"; then
-    echo "Error: You are not the owner of this gist" >&2
+  update_gist "$gist_id"
+
+  echo "Updated: $url"
+}
+
+# gist delete-filename (ファイル名指定で削除)
+cmd_delete_filename() {
+  local filename="${1:-}"
+
+  if [ -z "$filename" ]; then
+    echo "Usage: gist delete-filename <filename>" >&2
     exit 1
   fi
 
-  update_gist "$gist_id" "$filename"
+  local url
+  url=$(get_url_by_filename "$filename")
 
-  echo "Updated: $url"
+  if [ -z "$url" ]; then
+    echo "Error: '$filename' not found in index" >&2
+    exit 1
+  fi
+
+  local gist_id
+  gist_id=$(basename "$url")
+
+  # gh gist delete を実行
+  gh gist delete "$gist_id"
+
+  # インデックスから削除
+  local index
+  index=$(get_index)
+
+  local new_index
+  new_index=$(echo "$index" | grep -v "^- \[$filename\]" || true)
+
+  update_index "$new_index"
+
+  echo "Deleted: $filename ($url)"
 }
 
 # gist fzf edit
@@ -338,6 +354,42 @@ cmd_edit() {
 
   # 引数があれば edit-filename に委譲
   cmd_edit_filename "$@"
+}
+
+# gist fzf delete
+cmd_fzf_delete() {
+  # インデックスを取得して、ファイル名とURLのマップを一時ファイルに保存
+  local map_file
+  map_file=$(mktemp)
+  trap "rm -f $map_file" EXIT INT TERM
+
+  map_index > "$map_file"
+
+  # プレビューコマンド
+  local preview_cmd="$0 show {}"
+
+  # ファイル名だけをfzfで選択（プレビュー付き）
+  local filename
+  filename=$(awk -F'\t' '{print $1}' "$map_file" | fzf --height=40% --reverse --preview "$preview_cmd" --prompt="Delete gist> ")
+
+  if [ -z "$filename" ]; then
+    return 0
+  fi
+
+  # delete-filename を呼び出し
+  cmd_delete_filename "$filename"
+}
+
+# gist delete
+cmd_delete() {
+  # 引数なしなら fzf
+  if [ $# -eq 0 ]; then
+    cmd_fzf_delete
+    return $?
+  fi
+
+  # 引数があれば delete-filename に委譲
+  cmd_delete_filename "$@"
 }
 
 # gist list
@@ -435,7 +487,7 @@ cmd_fzf_view() {
   # showで標準出力を一時ファイルにリダイレクト
   cmd_show "$filename" > "$tmpfile"
 
-  # neovimで開く
+  # nvimで開く
   nvim "$tmpfile"
 
   # 終了時に一時ファイルを削除（trapで自動実行）
@@ -524,6 +576,16 @@ main() {
   local cmd="$1"
   shift
 
+  # gh コマンドを使用するコマンドは事前にオーナーチェック
+  case "$cmd" in
+    push|add|edit|edit-filename|delete|delete-filename|all-push)
+      if ! is_gist_owner "$ALL_GIST_INDEX"; then
+        echo "Error: You are not the owner of this gist index" >&2
+        exit 1
+      fi
+      ;;
+  esac
+
   case "$cmd" in
     push)
       cmd_push "$@"
@@ -543,6 +605,12 @@ main() {
     edit-filename)
       cmd_edit_filename "$@"
       ;;
+    delete)
+      cmd_delete "$@"
+      ;;
+    delete-filename)
+      cmd_delete_filename "$@"
+      ;;
     url)
       cmd_url "$@"
       ;;
@@ -559,7 +627,7 @@ main() {
       cmd_all_push
       ;;
     *)
-      echo "Usage: gist {push|add|show|pull|edit|edit-filename|url|show-url|list|all-pull|all-push} [filename]" >&2
+      echo "Usage: gist {push|add|show|pull|edit|edit-filename|delete|delete-filename|url|show-url|list|all-pull|all-push} [filename]" >&2
       exit 1
       ;;
   esac
