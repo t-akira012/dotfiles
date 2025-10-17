@@ -435,8 +435,8 @@ cmd_fzf_view() {
   # showで標準出力を一時ファイルにリダイレクト
   cmd_show "$filename" > "$tmpfile"
 
-  # vimで開く
-  vim "$tmpfile"
+  # neovimで開く
+  nvim "$tmpfile"
 
   # 終了時に一時ファイルを削除（trapで自動実行）
 }
