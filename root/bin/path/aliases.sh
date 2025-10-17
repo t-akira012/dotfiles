@@ -1,3 +1,4 @@
+alias gs="$HOME/bin/gist"
 alias bd='cd ../'
 alias ls='ls -FG --color'
 alias ll='ls -lFG --color'

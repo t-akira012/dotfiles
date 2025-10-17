@@ -1,0 +1,569 @@
+#!/usr/bin/env bash
+# GitHub Gist CLI - Simple private document management
+#
+# Usage:
+#   gist                      - Interactive fzf selector (view only)
+#   gist push <filename>      - Create new gist and add to index
+#   gist add <filename>       - Create new file in neovim and push
+#   gist show <filename>      - Show gist content (stdout)
+#   gist pull [filename]      - Pull gist to file (fzf selector if no filename)
+#   gist edit [filename]      - Update existing gist (fzf selector if no filename)
+#   gist edit-filename <name> - Update existing gist by filename
+#   gist url [filename]       - Open gist URL in browser (fzf selector if no filename)
+#   gist show-url <filename>  - Open gist URL in browser by filename
+#   gist list                 - Show index
+#   gist all-pull             - Pull all gists including index
+#   gist all-push             - Push all files in current directory (skip existing)
+#
+# Setup:
+#   export ALL_GIST_INDEX="https://gist.github.com/<user>/<gist_id>"
+#   gh auth login
+#
+# Dependencies: gh, curl, jq, fzf, nvim (for interactive mode)
+#
+# Shell function integration:
+#   source gist.sh to use gist-fzf function in your shell
+
+set -euo pipefail
+
+# Markdownインデックス行をパース: - [filename](url)
+# 引数1: パースする行
+# 出力: filename<TAB>url
+parse_index_line() {
+  local line="$1"
+  local filename
+  local url
+
+  filename=$(echo "$line" | sed -n 's/^- \[\(.*\)\](.*/\1/p')
+  url=$(echo "$line" | sed -n 's/.*(\(.*\))/\1/p')
+
+  echo "$filename	$url"
+}
+
+# ファイル名からURLを取得
+# 引数1: ファイル名
+# 出力: URL
+get_url_by_filename() {
+  local filename="$1"
+  local index
+  index=$(get_index)
+
+  echo "$index" | grep "^- \[$filename\]" | sed -n 's/.*(\(.*\))/\1/p'
+}
+
+# インデックスをファイル名<TAB>URLの形式にマップ
+# 出力: filename<TAB>url (標準出力)
+map_index() {
+  get_index | sed -n 's/^- \[\(.*\)\](\(.*\))/\1\t\2/p'
+}
+
+# 現在のユーザー名を取得（キャッシュあり）
+get_current_user() {
+  local cache_file="$HOME/.config/gist_owner"
+
+  if [ -f "$cache_file" ]; then
+    cat "$cache_file"
+    return 0
+  fi
+
+  local current_user
+  current_user=$(gh api user -q .login 2>/dev/null || echo "")
+
+  if [ -n "$current_user" ]; then
+    mkdir -p "$HOME/.config"
+    echo "$current_user" > "$cache_file"
+    echo "$current_user"
+  else
+    return 1
+  fi
+}
+
+# gist オーナーのチェック（URLから判定）
+is_gist_owner() {
+  local gist_url="$1"
+
+  local current_user
+  current_user=$(get_current_user)
+
+  if [ -z "$current_user" ]; then
+    return 1
+  fi
+
+  # gist URLから ユーザー名を抽出
+  # https://gist.github.com/{user}/{gist_id} 形式を想定
+  local gist_user
+  gist_user=$(echo "$gist_url" | sed -n 's|https://gist.github.com/\([^/]*\)/.*|\1|p')
+
+  [ "$current_user" = "$gist_user" ]
+}
+
+# gist URLから生データを取得 (認証不要)
+# 単一ファイルの Gist を想定
+fetch_gist_raw() {
+  local gist_url="$1"
+
+  local gist_id
+  gist_id=$(basename "$gist_url")
+
+  curl -s "https://gist.githubusercontent.com/raw/${gist_id}?t=$(date +%s)"
+}
+
+# インデックス取得 (認証不要)
+get_index() {
+  local gist_id
+  gist_id=$(basename "$ALL_GIST_INDEX")
+
+  curl -s "https://gist.githubusercontent.com/raw/${gist_id}/all-gist-index.md?t=$(date +%s)"
+}
+
+# gist作成 (認証必要)
+create_gist() {
+  local filename="$1"
+
+  # gh gist create にファイルを渡す (デフォルトでsecret)
+  gh gist create "$filename" | head -n 1
+}
+
+# gist更新 (認証必要)
+update_gist() {
+  local gist_id="$1"
+  local filename="$2"
+
+  # gh gist edit を使用
+  gh gist edit "$gist_id" "$filename"
+}
+
+# インデックス更新 (認証必要)
+update_index() {
+  local content="$1"
+  local gist_id
+  gist_id=$(basename "$ALL_GIST_INDEX")
+
+  # gh api を使ってインデックスファイルを更新
+  local payload
+  payload=$(jq -n --arg content "$content" \
+    '{files: {"all-gist-index.md": {content: $content}}}')
+
+  echo "$payload" | gh api "/gists/${gist_id}" --input - -X PATCH > /dev/null
+}
+
+# gist push
+cmd_push() {
+  local filename="${1:-}"
+
+  if [ -z "$filename" ]; then
+    echo "Usage: gist push <filename>" >&2
+    exit 1
+  fi
+
+  local url
+  url=$(create_gist "$filename")
+
+  local index
+  index=$(get_index)
+
+  local new_index
+  new_index=$(echo "$index" | grep -v "^- \[$filename\]" || true)
+  new_index="${new_index}
+- [$filename]($url)"
+
+  update_index "$new_index"
+
+  echo "Pushed: $url"
+}
+
+# gist add (neovimで新規作成してpush)
+cmd_add() {
+  local filename="${1:-}"
+
+  if [ -z "$filename" ]; then
+    echo "Usage: gist add <filename>" >&2
+    exit 1
+  fi
+
+  # 一時ファイルを作成
+  local tmpfile
+  tmpfile=$(mktemp)
+  trap "rm -f $tmpfile" EXIT INT TERM
+
+  # neovimで編集
+  nvim "$tmpfile"
+
+  # 内容が空でないかチェック
+  if [ ! -s "$tmpfile" ]; then
+    echo "Error: File is empty, not pushing" >&2
+    return 1
+  fi
+
+  # 一時ファイルの内容を標準入力で渡し、-f でファイル名を指定
+  local url
+  url=$(cat "$tmpfile" | gh gist create -f "$filename" | head -n 1)
+
+  # インデックスに追加
+  local index
+  index=$(get_index)
+
+  local new_index
+  new_index=$(echo "$index" | grep -v "^- \[$filename\]" || true)
+  new_index="${new_index}
+- [$filename]($url)"
+
+  update_index "$new_index"
+
+  echo "Pushed: $url"
+}
+
+# gist show (stdout)
+cmd_show() {
+  local filename="${1:-}"
+
+  if [ -z "$filename" ]; then
+    echo "Usage: gist show <filename>" >&2
+    exit 1
+  fi
+
+  local url
+  url=$(get_url_by_filename "$filename")
+
+  if [ -z "$url" ]; then
+    echo "Error: '$filename' not found in index" >&2
+    exit 1
+  fi
+
+  fetch_gist_raw "$url"
+}
+
+# gist fzf pull
+cmd_fzf_pull() {
+  # インデックスを取得して、ファイル名とURLのマップを一時ファイルに保存
+  local map_file
+  map_file=$(mktemp)
+  trap "rm -f $map_file" EXIT INT TERM
+
+  map_index > "$map_file"
+
+  # プレビューコマンド
+  local preview_cmd="$0 show {}"
+
+  # ファイル名だけをfzfで選択（プレビュー付き）
+  local filename
+  filename=$(awk -F'\t' '{print $1}' "$map_file" | fzf --height=40% --reverse --preview "$preview_cmd" --prompt="Pull gist> ")
+
+  if [ -z "$filename" ]; then
+    return 0
+  fi
+
+  # showで標準出力をファイルに保存
+  cmd_show "$filename" > "$filename"
+
+  echo "Pulled: $filename"
+}
+
+# gist pull
+cmd_pull() {
+  # 引数なしなら fzf
+  if [ $# -eq 0 ]; then
+    cmd_fzf_pull
+    return $?
+  fi
+
+  # 引数があれば直接保存
+  local filename="$1"
+  cmd_show "$filename" > "$filename"
+  echo "Pulled: $filename"
+}
+
+# gist edit-filename (元のedit機能)
+cmd_edit_filename() {
+  local filename="${1:-}"
+
+  if [ -z "$filename" ]; then
+    echo "Usage: gist edit-filename <filename>" >&2
+    exit 1
+  fi
+
+  local url
+  url=$(get_url_by_filename "$filename")
+
+  if [ -z "$url" ]; then
+    echo "Error: '$filename' not found in index" >&2
+    exit 1
+  fi
+
+  local gist_id
+  gist_id=$(basename "$url")
+
+  # 自分のgistかチェック
+  if ! is_gist_owner "$url"; then
+    echo "Error: You are not the owner of this gist" >&2
+    exit 1
+  fi
+
+  update_gist "$gist_id" "$filename"
+
+  echo "Updated: $url"
+}
+
+# gist fzf edit
+cmd_fzf_edit() {
+  # インデックスを取得して、ファイル名とURLのマップを一時ファイルに保存
+  local map_file
+  map_file=$(mktemp)
+  trap "rm -f $map_file" EXIT INT TERM
+
+  map_index > "$map_file"
+
+  # プレビューコマンド
+  local preview_cmd="$0 show {}"
+
+  # ファイル名だけをfzfで選択（プレビュー付き）
+  local filename
+  filename=$(awk -F'\t' '{print $1}' "$map_file" | fzf --height=40% --reverse --preview "$preview_cmd" --prompt="Edit gist> ")
+
+  if [ -z "$filename" ]; then
+    return 0
+  fi
+
+  # edit-filename を呼び出し
+  cmd_edit_filename "$filename"
+}
+
+# gist edit
+cmd_edit() {
+  # 引数なしなら fzf
+  if [ $# -eq 0 ]; then
+    cmd_fzf_edit
+    return $?
+  fi
+
+  # 引数があれば edit-filename に委譲
+  cmd_edit_filename "$@"
+}
+
+# gist list
+cmd_list() {
+  get_index
+}
+
+# gist all-pull
+cmd_all_pull() {
+  local index
+  index=$(get_index)
+
+  # インデックス自体を保存
+  echo "$index" > all-gist-index.md
+  echo "Saved: all-gist-index.md"
+
+  # インデックスから全ファイルを取得
+  echo "$index" | grep "^- \[" | while IFS= read -r line; do
+    local filename=$(echo "$line" | sed -n 's/^- \[\(.*\)\](.*)/\1/p')
+    if [ -n "$filename" ]; then
+      cmd_show "$filename" > "$filename"
+      echo "Pulled: $filename"
+    fi
+  done
+}
+
+# gist all-push
+cmd_all_push() {
+  local index
+  index=$(get_index)
+
+  # インデックスに既に存在するファイル名のリストを取得
+  local existing_files
+  existing_files=$(echo "$index" | grep "^- \[" | sed -n 's/^- \[\(.*\)\](.*)/\1/p')
+
+  # カレントディレクトリの全ファイルをチェック
+  for file in *; do
+    # ディレクトリはスキップ
+    if [ -d "$file" ]; then
+      continue
+    fi
+
+    # all-gist-index.md はスキップ
+    if [ "$file" = "all-gist-index.md" ]; then
+      continue
+    fi
+
+    # 既に存在するファイルはスキップ
+    if echo "$existing_files" | grep -q "^${file}$"; then
+      echo "Skipped: $file (already exists in index)"
+      continue
+    fi
+
+    # 新規gistとして作成
+    local url
+    url=$(create_gist "$file")
+
+    # インデックスに追記
+    index="${index}
+- [$file]($url)"
+
+    echo "Pushed: $file -> $url"
+  done
+
+  # インデックスを更新
+  update_index "$index"
+}
+
+# gist fzf view (読み取り専用)
+cmd_fzf_view() {
+  # インデックスを取得して、ファイル名とURLのマップを一時ファイルに保存
+  # 形式: filename<TAB>url
+  local map_file
+  map_file=$(mktemp)
+  trap "rm -f $map_file" EXIT INT TERM
+
+  map_index > "$map_file"
+
+  # プレビューコマンド: gist showを使ってコンテンツを表示
+  local preview_cmd="$0 show {}"
+
+  # ファイル名だけをfzfで選択（プレビュー付き）
+  local filename
+  filename=$(awk -F'\t' '{print $1}' "$map_file" | fzf --height=40% --reverse --preview "$preview_cmd" --prompt="View gist> ")
+
+  if [ -z "$filename" ]; then
+    return 0
+  fi
+
+  # 一時ファイルに取得
+  local tmpfile
+  tmpfile=$(mktemp)
+  trap "rm -f $map_file $tmpfile" EXIT INT TERM
+
+  # showで標準出力を一時ファイルにリダイレクト
+  cmd_show "$filename" > "$tmpfile"
+
+  # vimで開く
+  vim "$tmpfile"
+
+  # 終了時に一時ファイルを削除（trapで自動実行）
+}
+
+# gist show-url (ブラウザでURLを開く)
+cmd_show_url() {
+  local filename="${1:-}"
+
+  if [ -z "$filename" ]; then
+    echo "Usage: gist show-url <filename>" >&2
+    exit 1
+  fi
+
+  local url
+  url=$(get_url_by_filename "$filename")
+
+  if [ -z "$url" ]; then
+    echo "Error: '$filename' not found in index" >&2
+    exit 1
+  fi
+
+  # ブラウザで開く (macOS, Linux 対応)
+  if command -v open > /dev/null 2>&1; then
+    open "$url"
+  elif command -v xdg-open > /dev/null 2>&1; then
+    xdg-open "$url"
+  else
+    echo "Error: Cannot find browser command (open or xdg-open)" >&2
+    echo "URL: $url"
+    return 1
+  fi
+
+  echo "Opened: $url"
+}
+
+# gist fzf url (fzfでURLをブラウザで開く)
+cmd_fzf_url() {
+  # インデックスを取得して、ファイル名とURLのマップを一時ファイルに保存
+  local map_file
+  map_file=$(mktemp)
+  trap "rm -f $map_file" EXIT INT TERM
+
+  map_index > "$map_file"
+
+  # プレビューコマンド
+  local preview_cmd="$0 show {}"
+
+  # ファイル名だけをfzfで選択（プレビュー付き）
+  local filename
+  filename=$(awk -F'\t' '{print $1}' "$map_file" | fzf --height=40% --reverse --preview "$preview_cmd" --prompt="Open gist URL> ")
+
+  if [ -z "$filename" ]; then
+    return 0
+  fi
+
+  # show-url を呼び出し
+  cmd_show_url "$filename"
+}
+
+# gist url
+cmd_url() {
+  # 引数なしなら fzf
+  if [ $# -eq 0 ]; then
+    cmd_fzf_url
+    return $?
+  fi
+
+  # 引数があれば show-url に委譲
+  cmd_show_url "$@"
+}
+
+# 後方互換性のためのエイリアス
+gist-fzf() {
+  cmd_fzf_view
+}
+
+# メイン処理
+main() {
+  # 引数が全くない場合のみ cmd_fzf_view を実行
+  if [ $# -eq 0 ]; then
+    cmd_fzf_view
+    return $?
+  fi
+
+  local cmd="$1"
+  shift
+
+  case "$cmd" in
+    push)
+      cmd_push "$@"
+      ;;
+    add)
+      cmd_add "$@"
+      ;;
+    show)
+      cmd_show "$@"
+      ;;
+    pull)
+      cmd_pull "$@"
+      ;;
+    edit)
+      cmd_edit "$@"
+      ;;
+    edit-filename)
+      cmd_edit_filename "$@"
+      ;;
+    url)
+      cmd_url "$@"
+      ;;
+    show-url)
+      cmd_show_url "$@"
+      ;;
+    list)
+      cmd_list
+      ;;
+    all-pull)
+      cmd_all_pull
+      ;;
+    all-push)
+      cmd_all_push
+      ;;
+    *)
+      echo "Usage: gist {push|add|show|pull|edit|edit-filename|url|show-url|list|all-pull|all-push} [filename]" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"
+
