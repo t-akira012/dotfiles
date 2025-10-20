@@ -23,32 +23,43 @@ else
 	_eval_brew
 fi
 
-if [[ -d /home/linxbrew ]]; then
+if [[ -d /home/linuxbrew ]]; then
 	echo Install linuxbrew packages
 	brew install z bash-completion
 fi
 
 if [[ $(uname) == "Darwin" ]]; then
-	echo Install Homebrew packages
-	brew install \
+	echo "=== Install Homebrew packages"
+	brew install --quiet \
 		git gh curl wget tree tmux watch expect z unar nvim shfmt bash-completion git-delta
 
-	echo '=== Install packages for macOS'
-	brew install \
+	echo "=== Install GNU core packages for macOS"
+	brew install --quiet \
 		gnu-sed gawk coreutils binutils findutils util-linux
 
-	echo '=== Install cask packages'
-	brew install --cask google-chrome
-	brew install --cask visual-studio-code
-	brew install --cask coteditor
-	brew install --cask iterm2
-	brew install --cask karabiner-elements
-	brew install --cask alfred
-	brew install --cask rectangle
-	brew install --cask alt-tab
-	brew install --cask slack
+	echo "=== Install cask packages"
 
-  brew install --cask font-plemol-jp
-  brew install --cask font-plemol-jp-nf
-  brew install --cask font-plemol-jp-hs
+	CASKS=(
+		google-chrome
+		visual-studio-code
+		coteditor
+		iterm2
+		karabiner-elements
+		alfred
+		rectangle
+		alt-tab
+		slack
+		font-plemol-jp
+		font-plemol-jp-nf
+		font-plemol-jp-hs
+	)
+
+	for app in "${CASKS[@]}"; do
+		if ! brew list --cask "$app" >/dev/null 2>&1; then
+			echo "Installing $app ..."
+			brew install --cask "$app" --quiet
+		else
+			echo "$app already installed."
+		fi
+	done
 fi
