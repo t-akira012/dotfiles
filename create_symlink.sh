@@ -1,46 +1,63 @@
 #!/usr/bin/env bash
+set -eu
 #########################################################
-echo Create symbolic links
+echo "=== Create symbolic links"
 #########################################################
 
-BASEPATH=$HOME/dotfiles/root
+BASEPATH="$HOME/dotfiles/root"
+BACKUP_SUFFIX="$(date +"%Y%m%d_%H%M")"
 
-for_all(){
-  [[ ! -d $HOME/.config ]] && mkdir $HOME/.config
+# ---- utility: safe symlink ----
+symlink() {
+  local src="$1"
+  local dst="$2"
 
-  [[ -e $HOME/.bashrc ]] && mv "$HOME/.bashrc" "$HOME/.bashrc.bak.$(date +"%Y%m%d_%H%M")"
-  symlink $BASEPATH/.bashrc $HOME/.bashrc
+  # ディレクトリ存在保証
+  mkdir -p "$(dirname "$dst")"
 
-  [[ -e $HOME/.zshrc ]] && mv "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +"%Y%m%d_%H%M")"
-  symlink $BASEPATH/.config/zsh $HOME/.config/zsh
-  symlink $BASEPATH/.config/zsh/.zshrc $HOME/.zshrc
-
-  symlink $BASEPATH/bin $HOME/bin
-  symlink $BASEPATH/.tmux.conf $HOME/.tmux.conf
-  symlink $BASEPATH/.config/git $HOME/.config/git
-  symlink $BASEPATH/.config/starship.toml $HOME/.config/starship.toml
-  symlink $BASEPATH/.config/alacritty/ $HOME/.config/alacritty
-}
-
-symlink(){
-  if [[ ! -e $2 ]];then
-    ln -si $1 $2
-    echo "create symlink $1 to $2"
-  else
-    echo "$2 is already exist"
-    [[ ! -L $2 ]] && echo "$2 がシンボックリンクではありません"
+  # 既存ファイル処理
+  if [[ -L "$dst" ]]; then
+    echo "[SKIP] $dst (already symlink)"
+    return
+  elif [[ -e "$dst" ]]; then
+    local backup="${dst}.bak.${BACKUP_SUFFIX}"
+    mv "$dst" "$backup"
+    echo "[BACKUP] $dst -> $backup"
   fi
+
+  # シンボリックリンク作成
+  ln -sfn "$src" "$dst"
+  echo "[LINK] $src -> $dst"
 }
 
-for_darwin(){
-  symlink $BASEPATH/.config/karabiner/ $HOME/.config/karabiner
+# ---- common links ----
+for_all() {
+  mkdir -p "$HOME/.config"
+
+  symlink "$BASEPATH/.bashrc" "$HOME/.bashrc"
+  symlink "$BASEPATH/.config/zsh" "$HOME/.config/zsh"
+  symlink "$BASEPATH/.config/zsh/.zshrc" "$HOME/.zshrc"
+
+  symlink "$BASEPATH/bin" "$HOME/bin"
+  symlink "$BASEPATH/.tmux.conf" "$HOME/.tmux.conf"
+  symlink "$BASEPATH/.config/git" "$HOME/.config/git"
+  symlink "$BASEPATH/.config/starship.toml" "$HOME/.config/starship.toml"
+  symlink "$BASEPATH/.config/alacritty" "$HOME/.config/alacritty"
 }
 
-for_linux(){
-  symlink $BASEPATH/root/.config/xremap $HOME/.config/xremap
+# ---- OS specific ----
+for_darwin() {
+  symlink "$BASEPATH/.config/karabiner" "$HOME/.config/karabiner"
 }
 
+for_linux() {
+  symlink "$BASEPATH/.config/xremap" "$HOME/.config/xremap"
+}
+
+# ---- execute ----
 for_all
 
-[ "$(uname)" == "Darwin" ] && for_darwin
-[ "$(uname)" == "Linux" ] && for_linux
+case "$(uname)" in
+  Darwin) for_darwin ;;
+  Linux)  for_linux ;;
+esac
