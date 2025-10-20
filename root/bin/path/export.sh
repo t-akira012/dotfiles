@@ -6,7 +6,7 @@ if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 		$HOME/bin/tmux-popup.sh
 	}
 	zle -N __toggle_tmux_popup
-	bindkey '^j' __toggle_tmux_popup
+	bindkey '^g' __toggle_tmux_popup
 fi
 
 # docウィンドウなら、docs/docを開く
