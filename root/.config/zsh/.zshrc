@@ -72,7 +72,7 @@ zshaddhistory() {
   && ${cmd} != (twty)
   ]]
 }
-function __clear_history(){
+__clear_history(){
   echo /dev/null > $HISTFILE
   fc -R $HISTFILE
 }
@@ -92,11 +92,11 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 . $HOME/bin/func/cd-well
 
 # functions
-__nothing() {
+__zle-nothing() {
     return
 }
 
-__fzf-z-insert() {
+__zle-fzf-z-insert() {
   local SELECTED=$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')
   if [[ -n $SELECTED ]]; then
       BUFFER="${BUFFER}\"${SELECTED}\""
@@ -105,7 +105,7 @@ __fzf-z-insert() {
   zle reset-prompt
 }
 
-__fzf-find() {
+__zle-fzf-find() {
   local SELECTED=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | fzf)
   if [[ -n $SELECTED ]]; then
     BUFFER="${BUFFER}\"${SELECTED}\""
@@ -114,7 +114,7 @@ __fzf-find() {
   zle reset-prompt
 }
 
-__fzf-history() {
+__zle-fzf-history() {
   local SELECTED=$(fc -l -n -r 1 | fzf --query=$BUFFER --preview="")
   if [[ -n $SELECTED ]]; then
     BUFFER="$SELECTED"
@@ -122,7 +122,7 @@ __fzf-history() {
   fi
   zle reset-prompt
 }
-__fzf-la() {
+__zle-fzf-la() {
   local SELECTED=$(unbuffer ls -lA --color | fzf --ansi --bind='ctrl-o:execute(open $PWD/{})' --preview="[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
   if [[ -n $SELECTED ]]; then
     BUFFER="${BUFFER}\"$SELECTED\""
@@ -130,13 +130,13 @@ __fzf-la() {
   fi
   zle reset-prompt
 }
-__fzf-ghq-cd() {
+__zle-fzf-ghq-cd() {
   local SELECTED=$(ghq list | fzf --preview "cat $(ghq root)/{}/README.md ")
   [[ ! -z $SELECTED ]] && cd $(ghq root)/$SELECTED
   zle reset-prompt
 }
 
-__fzf-find-dir() {
+__zle-fzf-find-dir() {
   local SELECTED=$(fd -t d -I | fzf)
   if [[ -n $SELECTED ]]; then
     BUFFER="${BUFFER}\"${SELECTED}\""
@@ -147,27 +147,27 @@ __fzf-find-dir() {
 
 # bindkey
 zle -N __nothing
-zle -N __fzf-z-insert
-zle -N __fzf-la
-zle -N __fzf-history
-zle -N __fzf-find
-zle -N __fzf-ghq-cd
-zle -N __fzf-find-dir
-bindkey '\el' __fzf-la
-bindkey '\ez' __fzf-z-insert
-bindkey '^@' __nothing
-bindkey '^s' __nothing
-bindkey '^r' __fzf-history
-bindkey '^t' __fzf-find
-# bindkey '^g' __fzf-ghq-cd
-bindkey '^o' __fzf-find-dir
+zle -N __zle-fzf-z-insert
+zle -N __zle-fzf-la
+zle -N __zle-fzf-history
+zle -N __zle-fzf-find
+zle -N __zle-fzf-ghq-cd
+zle -N __zle-fzf-find-dir
+bindkey '\el' __zle-fzf-la
+bindkey '\ez' __zle-fzf-z-insert
+bindkey '^@' __zle-nothing
+bindkey '^s' __zle-nothing
+bindkey '^r' __zle-fzf-history
+bindkey '^t' __zle-fzf-find
+# bindkey '^g' __zle-fzf-ghq-cd
+bindkey '^o' __zle-fzf-find-dir
 
-__fzf-ghq-cd-notzle() {
+__fzf-ghq-cd() {
   local selected
   selected=$(ghq list | fzf --preview 'cat "$(ghq root)/{}/README.md" 2>/dev/null' --preview-window=down:30%)
   [[ -n "$selected" ]] && cd "$(ghq root)/$selected" || return 1
 }
-alias gg='__fzf-ghq-cd-notzle'
+alias gg='__fzf-ghq-cd'
 
 # source
 . $HOME/bin/path/aliases.sh
