@@ -36,7 +36,7 @@ setopt nonomatch
 # -u : 上記のテストを避けて、すべての発見したファイルを警告なしに使用する
 # -i : すべての安全でないファイルとディレクトリを無視する
 # -C : セキュリティチェック全体をスキップする
-autoload -Uz compinit; compinit -i
+autoload -UzC compinit; compinit -i
 # ディレクトリ選択時、最後の/を残す
 setopt noautoremoveslash
 
