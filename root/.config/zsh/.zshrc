@@ -159,8 +159,15 @@ bindkey '^@' __nothing
 bindkey '^s' __nothing
 bindkey '^r' __fzf-history
 bindkey '^t' __fzf-find
-bindkey '^g' __fzf-ghq-cd
+# bindkey '^g' __fzf-ghq-cd
 bindkey '^o' __fzf-find-dir
+
+__fzf-ghq-cd-notzle() {
+  local selected
+  selected=$(ghq list | fzf --preview 'cat "$(ghq root)/{}/README.md" 2>/dev/null' --preview-window=down:30%)
+  [[ -n "$selected" ]] && cd "$(ghq root)/$selected" || return 1
+}
+alias gg='__fzf-ghq-cd-notzle'
 
 # source
 . $HOME/bin/path/aliases.sh
