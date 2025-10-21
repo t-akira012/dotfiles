@@ -29,6 +29,7 @@ create_agent_popup_window() {
 create_ssh_popup_window() {
 		# POPセッション名
 		local POPUP_SESSION="ssh-prv"
+		local HOST_PRIMARY_IP="192.168.3.100"
 		local HOST_PRIMARY="prv"
 		local HOST_FALLBACK="vpn"
 		local SSH_USER="aki"
@@ -44,7 +45,7 @@ create_ssh_popup_window() {
 		else
 				# pingで疎通確認(1秒でタイムアウト、1回のみ試行)
 				local SSH_HOST
-				if ping -c 1 -W 1 ${HOST_PRIMARY} >/dev/null 2>&1; then
+				if ping -c 1 -W 1 ${HOST_PRIMARY_IP} >/dev/null 2>&1; then
 						SSH_HOST="${HOST_PRIMARY}"
 				else
 						SSH_HOST="${HOST_FALLBACK}"
