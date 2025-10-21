@@ -77,12 +77,17 @@ start_tmux() {
 alias ta='start_tmux'
 
 on_vpn(){
-local VPN_IP="193.2.2.2"
-local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
+	# tmuxの中にいる場合は実行しない
+	if [[ -n $TMUX ]]; then
+		return
+	fi
 
-if [[ ${CURRENT_SSH_IP} == ${VPN_IP} ]];then
-  start_tmux
-fi
+	local VPN_IP="193.2.2.2"
+	local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
+
+	if [[ ${CURRENT_SSH_IP} == ${VPN_IP} ]]; then
+		start_tmux
+	fi
 }
 on_vpn
 
