@@ -76,21 +76,15 @@ start_tmux() {
 }
 alias ta='start_tmux'
 
-on_tailscale(){
-	if command -v tailscale >/dev/null;then
-		local TAILSCALE_IP=$(tailscale status|head -n 1|awk '{print $1}')
-		local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
-		if [[ ${CURRENT_SSH_IP} == ${TAILSCALE_IP} ]];then
-			start_tmux
-		fi
-	fi
-	# if command -v tailscale >/dev/null;then
-	# 	if [[ $TERM_PROGRAM != "tmux" ]] && [[ -n $SSH_CONNECTION ]];then
-	# 		start_tmux
-	# 	fi
-	# fi
+on_vpn(){
+local VPN_IP="193.2.2.2"
+local CURRENT_SSH_IP=$(echo ${SSH_CONNECTION}| awk '{print $3}')
+
+if [[ ${CURRENT_SSH_IP} == ${VPN_IP} ]];then
+  start_tmux
+fi
 }
-on_tailscale
+on_vpn
 
 if [[ $(command -v nvim) ]]; then
 	export EDITOR="nvim"
