@@ -174,6 +174,7 @@ alias gg='__fzf-ghq-cd'
 . $HOME/bin/path/export.sh
 . $HOME/bin/func/fzf.sh
 . $HOME/bin/func/git.sh
+. $HOME/bin/func/git-fzf-worktree.sh
 
 # alias
 alias reload="exec zsh -l"
