@@ -22,6 +22,7 @@ fi
 if [[ $(uname) == "Darwin" ]];then
     echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
     bash -c ./homebrew_for_mac.sh
+    bash -c ./create_icloud_symlink.sh
 fi
 
 
