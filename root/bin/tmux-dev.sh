@@ -1,6 +1,6 @@
 #!/bin/bash
 # tmuxセッション名
-SESSION_NAME="iTerm"
+SESSION_NAME="Dev"
 
 # セッションが既に存在するかチェック
 tmux has-session -t $SESSION_NAME 2>/dev/null

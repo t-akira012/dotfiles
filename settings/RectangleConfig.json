@@ -206,7 +206,7 @@
       "int" : 2
     },
     "todoApplication" : {
-      "string" : "com.coteditor.CotEditor"
+      "string" : "org.alacritty"
     },
     "todoMode" : {
       "bool" : true
@@ -215,7 +215,7 @@
       "int" : 1
     },
     "todoSidebarWidth" : {
-      "float" : 300
+      "float" : 750
     },
     "traverseSingleScreen" : {
       "int" : 0
@@ -277,8 +277,8 @@
       "modifierFlags" : 1441792
     },
     "reflowTodo" : {
-      "keyCode" : 45,
-      "modifierFlags" : 786432
+      "keyCode" : 103,
+      "modifierFlags" : 1048576
     },
     "restore" : {
       "keyCode" : 125,
@@ -293,8 +293,8 @@
       "modifierFlags" : 1441792
     },
     "toggleTodo" : {
-      "keyCode" : 11,
-      "modifierFlags" : 786432
+      "keyCode" : 111,
+      "modifierFlags" : 1048576
     },
     "topCenterSixth" : {
       "keyCode" : 41,

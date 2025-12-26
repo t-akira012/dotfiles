@@ -64,8 +64,8 @@ start_tmux() {
 		[[ -z "$(tmux ls | grep code)" ]] && tmux new -s 'code' || tmux a -t 'code'
 	elif [[ $THIS_ITERM2 == 'DOC' ]]; then
 		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
-	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]]; then
-		[[ -z "$(tmux ls | grep iTerm)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'iTerm'
+	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]] || [[ $__CFBundleIdentifier == 'com.mitchellh.ghostty' ]]; then
+		[[ -z "$(tmux ls | grep Dev)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'Dev'
 	elif [[ -n $SSH_CONNECTION ]]; then
 		[[ -z "$(tmux ls | grep ssh-prv)" ]] && tmux new -s 'ssh-prv' || tmux a -t 'ssh-prv'
 	elif [[ $ALACRITTY_SOCKET ]]; then
