@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-./create_symlink.sh
-./add_git_config.sh
-./download_git_completion.sh
+./init_2_create_symlink.sh
+./init_2_add_git_config.sh
+./init_2_download_git_completion.sh
 cp ./.ex $HOME/.ex
 
 ./scripts/forzsh.sh
