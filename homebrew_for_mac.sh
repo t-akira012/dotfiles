@@ -19,7 +19,7 @@ if type brew >>/dev/null 2>&1; then
 	echo "Homebrew already installed."
 else
 	echo "Installing homebrew..."
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	_eval_brew
 fi
 
