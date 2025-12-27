@@ -41,17 +41,19 @@ if [[ $(uname) == "Darwin" ]]; then
 
 	CASKS=(
 		google-chrome
-		visual-studio-code
+		zen
+		firefox@developer-edition
 		coteditor
-		iterm2
+		ghostty
 		karabiner-elements
 		alfred
 		rectangle
 		alt-tab
+		dropbox
+		discord
 		slack
-		font-plemol-jp
-		font-plemol-jp-nf
-		font-plemol-jp-hs
+		vlc
+		zoom
 	)
 
 	for app in "${CASKS[@]}"; do
