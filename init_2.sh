@@ -13,6 +13,7 @@ if [[ $(uname) == "Darwin" ]];then
 fi
 
 ./scripts/forzsh.sh
+./scripts/neovim.sh
 ./asdf/_install.sh
 ./asdf/_install_tools.sh
 
