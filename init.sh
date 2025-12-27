@@ -25,6 +25,8 @@ if [[ $(uname) == "Darwin" ]];then
     bash -c ./create_icloud_symlink.sh
 fi
 
+mkdir $HOME/tmp
+
 
 echo 'init.sh 終了'
 echo '次は init_2.sh を実行'
