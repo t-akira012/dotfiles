@@ -26,7 +26,8 @@ if [[ $(uname) == "Darwin" ]];then
 fi
 
 mkdir $HOME/tmp
-
+mkdir $HOME/src
+mkdir $HOME/dev
 
 echo 'init.sh 終了'
 echo '次は init_2.sh を実行'
