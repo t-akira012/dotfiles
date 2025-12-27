@@ -46,7 +46,7 @@ defaults write com.apple.finder ShowStatusBar -bool "true"
 ## 拡張子まで表示
 defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
 ## 隠しファイルを表示
-defaults write com.apple.Finder "AppleShowAllFiles" -bool "true"
+defaults write com.apple.finder AppleShowAllFiles -bool true
 ## パスバーを表示
 defaults write com.apple.finder ShowPathbar -bool "true"
 ## タイトルをフルパス化
