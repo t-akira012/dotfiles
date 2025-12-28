@@ -1,0 +1,27 @@
+#!/bin/bash
+
+names=()
+lines=()
+max_len=9  # "File Name" の長さ
+
+for item in *; do
+  if [[ "$item" =~ \.(md|txt|mkd)$ ]]; then
+    names+=("$item")
+    lines+=("$(head -n1 "$item")")
+    len=${#item}
+    (( len > max_len )) && max_len=$len
+  fi
+done
+
+# 区切り線生成
+sep=""
+for ((i=0; i<max_len; i++)); do sep+="─"; done
+
+# ヘッダー
+printf "%-${max_len}s │ %s\n" "File Name" "1st line"
+printf "%s─┼─────────\n" "$sep"
+
+# データ
+for i in "${!names[@]}"; do
+  printf "%-${max_len}s │ %s\n" "${names[$i]}" "${lines[$i]}"
+done
