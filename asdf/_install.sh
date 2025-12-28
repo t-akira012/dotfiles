@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eux
 cd $(dirname $0)
 
 if [[ ! -d $HOME/.asdf ]];then
@@ -40,7 +41,7 @@ check(){
   fi
 }
 
-check go
+check golang
 check nodejs
 check python
 check ruby

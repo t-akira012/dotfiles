@@ -21,10 +21,8 @@ fi
 
 if [[ $(uname) == "Darwin" ]];then
     echo "[ -f ~/.bashrc ] && . ~/.bashrc" >> $HOME/.bash_profile
-    bash -c ./homebrew_for_mac.sh
-    bash -c ./create_icloud_symlink.sh
+    bash -c ./init_1_homebrew_for_mac.sh
 fi
-
 
 echo 'init.sh 終了'
 echo '次は init_2.sh を実行'

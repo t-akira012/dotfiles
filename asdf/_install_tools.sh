@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eux
 cd $(dirname $0)
 
 #########################################################
@@ -10,16 +11,17 @@ go install golang.org/x/tools/gopls@latest
 go install github.com/google/yamlfmt/cmd/yamlfmt@latest
 go install github.com/x-motemen/ghq@latest
 
-
 # fzf
 [[ ! -d $HOME/.local/ ]] && mkdir $HOME/.local/
 [[ ! -d $HOME/.local/repos ]] && mkdir $HOME/.local/repos
 [[ ! -d $HOME/.local/bin ]] && mkdir $HOME/.local/bin
-git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf
-bash -c $HOME/.local/repos/fzf/install
-cp $HOME/.local/repos/fzf/bin/fzf $HOME/.local/bin/fzf
-curl -s https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-preview.sh -o $HOME/.local/bin/fzf-preview.sh
-chmod +x $HOME/.local/bin/fzf-preview.sh
+if [[ ! -d $HOME/.local/repos/fzf ]];then
+    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/repos/fzf
+    bash -c $HOME/.local/repos/fzf/install
+    cp $HOME/.local/repos/fzf/bin/fzf $HOME/.local/bin/fzf
+    curl -s https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-preview.sh -o $HOME/.local/bin/fzf-preview.sh
+    chmod +x $HOME/.local/bin/fzf-preview.sh
+fi
 
 #########################################################
 echo Install rust tools
