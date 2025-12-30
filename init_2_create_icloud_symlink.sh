@@ -1,13 +1,10 @@
 #!/bin/bash
 set -eux
 
-
-if [[ ! -L $HOME/ssd/ ]];then
-    ln -si "/Volumes/WD_BLACK_SN7100_2TB_20251229" "$HOME/ssd"
-fi
+EXTERNAL_SSD_PATH=/Volumes/ssd
 
 if [[ ! -L $HOME/Downloads/PxDownloader/ ]];then
-    ln -si "/Volumes/WD_BLACK_SN7100_2TB_20251229/archives/PxDownloader" "$HOME/Downloads/PxDownloader"
+    ln -si "${EXTERNAL_SSD_PATH}/archives/PxDownloader" "$HOME/Downloads/PxDownloader"
 fi
 
 if [[ ! -L $HOME/iCloud ]];then
