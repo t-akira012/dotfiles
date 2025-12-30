@@ -4,21 +4,18 @@ mkdir $HOME/src
 mkdir $HOME/dev
 cp ./.ex $HOME/.ex
 
-./init_2_create_symlink.sh
-./init_2_add_git_config.sh
-./init_2_download_git_completion.sh
+./init_2/create_symlink.sh
+./init_2/add_git_config.sh
+./init_2/download_git_completion.sh
+./init_2/forzsh.sh
+./init_2/neovim.sh
 if [[ $(uname) == "Darwin" ]];then
-	bash -c ./init_2_create_icloud_symlink.sh
-	bash -c ./scripts/defaults_write.sh
+	./init_2/create_icloud_symlink.sh
+	./init_2/defaults_write.sh
+	./init_2/install-clipper-macos.sh
 fi
 
-./scripts/neovim.sh
 ./asdf/_install.sh
 
-echo '== git user を設定 =='
-echo './scripts/set-git-user.sh'
 echo '== install tools =='
 echo './asdf/_install_tools.sh'
-echo '== zsh tool download =='
-echo './scripts/forzsh.sh'
-

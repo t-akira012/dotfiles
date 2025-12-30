@@ -11,4 +11,4 @@ else
     echo 'require git or curl'
 fi
 
-bash -c "$HOME/dotfiles/init.sh"
+bash -c "$HOME/dotfiles/init_1.sh"

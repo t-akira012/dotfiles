@@ -24,6 +24,4 @@ if [[ $(uname) == "Darwin" ]];then
     bash -c ./init_1_homebrew_for_mac.sh
 fi
 
-
-echo 'init.sh 終了'
 bash -c ./init_2.sh
