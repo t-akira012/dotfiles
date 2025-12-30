@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -eux
 cd $(dirname $0)
 
 if [[ ! -d $HOME/.asdf ]];then
@@ -18,10 +17,7 @@ check(){
   echo =================================
   echo "Plugin install $LANG_NAME"
   echo =================================
-  if ! asdf plugin add $LANG_NAME > /dev/null 2>&1;then
-    asdf plugin add $LANG_NAME
-  fi
-
+  asdf plugin add $LANG_NAME
   asdf install $LANG_NAME latest
   asdf global $LANG_NAME latest
   which $LANG_NAME
