@@ -17,4 +17,5 @@ fi
 ./asdf/_install.sh
 ./asdf/_install_tools.sh
 
-# ./scripts/neovim.sh
+echo '== git user を設定 =='
+./scripts/set-git-user.sh
