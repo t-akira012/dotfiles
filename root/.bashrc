@@ -192,3 +192,5 @@ else
       export PS1="$SSH_DISPLAY\[\033[35m\]\w\033[00m\]\n$ "
     fi
 fi
+. "$HOME/.cargo/env"
+. "/Users/t-akira012/.deno/env"

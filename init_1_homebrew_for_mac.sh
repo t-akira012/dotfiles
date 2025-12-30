@@ -46,7 +46,7 @@ if [[ $(uname) == "Darwin" ]]; then
 		coteditor
 		ghostty
 		karabiner-elements
-		alfred
+		raycast
 		rectangle
 		alt-tab
 		dropbox
