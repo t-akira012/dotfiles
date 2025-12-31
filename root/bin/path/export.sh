@@ -89,6 +89,10 @@ fi
 	export BUN_INSTALL="$HOME/.bun" &&
 	export PATH="$BUN_INSTALL/bin:$PATH"
 
+if ! command -v colima > /dev/null 2>&1 ;then
+	export DOCKER_HOST="unix://$HOME/.colima/docker.sock"
+fi
+
 # fzf
 # https://github.com/junegunn/fzf/wiki/Color-schemes
 _gen_fzf_default_opts() {
