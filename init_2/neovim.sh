@@ -29,5 +29,7 @@ else
     echo "require ghq"
 fi
 
-[[ ! -d /usr/share/dict/words ]] && \
-  sudo curl https://users.cs.duke.edu/~ola/ap/linuxwords -o /usr/share/dict/words
+if [[ $(uname) != "Darwin"]];then
+    sudo test ! -d /usr/share/dict/words && \
+      sudo curl https://users.cs.duke.edu/~ola/ap/linuxwords -o /usr/share/dict/words
+fi

@@ -12,7 +12,6 @@ cp ./.ex $HOME/.ex
 if [[ $(uname) == "Darwin" ]];then
 	./init_2/create_icloud_symlink.sh
 	./init_2/defaults_write.sh
-	./init_2/install-clipper-macos.sh
 fi
 
 ./asdf/_install.sh

@@ -199,4 +199,3 @@ if [[ -e /etc/arch-release ]]; then
 elif type starship > /dev/null 2>&1; then
     eval "$(starship init zsh)"
 fi
-. "/Users/t-akira012/.deno/env"

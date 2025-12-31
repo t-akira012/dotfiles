@@ -55,7 +55,7 @@ export GO111MODULE=auto
 [[ -e "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 # deno
-export PATH="$HOME/.deno/bin:$PATH"
+[[ -e $HOME/deno/.env ]] && . "$HOME/.deno/env" && export PATH="$HOME/.deno/bin:$PATH"
 
 # ruby
 if [[ $(command -v asdf) ]]; then

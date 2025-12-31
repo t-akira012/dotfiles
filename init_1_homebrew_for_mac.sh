@@ -64,4 +64,13 @@ if [[ $(uname) == "Darwin" ]]; then
 			echo "$app already installed."
 		fi
 	done
+
+	echo "=== Install Clipper"
+	brew install clipper
+	brew services start clipper
+	cat <<EOF > $HOME/.clipper.json
+{
+  "address": "~/.clipper.sock"
+}
+EOF
 fi
