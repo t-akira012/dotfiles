@@ -65,12 +65,4 @@ if [[ $(uname) == "Darwin" ]]; then
 		fi
 	done
 
-	echo "=== Install Clipper"
-	brew install clipper
-	brew services start clipper
-	cat <<EOF > $HOME/.clipper.json
-{
-  "address": "~/.clipper.sock"
-}
-EOF
 fi
