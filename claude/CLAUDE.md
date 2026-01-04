@@ -12,5 +12,7 @@
 ### 許可事項
 - `/workspace/` 以下に限り、アプリケーションコードに関する調査を許可します
 - `/workspace/.claude-code` はCLAUDE CODEの実行コードディレクトリです。編集を禁止します。
+### 実行ファイルの新規導入
+- `$HOME/local/bin/` に対して実行ファイルを導入しなさい。Claudeは `/usr/local` を利用禁止
 ## MCP利用
 - Claudeはserena MCPが使えます。コンテクストを節約するために、必ずserena mcpを使ってください。
