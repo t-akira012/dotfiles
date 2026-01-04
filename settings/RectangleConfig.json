@@ -49,6 +49,9 @@
     "curtainChangeSize" : {
       "int" : 0
     },
+    "cycleSizesIsChanged" : {
+      "bool" : false
+    },
     "disabledApps" : {
       "string" : "[]"
     },
@@ -154,8 +157,17 @@
     "screenEdgeGapTop" : {
       "float" : 0
     },
+    "screenEdgeGapTopNotch" : {
+      "float" : 0
+    },
     "screenEdgeGapsOnMainScreenOnly" : {
       "bool" : false
+    },
+    "screensOrderedByX" : {
+      "int" : 0
+    },
+    "selectedCycleSizes" : {
+      "int" : 0
     },
     "shortEdgeSnapAreaSize" : {
       "float" : 145
@@ -223,6 +235,9 @@
     "unsnapRestore" : {
       "int" : 0
     },
+    "widthStepSize" : {
+      "float" : 30
+    },
     "windowSnapping" : {
       "int" : 0
     }
@@ -232,6 +247,10 @@
       "keyCode" : 47,
       "modifierFlags" : 1310720
     },
+    "bottomHalf" : {
+      "keyCode" : 125,
+      "modifierFlags" : 786432
+    },
     "bottomLeft" : {
       "keyCode" : 43,
       "modifierFlags" : 1310720
@@ -240,24 +259,16 @@
       "keyCode" : 44,
       "modifierFlags" : 1310720
     },
+    "center" : {
+      "keyCode" : 8,
+      "modifierFlags" : 786432
+    },
     "centerHalf" : {
-      "keyCode" : 33,
+      "keyCode" : 41,
       "modifierFlags" : 1310720
-    },
-    "centerThird" : {
-      "keyCode" : 126,
-      "modifierFlags" : 1310720
-    },
-    "firstThird" : {
-      "keyCode" : 37,
-      "modifierFlags" : 1441792
     },
     "larger" : {
       "keyCode" : 24,
-      "modifierFlags" : 1441792
-    },
-    "lastThird" : {
-      "keyCode" : 39,
       "modifierFlags" : 1441792
     },
     "leftHalf" : {
@@ -267,6 +278,10 @@
     "maximize" : {
       "keyCode" : 36,
       "modifierFlags" : 1310720
+    },
+    "maximizeHeight" : {
+      "keyCode" : 126,
+      "modifierFlags" : 917504
     },
     "nextDisplay" : {
       "keyCode" : 33,
@@ -296,9 +311,9 @@
       "keyCode" : 111,
       "modifierFlags" : 1048576
     },
-    "topCenterSixth" : {
-      "keyCode" : 41,
-      "modifierFlags" : 1310720
+    "topHalf" : {
+      "keyCode" : 126,
+      "modifierFlags" : 786432
     },
     "topLeft" : {
       "keyCode" : 37,
@@ -309,5 +324,5 @@
       "modifierFlags" : 1310720
     }
   },
-  "version" : "85"
+  "version" : "98"
 }
