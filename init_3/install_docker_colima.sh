@@ -12,6 +12,13 @@ chmod +x docker-compose
 [[ ! -d $HOME/.local/bin ]] && mkdir $HOME/.local/bin
 mv docker-compose $HOME/.local/bin/docker-compose
 
+# buildx
+BUILDX_VERSION=$(curl -s https://api.github.com/repos/docker/buildx/releases/latest | jq -r .tag_name)
+DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+mkdir -p $DOCKER_CONFIG/cli-plugins/
+curl -SL https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.darwin-arm64 -o $DOCKER_CONFIG/cli-plugins/docker-buildx
+chmod +x $DOCKER_CONFIG/cli-plugins/docker-buildx
+
 # test
 colima start --mount /Users:w --mount /Volumes:w
 
