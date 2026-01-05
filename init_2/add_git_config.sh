@@ -21,3 +21,4 @@ git config --global diff.colorMoved dimmed-zebra
 git config --global diff.colorMovedWS allow-indentation-change
 git config --global grep.lineNumber true
 git config --global core.quotepath false
+git config --global init.defaultBranch main
