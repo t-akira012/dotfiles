@@ -303,6 +303,10 @@
       "keyCode" : 124,
       "modifierFlags" : 1310720
     },
+    "secondFourth" : {
+      "keyCode" : 37,
+      "modifierFlags" : 1310720
+    },
     "smaller" : {
       "keyCode" : 27,
       "modifierFlags" : 1441792
