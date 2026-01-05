@@ -252,12 +252,12 @@
       "modifierFlags" : 786432
     },
     "bottomLeft" : {
-      "keyCode" : 43,
-      "modifierFlags" : 1310720
+      "keyCode" : 47,
+      "modifierFlags" : 1572864
     },
     "bottomRight" : {
       "keyCode" : 44,
-      "modifierFlags" : 1310720
+      "modifierFlags" : 1572864
     },
     "center" : {
       "keyCode" : 8,
@@ -307,6 +307,10 @@
       "keyCode" : 27,
       "modifierFlags" : 1441792
     },
+    "thirdFourth" : {
+      "keyCode" : 39,
+      "modifierFlags" : 1310720
+    },
     "toggleTodo" : {
       "keyCode" : 111,
       "modifierFlags" : 1048576
@@ -316,12 +320,12 @@
       "modifierFlags" : 786432
     },
     "topLeft" : {
-      "keyCode" : 37,
-      "modifierFlags" : 1310720
+      "keyCode" : 41,
+      "modifierFlags" : 1572864
     },
     "topRight" : {
       "keyCode" : 39,
-      "modifierFlags" : 1310720
+      "modifierFlags" : 1572864
     }
   },
   "version" : "98"
