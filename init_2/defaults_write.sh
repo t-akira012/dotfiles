@@ -87,17 +87,17 @@ defaults write com.apple.screencapture disable-shadow -boolean true
 
 # アニメーション高速化
 # ツールチップ表示までのタイムラグをなくす
-# defaults write -g NSInitialToolTipDelay -integer 0
+defaults write -g NSInitialToolTipDelay -integer 0
 # ダイアログ表示やウィンドウリサイズ速度を高速化する
-# defaults write -g NSWindowResizeTime 0.1
+defaults write -g NSWindowResizeTime 0.1
 # フォルダを開くときのアニメーション無効
-# defaults write com.apple.finder AnimateWindowZoom -bool false 
+defaults write com.apple.finder AnimateWindowZoom -bool false 
 # ファイルを開くときのアニメーション無効
-# defaults write -g NSAutomaticWindowAnimationsEnabled -bool false 
+defaults write -g NSAutomaticWindowAnimationsEnabled -bool false 
 # Dockが表示されるまでの待ち時間を無効
-# defaults write com.apple.dock autohide-delay -float 0 
+defaults write com.apple.dock autohide-delay -float 0 
 # Dockを自動で隠すまでの待ち時間無効
-# defaults write com.apple.dock autohide-time-modifier -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0
 
 
 # key repeat 高速化
