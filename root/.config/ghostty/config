@@ -2,7 +2,8 @@
 theme = Banana Blueberry
 background-opacity = 0.9
 background-blur = true
+macos-titlebar-style = hidden
 quick-terminal-size = 40%
 quick-terminal-position = right
 quick-terminal-animation-duration = 0
-keybind = global:cmd+semicolon=toggle_quick_terminal
+# keybind = global:cmd+semicolon=toggle_quick_terminal
