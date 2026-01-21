@@ -28,5 +28,6 @@
     "readFile": true,
     "writeFile": true,
     "executeCommand": false
-  }
+  },
+  "model": "opus"
 }
