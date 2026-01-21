@@ -1,1 +1,8 @@
+# https://ghostty.zerebos.com/
 theme = Banana Blueberry
+background-opacity = 0.9
+background-blur = true
+quick-terminal-size = 40%
+quick-terminal-position = right
+quick-terminal-animation-duration = 0
+keybind = global:cmd+semicolon=toggle_quick_terminal
