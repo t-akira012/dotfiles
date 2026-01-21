@@ -42,6 +42,7 @@ for_all() {
   symlink "$BASEPATH/.tmux.conf" "$HOME/.tmux.conf"
   symlink "$BASEPATH/.config/git" "$HOME/.config/git"
   symlink "$BASEPATH/.config/starship.toml" "$HOME/.config/starship.toml"
+  symlink "$BASEPATH/.config/ghostty" "$HOME/.config/ghostty"
   symlink "$BASEPATH/.config/alacritty" "$HOME/.config/alacritty"
 }
 
