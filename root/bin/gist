@@ -569,7 +569,8 @@ gist-fzf() {
 main() {
   # 引数が全くない場合のみ cmd_fzf_view を実行
   if [ $# -eq 0 ]; then
-    cmd_fzf_view
+    # cmd_fzf_view
+    cmd_fzf_edit
     return $?
   fi
 
