@@ -567,10 +567,13 @@ gist-fzf() {
 
 # メイン処理
 main() {
-  # 引数が全くない場合のみ cmd_fzf_view を実行
+  # 引数が全くない場合、ownerならedit、そうでなければview
   if [ $# -eq 0 ]; then
-    # cmd_fzf_view
-    cmd_fzf_edit
+    if is_gist_owner "$ALL_GIST_INDEX"; then
+      cmd_fzf_edit
+    else
+      cmd_fzf_view
+    fi
     return $?
   fi
 
