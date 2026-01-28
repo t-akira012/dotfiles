@@ -4,10 +4,11 @@ __fzf-open() {
   [[ -f "$SELECTED" ]] && open "$SELECTED"
 }
 
-__fzf-z-cd() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
-}
+# replace zoxide
+# __fzf-z-cd() {
+#   [ $# -gt 0 ] && _z "$*" && return
+#   cd "$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
+# }
 
 __fzf-la-cd() {
   local selected=$(unbuffer ls -lA --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --bind='ctrl-o:execute(open {})' --preview "exa -T {}" | xargs echo) 
@@ -134,7 +135,8 @@ __fzf-open-code-workspace(){
 
 alias o='__fzf-open'
 alias oa='__fzf-open-app'
-alias z='__fzf-z-cd'
+# replace zoxide
+# alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
 alias vz='__fzf-find-vi'
 alias tf='__fzf-tree'

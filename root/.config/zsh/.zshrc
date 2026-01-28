@@ -89,21 +89,23 @@ bindkey "\e[Z" reverse-menu-complete
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # replace z
-. $HOME/bin/func/cd-well
+# . $HOME/bin/func/cd-well
+[[ $(command -v zoxide) ]] && eval "$(zoxide init zsh --cmd cd)" && alias z="cdi"
 
 # functions
 __zle-nothing() {
     return
 }
 
-__zle-fzf-z-insert() {
-  local SELECTED=$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')
-  if [[ -n $SELECTED ]]; then
-      BUFFER="${BUFFER}\"${SELECTED}\""
-      CURSOR=${#BUFFER}
-  fi
-  zle reset-prompt
-}
+# replace zoxide
+# __zle-fzf-z-insert() {
+#   local SELECTED=$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')
+#   if [[ -n $SELECTED ]]; then
+#       BUFFER="${BUFFER}\"${SELECTED}\""
+#       CURSOR=${#BUFFER}
+#   fi
+#   zle reset-prompt
+# }
 
 __zle-fzf-find() {
   local SELECTED=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | fzf)
@@ -147,7 +149,8 @@ __zle-fzf-find-dir() {
 
 # bindkey
 zle -N __nothing
-zle -N __zle-fzf-z-insert
+# replace zoxide
+# zle -N __zle-fzf-z-insert
 zle -N __zle-fzf-la
 zle -N __zle-fzf-history
 zle -N __zle-fzf-find

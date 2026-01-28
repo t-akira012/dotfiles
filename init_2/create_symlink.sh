@@ -44,6 +44,7 @@ for_all() {
   symlink "$BASEPATH/.config/starship.toml" "$HOME/.config/starship.toml"
   symlink "$BASEPATH/.config/ghostty" "$HOME/.config/ghostty"
   symlink "$BASEPATH/.config/alacritty" "$HOME/.config/alacritty"
+  symlink "$BASEPATH/.config/yazi" "$HOME/.config/yazi"
 }
 
 # ---- OS specific ----

@@ -40,6 +40,15 @@ esac
 # [[ $(command -v ggrep) ]] && alias grep='ggrep'
 # [[ $(command -v gxargs) ]] && alias xargs="gxargs"
 
+# yazi
+[[ $(command -v yazi) ]] && function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 # bin
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
