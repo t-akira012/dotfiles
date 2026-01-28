@@ -108,22 +108,22 @@ _gen_fzf_default_opts() {
 	# https://github.com/jez/dotfiles/blob/master/util/fzf.zsh#L47C1-L58C4
 	# Solarized Dark color scheme for fzf
 	export FZF_DARK="
-    --color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:-1,hl+:$blue
-    --color info:$yellow,prompt:$yellow,pointer:$base3,marker:$base3,spinner:$yellow
-    --no-separator
-  "
+	--color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:-1,hl+:$blue
+	--color info:$yellow,prompt:$yellow,pointer:$base3,marker:$base3,spinner:$yellow
+	--no-separator
+	"
 	# Solarized Light color scheme for fzf
 	export FZF_LIGHT="
-    --color fg:-1,bg:-1,hl:$blue,fg+:$base02,bg+:-1,hl+:$blue
-    --color info:$yellow,prompt:$yellow,pointer:$base03,marker:$base03,spinner:$yellow
-    --no-separator
-  "
+	--color fg:-1,bg:-1,hl:$blue,fg+:$base02,bg+:-1,hl+:$blue
+	--color info:$yellow,prompt:$yellow,pointer:$base03,marker:$base03,spinner:$yellow
+	--no-separator
+	"
 	if [[ "$TERM_COLOR_MODE" == "LIGHT" ]]; then
-		export COLOR_OPTS="$FZF_LIGHT"
+	  export COLOR_OPTS="$FZF_LIGHT"
 	else
-		export COLOR_OPTS="$FZF_DARK"
+	  export COLOR_OPTS="$FZF_DARK"
 	fi
-	local OPTS="--bind='ctrl-o:execute(open {})' --height 70% --layout=reverse --preview-window=right --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
+	local OPTS="--bind='ctrl-o:execute(open {}),ctrl-z:ignore,btab:up,tab:down' --height=100% --layout=reverse --cycle --keep-right --border --info=inline --exit-0 --preview-window=down,30%,sharp --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
 	export FZF_DEFAULT_OPTS="$COLOR_OPTS $OPTS"
 	export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!.git/*"'
 	export FZF_TMUX_OPTS="-p 80%"
