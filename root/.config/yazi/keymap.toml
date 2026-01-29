@@ -17,6 +17,10 @@ desc = "Directory finder (fd + zoxide)"
 on   = ["<Space>", "g"]
 run  = "plugin ghq"
 desc = "ghq finder"
+[[mgr.prepend_keymap]]
+on   = ["T"]
+run  = "shell 'tmux new-window -c \"$PWD\" -n \"$(basename $PWD)\"'"
+desc = "Open current directory in new tmux window (named)"
 
 [mgr]
 
