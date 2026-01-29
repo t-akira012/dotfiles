@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 set -eux
 CURRENT_WINDOW=$(tmux display-message -p '#I')
-TARGET_WINDOW=9
+TARGET_WINDOW_NAME=dev
+TARGET_WINDOW=1
 
 [[ ! -e $HOME/.tmux_toggle_window ]] && echo $CURRENT_WINDOW >$HOME/.tmux_toggle_window
 
 if [[ $TARGET_WINDOW -ne $CURRENT_WINDOW ]]; then
 	echo $CURRENT_WINDOW >$HOME/.tmux_toggle_window
 
-	if tmux list-windows -F '#I' | rg 9 >/dev/null 2>&1; then
+	if tmux list-windows -F '#I' | rg $TARGET_WINDOW >/dev/null 2>&1; then
 		tmux select-window -t $TARGET_WINDOW
 	else
-		tmux new-window -n "doc" -t 9
+		tmux new-window -n "$TARGET_WINDOW_NAME" -t $TARGET_WINDOW
 	fi
 else
 	LATEST_WINDOW=$(cat $HOME/.tmux_toggle_window)
