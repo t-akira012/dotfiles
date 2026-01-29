@@ -13,6 +13,10 @@ desc = "Enter the child directory, or open the file"
 on   = ["<Space>", "p"]
 run  = "plugin dirfinder"
 desc = "Directory finder (fd + zoxide)"
+[[mgr.prepend_keymap]]
+on   = ["<Space>", "g"]
+run  = "plugin ghq"
+desc = "ghq finder"
 
 [mgr]
 
