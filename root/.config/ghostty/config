@@ -1,5 +1,6 @@
 # https://ghostty.zerebos.com/
 font-family = Cica
+font-size = 24
 theme = Banana Blueberry
 background-opacity = 0.9
 background-blur = true
