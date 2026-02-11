@@ -48,7 +48,6 @@ if [[ $(uname) == "Darwin" ]]; then
 		karabiner-elements
 		raycast
 		rectangle
-		alt-tab
 		dropbox
 		discord
 		slack
