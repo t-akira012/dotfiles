@@ -3,7 +3,7 @@ set -eu
 cd $(dirname $0)
 
 # TODO: xcode存在チェックを正しく
-if [[ $(uname -a) == "Darwin"]];then
+if [[ $(uname -a) == "Darwin" ]] ;then
     if ! command -v xcodebuild > /dev/null;then
        xcode-select --install
     fi
