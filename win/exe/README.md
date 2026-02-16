@@ -1,12 +1,5 @@
 # exe
 
-## 手動配置
-
-* git-bash
-    * [Git - Install for Windows](https://git-scm.com/install/windows)
-* neovim(nvim-win64.zip)
-    * [Releases · neovim/neovim](https://github.com/neovim/neovim/releases)
-
 ## install.bat で一括導入
 
 `install.bat` を実行すると、以下のツールを GitHub Releases から `%USERPROFILE%\exe` にインストールする。
@@ -17,8 +10,10 @@
 * eza
 * bat
 * ripgrep (rg)
+* neovim (`nvim-win64\bin\nvim.exe`)
+* git / git-bash (PortableGit → `git-bash\`)
 
-`%USERPROFILE%\exe` を PATH に追加すること。
+PATH は `cmdrun.bat` で設定済み。
 
 ## cargo / go
 
