@@ -16,7 +16,7 @@ call :install "sharkdp/bat"        "x86_64-pc-windows-msvc.zip" "bat.exe"
 call :install "BurntSushi/ripgrep" "x86_64-pc-windows-msvc.zip" "rg.exe"
 
 :: Directory-based tools
-call :install_dir "neovim/neovim" "nvim-win64.zip"
+call :install_dir "neovim/neovim" "nvim-win64.zip" "nvim-win64"
 call :install_git
 
 echo.
@@ -27,6 +27,13 @@ goto :eof
 set "REPO=%~1"
 set "PATTERN=%~2"
 set "EXE=%~3"
+
+if exist "%EXE_DIR%\%EXE%" (
+    echo.
+    echo [%REPO%] SKIP: %EXE% already exists
+    goto :eof
+)
+
 set "WORK=%TEMP_DIR%\%EXE%"
 mkdir "%WORK%" 2>nul
 
@@ -56,6 +63,14 @@ goto :eof
 :install_dir
 set "REPO=%~1"
 set "PATTERN=%~2"
+set "DIR_NAME=%~3"
+
+if exist "%EXE_DIR%\%DIR_NAME%" (
+    echo.
+    echo [%REPO%] SKIP: %DIR_NAME% already exists
+    goto :eof
+)
+
 set "WORK=%TEMP_DIR%\dir_%RANDOM%"
 mkdir "%WORK%" 2>nul
 
@@ -73,12 +88,18 @@ if not defined URL (
 echo   %URL%
 curl -sL "%URL%" -o "%WORK%\archive.zip"
 tar xvf "%WORK%\archive.zip" -C "%EXE_DIR%"
-echo   -^> %EXE_DIR%
+echo   -^> %EXE_DIR%\%DIR_NAME%
 
 rd /s /q "%WORK%"
 goto :eof
 
 :install_git
+if exist "%EXE_DIR%\git-bash" (
+    echo.
+    echo [git-for-windows/git] SKIP: git-bash already exists
+    goto :eof
+)
+
 echo.
 echo [git-for-windows/git]
 
