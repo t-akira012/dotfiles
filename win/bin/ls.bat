@@ -1,3 +1,2 @@
 @echo off
->>"%USERPROFILE%\.dir_history" echo %CD%
-dir
+_dir.bat
