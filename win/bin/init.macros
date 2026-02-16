@@ -1,3 +1,4 @@
+c=clear
 cd=_cd.bat $*
 bd=_cd ..
 e=explorer $*
