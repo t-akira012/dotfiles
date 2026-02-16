@@ -1,0 +1,6 @@
+cd=_cd.bat $*
+bd=_cd ..
+ls=dir
+la=dir /a
+vi=nvim $*
+vim=nvim $*
