@@ -8,22 +8,22 @@ mkdir "%EXE_DIR%" 2>nul
 echo Installing CLI tools to %EXE_DIR% ...
 
 :: Single exe tools
-call :install "junegunn/fzf"       "windows_amd64.zip"          "fzf.exe"
-call :install "x-motemen/ghq"      "windows_amd64.zip"          "ghq.exe"
-call :install "sharkdp/fd"         "x86_64-pc-windows-msvc.zip" "fd.exe"
-call :install "eza-community/eza"  "x86_64-pc-windows-gnu.zip"  "eza.exe"
-call :install "sharkdp/bat"        "x86_64-pc-windows-msvc.zip" "bat.exe"
-call :install "BurntSushi/ripgrep" "x86_64-pc-windows-msvc.zip" "rg.exe"
+call :dl_exe "junegunn/fzf"       "windows_amd64.zip"          "fzf.exe"
+call :dl_exe "x-motemen/ghq"      "windows_amd64.zip"          "ghq.exe"
+call :dl_exe "sharkdp/fd"         "x86_64-pc-windows-msvc.zip" "fd.exe"
+call :dl_exe "eza-community/eza"  "x86_64-pc-windows-gnu.zip"  "eza.exe"
+call :dl_exe "sharkdp/bat"        "x86_64-pc-windows-msvc.zip" "bat.exe"
+call :dl_exe "BurntSushi/ripgrep" "x86_64-pc-windows-msvc.zip" "rg.exe"
 
 :: Directory-based tools
-call :install_dir "neovim/neovim" "nvim-win64.zip" "nvim-win64"
-call :install_git
+call :dl_dir "neovim/neovim" "nvim-win64.zip" "nvim-win64"
+call :dl_git
 
 echo.
 echo Done!
 goto :eof
 
-:install
+:dl_exe
 set "REPO=%~1"
 set "PATTERN=%~2"
 set "EXE=%~3"
@@ -60,7 +60,7 @@ for /r "%WORK%" %%f in (%EXE%) do (
 rd /s /q "%WORK%"
 goto :eof
 
-:install_dir
+:dl_dir
 set "REPO=%~1"
 set "PATTERN=%~2"
 set "DIR_NAME=%~3"
@@ -93,7 +93,7 @@ echo   -^> %EXE_DIR%\%DIR_NAME%
 rd /s /q "%WORK%"
 goto :eof
 
-:install_git
+:dl_git
 if exist "%EXE_DIR%\git-bash" (
     echo.
     echo [git-for-windows/git] SKIP: git-bash already exists
