@@ -11,19 +11,16 @@ cmd.exe をUnix風に使うための最小dotfiles。
 
 ## Install
 
-### 1. 外部ツールの配置
+Windows上のブラウザで `dl.bat` の raw URL を開き、保存して実行する。
 
-以下を `%USERPROFILE%\exe\` に手動で配置する。
-
-- [fzf](https://github.com/junegunn/fzf/releases) - `fzf.exe`
-- [git-bash](https://git-scm.com/install/windows) - `git-bash\` ディレクトリごと
-- [neovim](https://github.com/neovim/neovim/releases) - `nvim-win64\` ディレクトリごと
-
-### 2. デプロイ
-
-```bash
-cp .env.template .env  # WIN_USERNAME を設定
-./copy.sh              # bin/, keyhac/config.py をWindows側にコピー
+```
+dl.bat が行うこと:
+1. GitHubからdotfiles main zipをDL・展開
+2. bin\ を %USERPROFILE%\bin\ に上書きコピー
+3. keyhac を GitHub Releases からDL・展開（既存ならスキップ）
+4. keyhac\config.py を %USERPROFILE%\keyhac\ にコピー
+5. install_exefiles.bat を %USERPROFILE%\exe\ に配置・実行
+   （fzf, ghq, fd, eza, bat, rg, nvim, git-bash を既存でなければDL）
 ```
 
 `%USERPROFILE%\bin\cmdrun.bat` を実行して起動する。
@@ -38,12 +35,22 @@ C:\Users\{WIN_USERNAME}\
 │   ├── _cd.bat         cd置換（履歴記録付き）
 │   ├── l.bat           サブディレクトリをfzfで選択してジャンプ
 │   ├── z.bat           過去の移動履歴からfzfでジャンプ
+│   ├── gg.bat          ghqリポジトリをfzfで選択してジャンプ
+│   ├── vz.bat          rgでファイル検索→fzfで選択→nvimで開く
+│   ├── gr.bat          gitリポジトリルートへ移動
+│   ├── tf.bat          fdでディレクトリ検索→fzfで選択してジャンプ
 │   └── rm.bat          ごみ箱に送る削除
-├── exe\                外部バイナリ（手動配置）
+├── exe\
+│   ├── install_exefiles.bat  外部バイナリ一括DLスクリプト
 │   ├── fzf.exe
+│   ├── ghq.exe
+│   ├── fd.exe
+│   ├── eza.exe
+│   ├── bat.exe
+│   ├── rg.exe
 │   ├── git-bash\       bin/, usr/bin/ のUnixコマンドをPATH供給
 │   └── nvim-win64\
-└── keyhac\config.py    Emacs風キーバインド（OS全体）
+└── keyhac\config.py    キーバインド設定（OS全体）
 ```
 
 ## コマンド一覧
@@ -63,7 +70,10 @@ C:\Users\{WIN_USERNAME}\
 | `cd <dir>` | ディレクトリ移動 + 履歴記録 |
 | `z` | 過去の移動履歴からfzfで選択してジャンプ |
 | `l` | 現在地のサブディレクトリをfzfで選択してジャンプ |
+| `tf [depth]` | fdでディレクトリを再帰検索→fzfで選択してジャンプ |
 | `bd` | 親ディレクトリへ移動 |
+| `gg` | ghqリポジトリをfzfで選択してジャンプ |
+| `gr` | gitリポジトリルートへ移動 |
 
 ### ファイル操作・エディタ
 
@@ -71,10 +81,11 @@ C:\Users\{WIN_USERNAME}\
 |---|---|
 | `rm <file>` | ごみ箱に送る（完全削除ではない） |
 | `vi` / `vim` | neovim起動 |
+| `vz [query]` | rgでファイル検索→fzfで選択→nvimで開く |
 
 ## keyhac
 
-OS全体に適用されるEmacs風キーバインド（Ubuntu.exeは除外）。
+OS全体に適用されるキーバインド設定。
 
 | キー | 動作 |
 |---|---|
@@ -82,3 +93,6 @@ OS全体に適用されるEmacs風キーバインド（Ubuntu.exeは除外）。
 | `C-a/e` | Home/End |
 | `C-h/d` | BackSpace/Delete |
 | `C-k` | 行末まで削除 |
+| `Win+;` | WindowsTerminalを最前面トグル |
+
+対象アプリ: Chrome, Edge WebView2, Notepad, PowerToys Launcher, cmd.exe（Nvim除外）
