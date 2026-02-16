@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
-read -p "Who am i? >" WIN_USERNAME
+#!/usr/bin/env bash -eux
+source .env
 cp -r ./bin /mnt/c/Users/${WIN_USERNAME}/
