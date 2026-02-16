@@ -62,8 +62,6 @@ C:\Users\{WIN_USERNAME}\
 
 | コマンド | 内容 |
 |---|---|
-| `ls` | `dir` |
-| `la` | `dir /a`（隠しファイル含む） |
 | `rm <file>` | ごみ箱に送る（完全削除ではない） |
 | `vi` / `vim` | neovim起動 |
 
