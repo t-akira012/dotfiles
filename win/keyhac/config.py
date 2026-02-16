@@ -36,6 +36,17 @@ def configure(keymap):
     keymap_global = keymap.defineWindowKeymap()
     keymap_global["O-LWin"] = lambda: None
 
+    # Win+; でWindowsTerminalを最前面トグル
+    def toggle_windows_terminal():
+        wnd = Window.find("WindowsTerminal.exe", None)
+        if wnd:
+            if wnd.isVisible() and wnd == keymap.getTopLevelWindow():
+                wnd.minimize()
+            else:
+                wnd.setForeground()
+
+    keymap_global["LWin-Semicolon"] = toggle_windows_terminal
+
     # Emacs keybindings (whitelist)
     target_apps = ["msedgewebview2.exe", "chrome.exe", "notepad.exe", "PowerToys.PowerLauncher.exe"]
 
