@@ -1,8 +1,8 @@
 # exe
 
-## install.bat で一括導入
+## install_exefiles.bat で一括導入
 
-`install.bat` を実行すると、以下のツールを GitHub Releases から `%USERPROFILE%\exe` にインストールする。
+`install_exefiles.bat` を実行すると、以下のツールを GitHub Releases から `%USERPROFILE%\exe` にインストールする。
 
 * fzf
 * ghq

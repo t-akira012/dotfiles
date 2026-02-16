@@ -37,8 +37,13 @@ echo Copying keyhac\config.py ...
 copy /y "%SRC%\keyhac\config.py" "%USERPROFILE%\keyhac\config.py"
 
 echo.
-echo Running install.bat ...
-call "%SRC%\exe\install.bat"
+echo Copying install_exefiles.bat ...
+mkdir "%USERPROFILE%\exe" 2>nul
+copy /y "%SRC%\exe\install_exefiles.bat" "%USERPROFILE%\exe\install_exefiles.bat"
+
+echo.
+echo Running install_exefiles.bat ...
+call "%USERPROFILE%\exe\install_exefiles.bat"
 
 rd /s /q "%TEMP_DIR%"
 echo.
