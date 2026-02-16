@@ -32,6 +32,10 @@ def configure(keymap):
     # keymap.replaceKey("LWin", 235)
     # keymap.replaceKey("RWin", 255)
 
+    # LWin単発押下を無効化（スタートメニュー抑止）
+    keymap_global = keymap.defineWindowKeymap()
+    keymap_global["O-LWin"] = lambda: None
+
     # Emacs keybindings (whitelist)
     target_apps = ["msedgewebview2.exe", "chrome.exe", "notepad.exe"]
 
