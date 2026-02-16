@@ -11,7 +11,7 @@
 [rustup-init.exe](https://rustup.rs/) でRustを導入後、以下を実行する。
 
 ```
-cargo install eza ripgrep fd-find
+cargo install eza ripgrep fd-find bat
 ```
 
 ## go install
