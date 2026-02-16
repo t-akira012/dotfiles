@@ -33,7 +33,7 @@ def configure(keymap):
     # keymap.replaceKey("RWin", 255)
 
     # Emacs keybindings (whitelist)
-    target_apps = ["msedgewebview2.exe", "chrome.exe", "notepad.exe", "cmd.exe"]
+    target_apps = ["msedgewebview2.exe", "chrome.exe", "notepad.exe"]
 
     def emacs_keybinds(km):
         km["LC-P"] = "Up"
@@ -48,3 +48,8 @@ def configure(keymap):
 
     for app in target_apps:
         emacs_keybinds(keymap.defineWindowKeymap(exe_name=app))
+
+    # cmd.exe: Nvimがタイトルに含まれる場合は除外
+    emacs_keybinds(keymap.defineWindowKeymap(
+        check_func=lambda w: w.getProcessName() == "cmd.exe" and "Nvim" not in w.getText()
+    ))
