@@ -32,19 +32,19 @@ def configure(keymap):
     # keymap.replaceKey("LWin", 235)
     # keymap.replaceKey("RWin", 255)
 
-    exclude_global_target = ["Ubuntu.exe"]
+    # Emacs keybindings (whitelist)
+    target_apps = ["ms-teams.exe", "chrome.exe", "notepad.exe"]
 
-    # Global keymap which affects any windows
-    if 1:
-        keymap_global = keymap.defineWindowKeymap(check_func=lambda window: not window.getProcessName() in exclude_global_target)
+    def emacs_keybinds(km):
+        km["LC-P"] = "Up"
+        km["LC-N"] = "Down"
+        km["LC-F"] = "Right"
+        km["LC-B"] = "Left"
+        km["LC-A"] = "Home"
+        km["LC-E"] = "End"
+        km["LC-H"] = "Back"
+        km["LC-D"] = "Delete"
+        km["LC-K"] = "S-End", "Back"
 
-        # emacs like
-        keymap_global["LC-P"] = "Up"
-        keymap_global["LC-N"] = "Down"
-        keymap_global["LC-F"] = "Right"
-        keymap_global["LC-B"] = "Left"
-        keymap_global["LC-A"] = "Home"
-        keymap_global["LC-E"] = "End"
-        keymap_global["LC-H"] = "Back"
-        keymap_global["LC-D"] = "Delete"
-        keymap_global["LC-K"] = "S-End", "Back"
+    for app in target_apps:
+        emacs_keybinds(keymap.defineWindowKeymap(exe_name=app))
