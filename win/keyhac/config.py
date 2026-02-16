@@ -33,7 +33,7 @@ def configure(keymap):
     # keymap.replaceKey("RWin", 255)
 
     # Emacs keybindings (whitelist)
-    target_apps = ["ms-teams.exe", "chrome.exe", "notepad.exe"]
+    target_apps = ["msedgewebview2.exe", "chrome.exe", "notepad.exe", "cmd.exe"]
 
     def emacs_keybinds(km):
         km["LC-P"] = "Up"
