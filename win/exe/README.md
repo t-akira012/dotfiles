@@ -1,18 +1,24 @@
 # exe
 
-ダウンロードして配置すること
+## 手動配置
 
 * git-bash
     * [Git - Install for Windows](https://git-scm.com/install/windows)
 * neovim(nvim-win64.zip)
     * [Releases · neovim/neovim](https://github.com/neovim/neovim/releases)
-* fzf.exe
-    * [Release 0.67.0 · junegunn/fzf · GitHub](https://github.com/junegunn/fzf/releases/tag/v0.67.0)
-* eza.exe
-    * [Releases · eza-community/eza](https://github.com/eza-community/eza/releases)
-* ghq.exe
-    * [Releases · x-motemen/ghq](https://github.com/x-motemen/ghq/releases)
-* ripgrep(rg.exe)
-    * [Releases · BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep/releases)
-* fd.exe
-    * [Releases · sharkdp/fd](https://github.com/sharkdp/fd/releases)
+## cargo install
+
+[rustup-init.exe](https://rustup.rs/) でRustを導入後、以下を実行する。
+
+```
+cargo install eza ripgrep fd-find
+```
+
+## go install
+
+[go.dev](https://go.dev/dl/) でGoを導入後、以下を実行する。
+
+```
+go install github.com/junegunn/fzf@latest
+go install github.com/x-motemen/ghq@latest
+```
