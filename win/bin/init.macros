@@ -1,6 +1,8 @@
 cd=_cd.bat $*
 bd=_cd ..
+gp=git pull
 ls=ls --color=auto --show-control-chars -N $*
+ll=ls -l --color=auto --show-control-chars -N $*
 la=ls -la --color=auto --show-control-chars -N $*
 vi=nvim $*
 vim=nvim $*
