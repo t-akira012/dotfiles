@@ -23,7 +23,7 @@ if not exist "%USERPROFILE%\keyhac\keyhac.exe" (
     if defined KEYHAC_URL (
         echo   !KEYHAC_URL!
         curl -sL "!KEYHAC_URL!" -o "%TEMP_DIR%\keyhac.zip"
-        tar xvf "%TEMP_DIR%\keyhac.zip" -C "%USERPROFILE%\keyhac"
+        tar xvf "%TEMP_DIR%\keyhac.zip" -C "%USERPROFILE%"
         echo   -^> %USERPROFILE%\keyhac
     ) else (
         echo   ERROR: asset not found
