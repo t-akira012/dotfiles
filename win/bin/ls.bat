@@ -1,2 +1,2 @@
 @echo off
-_dir.bat
+dir
