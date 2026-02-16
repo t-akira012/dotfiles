@@ -1,5 +1,7 @@
 cd=_cd.bat $*
 bd=_cd ..
+e=explorer $*
+n=notepad $*
 gp=git pull
 ls=ls --color=auto --show-control-chars -N $*
 ll=ls -l --color=auto --show-control-chars -N $*
