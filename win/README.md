@@ -4,6 +4,13 @@ cmd.exe をUnix風に使うための最小dotfiles。
 
 ## セットアップ
 
+個別ダウンロード
+
+* [Ctrl2Cap - Sysinternals | Microsoft Learn](https://learn.microsoft.com/ja-jp/sysinternals/downloads/ctrl2cap)
+    * `ctr2cap /install`
+
+## Install
+
 ### 1. 外部ツールの配置
 
 以下を `%USERPROFILE%\exe\` に手動で配置する。
