@@ -82,36 +82,45 @@ local function is_allowed_fd_root(cwdp, rule)
 	return false
 end
 
-local function should_run_fd(cwd)
+-- Returns: run_fd (bool), max_depth (number or nil)
+local function get_fd_config(cwd)
 	local cwdp = normalize_path(cwd)
 	local home = normalize_path(os.getenv("HOME") or "")
 
-	local allowed = {
-		{ kind = "prefix", path = home }, -- $HOME and descendants
-		{ kind = "glob1", base = "/Volumes" }, -- /Volumes/<mount> and descendants
-		-- extend here if needed:
-		-- { kind = "prefix", path = "/mnt" },
-		-- { kind = "prefix", path = "/work" },
-	}
-
-	for _, rule in ipairs(allowed) do
-		if is_allowed_fd_root(cwdp, rule) then
-			return true
+	if home ~= "" then
+		-- cwd is a proper descendant of $HOME → no depth limit
+		if cwdp ~= home and is_descendant_or_same(cwdp, home) then
+			return true, nil
+		end
+		-- cwd is $HOME or an ancestor of $HOME → depth 1
+		if cwdp == home or is_descendant_or_same(home, cwdp) then
+			return true, 1
 		end
 	end
-	return false
+
+	-- /Volumes/<mount> and descendants → no depth limit
+	if is_allowed_fd_root(cwdp, { kind = "glob1", base = "/Volumes" }) then
+		return true, nil
+	end
+
+	return false, nil
 end
 
 ---@param cwd string
 ---@return string?, Error?
 function M.run_with(cwd)
-	local run_fd = should_run_fd(cwd)
+	local run_fd, max_depth = get_fd_config(cwd)
 
 	-- Get directories from fd (restricted)
 	local fd_output = ""
 	if run_fd then
+		local fd_args = { "--type", "d", "--hidden", "--exclude", ".git" }
+		if max_depth then
+			fd_args[#fd_args + 1] = "--max-depth"
+			fd_args[#fd_args + 1] = tostring(max_depth)
+		end
 		local fd_child =
-			Command("fd"):arg({ "--type", "d", "--hidden", "--exclude", ".git" }):cwd(cwd):stdout(Command.PIPED):spawn()
+			Command("fd"):arg(fd_args):cwd(cwd):stdout(Command.PIPED):spawn()
 
 		if fd_child then
 			local out = fd_child:wait_with_output()
