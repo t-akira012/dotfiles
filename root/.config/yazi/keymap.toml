@@ -22,6 +22,11 @@ on   = ["T"]
 run  = "shell 'tmux new-window -c \"$PWD\" -n \"$(basename $PWD)\"'"
 desc = "Open current directory in new tmux window (named)"
 
+[[mgr.prepend_keymap]]
+on   = "i"
+run  = "plugin toggle-pane max-preview"
+desc = "Maximize or restore the preview pane"
+
 [mgr]
 
 keymap = [
