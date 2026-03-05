@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -eux
 CURRENT_WINDOW=$(tmux display-message -p '#I')
-TARGET_WINDOW_NAME=dev
-TARGET_WINDOW=1
+TARGET_WINDOW_NAME=doc
+TARGET_WINDOW=9
 
 [[ ! -e $HOME/.tmux_toggle_window ]] && echo $CURRENT_WINDOW >$HOME/.tmux_toggle_window
 
