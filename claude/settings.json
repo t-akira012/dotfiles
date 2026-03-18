@@ -18,6 +18,8 @@
       "Write(~/.ssh/*)"
     ]
   },
+  "model": "opus",
+  "skipDangerousModePermissionPrompt": true,
   "ignorePatterns": [
     "node_modules/**",
     ".venv/**",
@@ -28,6 +30,5 @@
     "readFile": true,
     "writeFile": true,
     "executeCommand": false
-  },
-  "model": "opus"
+  }
 }
