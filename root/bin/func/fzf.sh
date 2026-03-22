@@ -133,6 +133,21 @@ __fzf-open-code-workspace(){
     [ -n "$workspace" ] && open $HOME/dev/$workspace
 }
 
+# bookmarks.sh - source from .zshrc
+__fzf-bookmarks() {
+  local file="$HOME/src/github.com/t-akira012/prv/README.md"
+  if [[ -e $file ]];then
+      local url
+      url=$(sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\1\t\2/p' "$file" \
+        | fzf --delimiter=$'\t' --with-nth=1 \
+        | cut -f2)
+      [[ -n "$url" ]] && open "$url"
+  else
+      echo 'bookmark file is notfound.'
+  fi
+}
+
+alias b='__fzf-bookmarks'
 alias o='__fzf-open'
 alias oa='__fzf-open-app'
 # replace zoxide

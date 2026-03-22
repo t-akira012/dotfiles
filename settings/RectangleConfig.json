@@ -215,19 +215,19 @@
 
     },
     "todo" : {
-      "int" : 2
-    },
-    "todoApplication" : {
-      "string" : "org.alacritty"
-    },
-    "todoMode" : {
-      "bool" : true
-    },
-    "todoSidebarSide" : {
       "int" : 1
     },
+    "todoApplication" : {
+      "string" : "com.mitchellh.ghostty"
+    },
+    "todoMode" : {
+      "bool" : false
+    },
+    "todoSidebarSide" : {
+      "int" : 2
+    },
     "todoSidebarWidth" : {
-      "float" : 750
+      "float" : 900
     },
     "traverseSingleScreen" : {
       "int" : 0
@@ -282,14 +282,6 @@
     "maximizeHeight" : {
       "keyCode" : 126,
       "modifierFlags" : 917504
-    },
-    "nextDisplay" : {
-      "keyCode" : 33,
-      "modifierFlags" : 1441792
-    },
-    "previousDisplay" : {
-      "keyCode" : 30,
-      "modifierFlags" : 1441792
     },
     "reflowTodo" : {
       "keyCode" : 103,
