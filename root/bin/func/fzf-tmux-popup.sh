@@ -1,8 +1,9 @@
 #!/bin/bash
 # fzf-tmux-popup.sh - generic tmux popup frontend for fzf
 # Usage:
-#   echo "data" | fzf-tmux-popup.sh         -> select with fzf in popup
-#   fzf-tmux-popup.sh --input "Prompt: "    -> user input in popup
+#   echo "data" | fzf-tmux-popup.sh                    -> select with fzf in popup
+#   echo "data" | fzf-tmux-popup.sh "preview cmd {}"   -> select with preview
+#   fzf-tmux-popup.sh --input "Prompt: "               -> user input in popup
 
 input_mode() {
   local prompt="${1:-Input: }"
@@ -17,18 +18,16 @@ select_mode() {
   local tmp_in=$(mktemp)
   local tmp_out=$(mktemp)
   cat > "$tmp_in"
-  tmux display-popup -E -w 80% -h 60% \
-    "bash -c 'fzf < \"$tmp_in\" > \"$tmp_out\"'"
+  local fzf_opts=""
+  [[ -n "$1" ]] && fzf_opts="--preview '$1'"
+  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$tmp_in' > '$tmp_out'"
   cat "$tmp_out"
   rm -f "$tmp_in" "$tmp_out"
 }
 
 main() {
-  if [[ "$1" == "--input" ]]; then
-    input_mode "$2"
-  else
-    select_mode
-  fi
+  [[ "$1" == "--input" ]] && { input_mode "$2"; return; }
+  select_mode "$1"
 }
 
 main "$@"

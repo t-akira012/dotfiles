@@ -133,49 +133,44 @@ __fzf-open-code-workspace(){
     [ -n "$workspace" ] && open $HOME/dev/$workspace
 }
 
-# bookmarks.sh - source from .zshrc
-__fzf-bookmarks() {
+# data sources: output "url\ttitle" lines
+__query-bookmarks() {
   local file="$HOME/src/github.com/t-akira012/prv/README.md"
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-  if [[ -e $file ]]; then
-      local tmp_data=$(mktemp)
-      sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\2\t\1/p' "$file" > "$tmp_data"
-      local selected
-      selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
-      if [[ -n "$selected" ]]; then
-        local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
-        local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
-        open "$url"
-      fi
-      rm -f "$tmp_data"
-  else
-      echo 'bookmark file is notfound.'
-  fi
+  [[ -e "$file" ]] && sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\2\t\1/p' "$file"
 }
 
-__fzf-firefox-history() {
+__query-history() {
   local profile_dir="$HOME/Library/Application Support/zen/Profiles"
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
   local dbs=("${(@f)$(find "$profile_dir" -name "places.sqlite" 2>/dev/null)}")
-  [[ ${#dbs[@]} -eq 0 ]] && echo "places.sqlite not found" && return 1
+  [[ ${#dbs[@]} -eq 0 ]] && return 1
   local tmp=$(mktemp)
-  local selected
-  local tmp_data=$(mktemp)
   {
     for db in "${dbs[@]}"; do
       command cp "$db" "$tmp"
-      sqlite3 "$tmp" "SELECT p.title, p.url FROM moz_places p INNER JOIN moz_historyvisits v ON p.id = v.place_id ORDER BY v.visit_date DESC LIMIT 5000;" -separator $'\t'
+      sqlite3 "$tmp" "SELECT p.url, p.title FROM moz_places p INNER JOIN moz_historyvisits v ON p.id = v.place_id ORDER BY v.visit_date DESC LIMIT 5000;" -separator $'\t'
     done
-  } | awk -F'\t' '!seen[$2]++' > "$tmp_data"
+  } | awk -F'\t' '!seen[$1]++'
+  rm -f "$tmp"
+}
+
+# select and open: takes "url\ttitle" from stdin
+__fzf-open-url() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local tmp_data=$(mktemp)
+  cat > "$tmp_data"
   local selected
-  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $2, $1}' "$tmp_data" | "$popup")
+  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
   if [[ -n "$selected" ]]; then
-    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $2, $1}' "$tmp_data") | head -1 | cut -d: -f1)
-    local url=$(sed -n "${line}p" "$tmp_data" | cut -f2)
+    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
+    local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
     open "$url"
   fi
-  rm -f "$tmp" "$tmp_data"
+  rm -f "$tmp_data"
 }
+
+__fzf-bookmarks() { __query-bookmarks | __fzf-open-url; }
+__fzf-firefox-history() { __query-history | __fzf-open-url; }
+__fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __fzf-open-url; }
 
 __fzf-search() {
   local query="$*"
@@ -198,8 +193,9 @@ __fzf-search() {
 alias s='__fzf-search'
 
 
-alias h='__fzf-firefox-history'
-alias b='__fzf-bookmarks'
+# alias h='__fzf-firefox-history'
+# alias b='__fzf-bookmarks'
+alias b='__fzf-bookmarks-and-history'
 alias o='__fzf-open'
 alias a='__fzf-open-app'
 # replace zoxide
@@ -213,3 +209,5 @@ alias fnamecopy='__fzf-filename-copy'
 alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
 alias dev='__fzf-open-code-workspace'
+
+alias t='$HOME/bin/func/fzf-tmux-window.sh'
