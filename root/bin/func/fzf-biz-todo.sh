@@ -1,13 +1,25 @@
 TASK_MD="$HOME/docs/doc/DRAFT.md"
 
-__biz_get-todo() {
+__action-todo() {
+  local line_num="$(echo "$1" | cut -f1 | cut -d: -f1)"
+  if ! tmux select-window -t :9 2>/dev/null; then
+    tmux new-window -t :9 -n doc
+    tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
+  elif [[ "$(tmux list-panes -t :9 -F '#{pane_current_command}')" == "nvim" ]]; then
+    tmux send-keys -t :9 ":tabnew +${line_num} ${TASK_MD}" Enter
+  else
+    tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
+  fi
+}
+
+__query-todo() {
   [[ -f "$TASK_MD" ]] && grep -n '^ *\- \[[ x]\]' "$TASK_MD"
 }
 
 __biz_fzf-todo() {
   local popup="$HOME/bin/func/fzf-tmux-popup.sh"
   local selected
-  selected="$(__biz_get-todo | "$popup" --expect=ctrl-x,ctrl-o)"
+  selected="$(__query-todo | "$popup" --expect=ctrl-x,ctrl-o)"
 
   [[ -z "$selected" ]] && return
 

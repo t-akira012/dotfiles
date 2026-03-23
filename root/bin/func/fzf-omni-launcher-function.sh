@@ -1,7 +1,25 @@
-__fzf-open-app(){
-    local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-    local app=$(find /Applications -name "*.app" -type d -maxdepth 2 | sed 's|/Applications/||' | "$popup")
-    [[ -n "$app" ]] && open -a "/Applications/$app"
+__query-apps() {
+  find /Applications -name "*.app" -type d -maxdepth 2 | sed 's|/Applications/||'
+}
+
+__action-apps() {
+  open -a "/Applications/$(echo "$1" | cut -f1)"
+}
+
+__fzf-open-app() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local app=$(__query-apps | "$popup")
+  [[ -n "$app" ]] && open -a "/Applications/$app"
+}
+
+__query-search() {
+  local query="$1"
+  [[ -z "$query" ]] && return 1
+  "$HOME/bin/func/curlDuckduckgo.sh" "$query"
+}
+
+__action-search() {
+  open "$(echo "$1" | cut -f1)"
 }
 
 __fzf-search() {
@@ -12,7 +30,7 @@ __fzf-search() {
     [[ -z "$query" ]] && return 1
   fi
   local tmp_data=$(mktemp)
-  "$HOME/bin/func/curlDuckduckgo.sh" "$query" > "$tmp_data"
+  __query-search "$query" > "$tmp_data"
   local selected
   selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
   if [[ -n "$selected" ]]; then
