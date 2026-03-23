@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: 壊れているので修正
 # fzf-tmux-window.sh - select tmux window via fzf popup
 popup="$HOME/bin/func/fzf-tmux-popup.sh"
 win=$(tmux list-windows -F '#{window_index}: #{window_name}' \
