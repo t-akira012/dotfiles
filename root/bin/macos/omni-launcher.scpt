@@ -1,5 +1,7 @@
-tell application "Ghostty" to activate
-delay 0.1
-tell application "System Events"
-	key code 30 using control down
+tell application "Ghostty"
+	activate
+	repeat until frontmost
+		delay 0.05
+	end repeat
 end tell
+do shell script "/opt/homebrew/bin/tmux run-shell '$HOME/bin/func/fzf-omni-launcher.sh'"
