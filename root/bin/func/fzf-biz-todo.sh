@@ -24,7 +24,7 @@ __biz_fzf-todo() {
     fi
   else
     local stamp=$(date '+%m/%d %H:%M')
-    sed -i '' "${line_num}s/$/ ${stamp}/" "$TASK_MD"
+    sed -i '' "${line_num}s|$| ${stamp}|" "$TASK_MD"
   fi
   __biz_fzf-todo
 }
