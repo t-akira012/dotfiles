@@ -8,6 +8,7 @@ typeset -A __omni_type_map=(
   bookmarks   b
   history     h
   todo        t
+  tmux-windows tw
 )
 
 # 逆引き（短縮型 → サフィックス）を自動生成

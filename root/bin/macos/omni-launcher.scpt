@@ -4,4 +4,4 @@ tell application "Ghostty"
 		delay 0.05
 	end repeat
 end tell
-do shell script "/opt/homebrew/bin/tmux run-shell '$HOME/bin/func/fzf-omni-launcher.sh'"
+do shell script "/opt/homebrew/bin/tmux run-shell '$HOME/bin/func/omni'"

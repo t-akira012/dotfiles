@@ -43,5 +43,3 @@ __fzf-search() {
 
 alias s='__fzf-search'
 alias a='__fzf-open-app'
-
-alias tw='$HOME/bin/func/fzf-tmux-window.sh'

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+select_window() {
+  tmux select-window -t ":$1"
+}
+
+select_pane() {
+  tmux display-panes
+}
+
 direct_action() {
   zsh -ic "$1"
 }
@@ -14,7 +22,11 @@ main() {
   cmd=$("$popup" --input "Omni: ")
   [[ -z "$cmd" ]] && exit 0
 
-  if [[ ${#cmd} -le 2 ]]; then
+  if [[ "$cmd" == "q" ]]; then
+    select_pane
+  elif [[ "$cmd" =~ ^[0-9]+$ ]]; then
+    select_window "$cmd"
+  elif [[ ${#cmd} -le 2 ]]; then
     direct_action "$cmd"
   else
     omni_search "$cmd"
