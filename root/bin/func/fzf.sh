@@ -1,3 +1,7 @@
+for f in "$HOME/bin/func"/fzf-common-*.sh; do
+  [[ -e "$f" ]] && source "$f"
+done
+
 ## functions
 __fzf-open() {
   local SELECTED=$(unbuffer ls -lA --color | rg ^- | fzf --ansi --bind='ctrl-o:execute(open {9})' --preview "[[ -d {9} ]] && exa -T {9} || bat {9}" | awk '{print substr($0,index($0,$9))}' | xargs echo)
@@ -133,6 +137,3 @@ alias cdg='ghq-cd'
 alias fnamecopy='__fzf-filename-copy'
 alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
-
-
-. ./fzf-projects.sh
