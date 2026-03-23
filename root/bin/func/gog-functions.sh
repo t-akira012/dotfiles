@@ -60,8 +60,10 @@ __gog_get-today-tasks() {
 }
 
 __gog_fzf-today-calendar() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local fzf_opts="--with-nth=4.. --delimiter=$'\t' --preview-window=hidden"
   local selected
-  selected="$(__gog_get-today-calendar "$@" | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden)"
+  selected="$(__gog_get-today-calendar "$@" | "$popup" $fzf_opts)"
 
   [[ -z "$selected" ]] && return
 
@@ -71,8 +73,10 @@ __gog_fzf-today-calendar() {
 }
 
 __gog_fzf-today-tasks() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local fzf_opts="--with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x"
   local selected key
-  selected="$(__gog_get-today-tasks "$@" | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x)"
+  selected="$(__gog_get-today-tasks "$@" | "$popup" $fzf_opts)"
 
   [[ -z "$selected" ]] && return
 
@@ -98,8 +102,10 @@ __gog_fzf-today-tasks() {
 }
 
 __gog_fzf-today-all() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local fzf_opts="--with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x"
   local selected key
-  selected="$({ __gog_get-today-calendar "$@"; __gog_get-today-tasks "$@"; } | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x)"
+  selected="$({ __gog_get-today-calendar "$@"; __gog_get-today-tasks "$@"; } | "$popup" $fzf_opts)"
 
   [[ -z "$selected" ]] && return
 

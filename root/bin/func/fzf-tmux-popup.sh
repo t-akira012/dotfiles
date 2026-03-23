@@ -15,10 +15,11 @@ input_mode() {
 }
 
 select_mode() {
+  local fzf_opts="$*"
   local INPUT_FZF_LIST=$(mktemp)
   local OUTPUT_FZF_SELECTED=$(mktemp)
   cat > "$INPUT_FZF_LIST"
-  tmux display-popup -E -w 80% -h 60% "fzf < '$INPUT_FZF_LIST' > '$OUTPUT_FZF_SELECTED'" || true
+  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$INPUT_FZF_LIST' > '$OUTPUT_FZF_SELECTED'" || true
   cat "$OUTPUT_FZF_SELECTED"
   rm -f "$INPUT_FZF_LIST" "$OUTPUT_FZF_SELECTED"
 }

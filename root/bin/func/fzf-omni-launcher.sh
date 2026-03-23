@@ -1,29 +1,17 @@
-__fzf-open-app(){
-    local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-    local app=$(find /Applications -name "*.app" -type d -maxdepth 2 | sed 's|/Applications/||' | "$popup")
-    [[ -n "$app" ]] && open -a "/Applications/$app"
-}
+#!/bin/bash
+# run a single shell command via tmux popup input
+POPUP="$HOME/bin/func/fzf-tmux-popup.sh"
+CMD=$("$POPUP" --input "Launch: ")
+[[ -z "$CMD" ]] && exit 0
 
-__fzf-search() {
-  local query="$*"
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-  if [[ -z "$query" ]]; then
-    query=$("$popup" --input "Search: ")
-    [[ -z "$query" ]] && return 1
+check_cmd(){
+  if ! zsh -ic "command -v ${CMD%% *}" >/dev/null 2>&1; then
+    CMD=""
   fi
-  local tmp_data=$(mktemp)
-  "$HOME/bin/func/curlDuckduckgo.sh" "$query" > "$tmp_data"
-  local selected
-  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
-  if [[ -n "$selected" ]]; then
-    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
-    local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
-    open "$url"
-  fi
-  rm -f "$tmp_data"
 }
-
-alias s='__fzf-search'
-alias a='__fzf-open-app'
-
-alias tw='$HOME/bin/func/fzf-tmux-window.sh'
+case "${CMD%% *}" in
+  b|s|a|t|c|tc) check_cmd ;;
+  *) CMD="__fzf-search $CMD" ;;
+esac
+[[ -n "$CMD" ]] && zsh -ic "$CMD"
+exit 0
