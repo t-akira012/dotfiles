@@ -8,6 +8,10 @@ select_pane() {
   tmux display-panes
 }
 
+kill_process() {
+  zsh -ic "__fzf-kill-process"
+}
+
 direct_action() {
   zsh -ic "$1"
 }
@@ -22,7 +26,9 @@ main() {
   cmd=$("$popup" --input "Omni: ")
   [[ -z "$cmd" ]] && exit 0
 
-  if [[ "$cmd" == "q" ]]; then
+  if [[ "$cmd" == "kill" ]]; then
+    kill_process
+  elif [[ "$cmd" == "q" ]]; then
     select_pane
   elif [[ "$cmd" =~ ^[0-9]+$ ]]; then
     select_window "$cmd"
