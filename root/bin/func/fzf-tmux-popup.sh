@@ -20,7 +20,7 @@ select_mode() {
   cat > "$tmp_in"
   local fzf_opts=""
   [[ -n "$1" ]] && fzf_opts="--preview '$1'"
-  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$tmp_in' > '$tmp_out'"
+  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$tmp_in' > '$tmp_out'" || true
   cat "$tmp_out"
   rm -f "$tmp_in" "$tmp_out"
 }
