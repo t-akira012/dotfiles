@@ -1,15 +1,15 @@
 __action-bookmarks() {
-  open "$(echo "$1" | cut -f1)"
+  open "$(echo "$1" | cut -f5)"
 }
 
 __action-history() {
-  open "$(echo "$1" | cut -f1)"
+  open "$(echo "$1" | cut -f5)"
 }
 
 __query-bookmarks() {
   local chrome_dir="$HOME/Library/Application Support/Google/Chrome"
   for file in "$chrome_dir"/Profile\ */Bookmarks; do
-    [[ -e "$file" ]] && jq -r '.. | select(.type? == "url") | "\(.url)\t\(.name)"' "$file"
+    [[ -e "$file" ]] && jq -r '.. | select(.type? == "url") | "\(.url)\t\(.name)\t\t\t\(.url)"' "$file"
   done
 }
 
@@ -21,24 +21,18 @@ __query-history() {
   {
     for db in "${dbs[@]}"; do
       command cp "$db" "$tmp"
-      sqlite3 "$tmp" "SELECT url, title FROM urls ORDER BY last_visit_time DESC LIMIT 5000;" -separator $'\t'
+      sqlite3 "$tmp" "SELECT url || char(9) || title || char(9) || char(9) || char(9) || url FROM urls ORDER BY last_visit_time DESC LIMIT 5000;" -separator $'\t'
     done
-  } | awk -F'\t' '!seen[$1]++'
+  } | awk -F'\t' '!seen[$5]++'
   rm -f "$tmp"
 }
 
 __omni-fzf-open-url() {
   local popup="$HOME/bin/omni/popup.sh"
-  local tmp_data=$(mktemp)
-  cat > "$tmp_data"
+  local fzf_opts="--with-nth=1..4 --delimiter=$'\t'"
   local selected
-  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
-  if [[ -n "$selected" ]]; then
-    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
-    local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
-    open "$url"
-  fi
-  rm -f "$tmp_data"
+  selected=$(cat | "$popup" $fzf_opts)
+  [[ -n "$selected" ]] && open "$(echo "$selected" | cut -f5)"
 }
 
 __omni-fzf-bookmarks() { __query-bookmarks | __omni-fzf-open-url; }

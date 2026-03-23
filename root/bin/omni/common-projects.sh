@@ -1,5 +1,3 @@
-PROJECT_MD="$HOME/docs/doc/DRAFT.md"
-
 __action-projects() {
   local line_num="$(echo "$1" | cut -f1 | cut -d: -f1)"
   if ! tmux select-window -t :9 2>/dev/null; then

@@ -1,14 +1,14 @@
 __action-bookmarks() {
-  open "$(echo "$1" | cut -f1)"
+  open "$(echo "$1" | cut -f5)"
 }
 
 __action-history() {
-  open "$(echo "$1" | cut -f1)"
+  open "$(echo "$1" | cut -f5)"
 }
 
 __query-bookmarks() {
   local file="$HOME/src/github.com/t-akira012/prv/README.md"
-  [[ -e "$file" ]] && sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\2\t\1/p' "$file"
+  [[ -e "$file" ]] && sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\2\t\1\t\t\t\2/p' "$file"
 }
 
 __query-history() {
@@ -19,24 +19,18 @@ __query-history() {
   {
     for db in "${dbs[@]}"; do
       command cp "$db" "$tmp"
-      sqlite3 "$tmp" "SELECT p.url, p.title FROM moz_places p INNER JOIN moz_historyvisits v ON p.id = v.place_id ORDER BY v.visit_date DESC LIMIT 5000;" -separator $'\t'
+      sqlite3 "$tmp" "SELECT p.url || char(9) || p.title || char(9) || char(9) || char(9) || p.url FROM moz_places p INNER JOIN moz_historyvisits v ON p.id = v.place_id ORDER BY v.visit_date DESC LIMIT 5000;" -separator $'\t'
     done
-  } | awk -F'\t' '!seen[$1]++'
+  } | awk -F'\t' '!seen[$5]++'
   rm -f "$tmp"
 }
 
 __omni-fzf-open-url() {
   local popup="$HOME/bin/omni/popup.sh"
-  local tmp_data=$(mktemp)
-  cat > "$tmp_data"
+  local fzf_opts="--with-nth=1..4 --delimiter=$'\t'"
   local selected
-  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
-  if [[ -n "$selected" ]]; then
-    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
-    local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
-    open "$url"
-  fi
-  rm -f "$tmp_data"
+  selected=$(cat | "$popup" $fzf_opts)
+  [[ -n "$selected" ]] && open "$(echo "$selected" | cut -f5)"
 }
 
 __omni-fzf-bookmarks() { __query-bookmarks | __omni-fzf-open-url; }

@@ -1,5 +1,3 @@
-__gog_cache_dir="$HOME/.local/cache/gog-function"
-
 __gog_fetch-today-calendar() {
   local today_start today_end
   today_start="$(date +%Y-%m-%dT00:00:00%z)"

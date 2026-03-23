@@ -23,7 +23,9 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 | `gt` | `__query-today-tasks` | `__action-today-tasks` |
 | `p` | `__query-projects` | `__action-projects` |
 | `b` | `__query-bookmarks` | `__action-bookmarks` |
+| `h` | `__query-history` | `__action-history` |
 | `t` | `__query-todo` | `__action-todo` |
+| `u` | `__query-urls` | `__action-urls` |
 
 ## 各ソースの列割り当て
 
@@ -34,8 +36,10 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 | `c` | 表示文字列 | | | | url |
 | `gt` | 表示文字列 | | | | url |
 | `p` | 行番号:見出し | | | | |
-| `b` | url | title | | | |
+| `b` | url | title | | | url |
+| `h` | url | title | | | url |
 | `t` | 行番号:タスク行 | | | | |
+| `u` | url | title | | | url |
 
 ## __query-* 命名規則
 
