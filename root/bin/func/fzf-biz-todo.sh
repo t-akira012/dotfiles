@@ -1,7 +1,7 @@
 TASK_MD="$HOME/docs/doc/DRAFT.md"
 
 __biz_get-todo() {
-  [[ -f "$TASK_MD" ]] && grep -n '^\- \[[ x]\]' "$TASK_MD"
+  [[ -f "$TASK_MD" ]] && grep -n '^ *\- \[[ x]\]' "$TASK_MD"
 }
 
 __biz_fzf-todo() {
