@@ -1,9 +1,9 @@
 #!/bin/bash
-# fzf-tmux-popup.sh - generic tmux popup frontend for fzf
+# popup.sh - generic tmux popup frontend for fzf
 # Usage:
-#   echo "data" | fzf-tmux-popup.sh                    -> select with fzf in popup
-#   echo "data" | fzf-tmux-popup.sh "preview cmd {}"   -> select with preview
-#   fzf-tmux-popup.sh --input "Prompt: "               -> user input in popup
+#   echo "data" | popup.sh                    -> select with fzf in popup
+#   echo "data" | popup.sh "preview cmd {}"   -> select with preview
+#   popup.sh --input "Prompt: "               -> user input in popup
 
 input_mode() {
   local PROMPT="${1:-Input: }"

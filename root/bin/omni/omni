@@ -9,19 +9,29 @@ select_pane() {
 }
 
 kill_process() {
-  zsh -ic "__fzf-kill-process"
+  zsh -ic "__omni-fzf-kill-process"
+}
+
+send_to_pane() {
+  tmux send-keys "$1" Enter
 }
 
 direct_action() {
-  zsh -ic "$1"
+  local resolved
+  resolved=$(zsh -ic "whence $1" 2>/dev/null)
+  if [[ "$resolved" == __* ]]; then
+    zsh -ic "$1"
+  else
+    send_to_pane "$1"
+  fi
 }
 
 omni_search() {
-  zsh -ic "__omni-search $1"
+  zsh -ic "__omni-engine-search $1"
 }
 
 main() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local popup="$HOME/bin/omni/popup.sh"
   local cmd
   cmd=$("$popup" --input "Omni: ")
   [[ -z "$cmd" ]] && exit 0

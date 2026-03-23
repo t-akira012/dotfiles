@@ -1,12 +1,3 @@
-#!/usr/bin/env bash
-# __gog_fetch-today-calendar — Calendar API から JSON 取得・キャッシュ保存
-# __gog_fetch-today-tasks — Tasks API から JSON 取得・キャッシュ保存
-# __query-today-calendar [reload] — キャッシュからカレンダー整形出力
-# __query-today-tasks [reload] — キャッシュからタスク整形出力
-# __gog_fzf-today-calendar [reload] — fzf で選択 → $BROWSER で開く
-# __gog_fzf-today-tasks [reload] — fzf で選択 → done/undo トグル、ctrl-o で $BROWSER
-# __gog_fzf-today-all [reload] — calendar + tasks を fzf で選択
-
 __gog_cache_dir="$HOME/.local/cache/gog-function"
 
 __gog_fetch-today-calendar() {
@@ -69,8 +60,8 @@ __query-today-tasks() {
     | cut -f3-
 }
 
-__gog_fzf-today-calendar() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-today-calendar() {
+  local popup="$HOME/bin/omni/popup.sh"
   local fzf_opts="--with-nth=1..4 --delimiter=$'\t' --preview-window=hidden"
   local selected
   selected="$(__query-today-calendar "$@" | "$popup" $fzf_opts)"
@@ -82,8 +73,8 @@ __gog_fzf-today-calendar() {
   [[ -n "$url" ]] && "${BROWSER:-open}" "$url"
 }
 
-__gog_fzf-today-tasks() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-today-tasks() {
+  local popup="$HOME/bin/omni/popup.sh"
   local fzf_opts="--with-nth=1..4 --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x"
   local selected key
   selected="$(__query-today-tasks "$@" | "$popup" $fzf_opts)"
@@ -111,8 +102,8 @@ __gog_fzf-today-tasks() {
   fi
 }
 
-__gog_fzf-today-all() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-today-all() {
+  local popup="$HOME/bin/omni/popup.sh"
   local fzf_opts="--with-nth=1..4 --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x"
   local selected key
   selected="$({ __query-today-calendar "$@"; __query-today-tasks "$@"; } | "$popup" $fzf_opts)"
@@ -142,6 +133,6 @@ __gog_fzf-today-all() {
   fi
 }
 
-alias c='__gog_fzf-today-calendar'
-alias t='__gog_fzf-today-tasks'
-alias tc='__gog_fzf-today-all'
+alias c='__omni-fzf-today-calendar'
+alias t='__omni-fzf-today-tasks'
+alias tc='__omni-fzf-today-all'

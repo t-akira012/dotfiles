@@ -16,8 +16,8 @@ __query-todo() {
   [[ -f "$TASK_MD" ]] && grep -n '^ *\- \[[ x]\]' "$TASK_MD"
 }
 
-__biz_fzf-todo() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-todo() {
+  local popup="$HOME/bin/omni/popup.sh"
   local selected
   selected="$(__query-todo | "$popup" --expect=ctrl-x,ctrl-o)"
 
@@ -34,11 +34,11 @@ __biz_fzf-todo() {
     else
       sed -i '' "${line_num}s/\- \[ \]/- [x]/" "$TASK_MD"
     fi
-    __biz_fzf-todo
+    __omni-fzf-todo
   elif [[ "$key" == "ctrl-o" ]]; then
     local stamp=$(date '+%m/%d %H:%M')
     sed -i '' "${line_num}s|$| ${stamp}|" "$TASK_MD"
-    __biz_fzf-todo
+    __omni-fzf-todo
   else
     if ! tmux select-window -t :9 2>/dev/null; then
       tmux new-window -t :9 -n doc
@@ -50,5 +50,3 @@ __biz_fzf-todo() {
     fi
   fi
 }
-
-alias t='__biz_fzf-todo'

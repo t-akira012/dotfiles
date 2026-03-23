@@ -6,10 +6,10 @@ __action-tmux-windows() {
   tmux select-window -t "${1%%:*}"
 }
 
-__fzf-tmux-select-window() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-tmux-select-window() {
+  local popup="$HOME/bin/omni/popup.sh"
   local selected
   selected=$(__query-tmux-windows | "$popup")
   [[ -n "$selected" ]] && __action-tmux-windows "$selected"
 }
-alias tw='__fzf-tmux-select-window'
+alias tw='__omni-fzf-tmux-select-window'

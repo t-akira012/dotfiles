@@ -1,4 +1,4 @@
-# fzf-omni-search 列定義
+# omni-search 列定義
 
 ## 列構造
 
@@ -41,7 +41,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 
 - データ生成関数は全て `__query-*` を命名規則とする
 - 出力はタブ区切り、改行区切りリスト
-- col1（型）は `__fzf-omni-search` が型対応表に基づき付与。`__query-*` は col2 以降を出力する
+- col1（型）は `__omni-engine-search` が型対応表に基づき付与。`__query-*` は col2 以降を出力する
 - col2-5 は表示列。隠蔽データは必ず col6+ に配置すること（col2-5 に隠蔽列を置くのはschema違反）
 - 隠蔽列がある場合、col2-5 を空タブで埋めて col6+ に配置する
 
@@ -54,7 +54,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 ## __action-* 命名規則
 
 - アクション関数は全て `__action-*` を命名規則とする（`__query-*` と同じサフィックス）
-- `__omni-action` は型から逆引きし `__action-{suffix}` にディスパッチする
+- `__omni-engine-dispatch` は型から逆引きし `__action-{suffix}` にディスパッチする
 - `__action-*` は `__query-*` 出力（型プレフィックスなし）を受け取る
 
 ## アーキテクチャ
@@ -62,7 +62,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 ```
 __query-* → 動的発見 ${(k)functions[(I)__query-*]}
          → 型対応表で短縮型付与（未登録は関数名サフィックス）
-         → __omni-format（一元整形、型非依存）
+         → __omni-engine-format（一元整形、型非依存）
          → fzf
-         → __omni-action → 逆引き対応表 → __action-*
+         → __omni-engine-dispatch → 逆引き対応表 → __action-*
 ```

@@ -6,8 +6,8 @@ __action-apps() {
   open -a "/Applications/$(echo "$1" | cut -f1)"
 }
 
-__fzf-open-app() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-open-app() {
+  local popup="$HOME/bin/omni/popup.sh"
   local app=$(__query-apps | "$popup")
   [[ -n "$app" ]] && open -a "/Applications/$app"
 }
@@ -15,16 +15,16 @@ __fzf-open-app() {
 __query-search() {
   local query="$1"
   [[ -z "$query" ]] && return 1
-  "$HOME/bin/func/curlDuckduckgo.sh" "$query"
+  "$HOME/bin/omni/curlDuckduckgo.sh" "$query"
 }
 
 __action-search() {
   open "$(echo "$1" | cut -f1)"
 }
 
-__fzf-search() {
+__omni-fzf-web-search() {
   local query="$*"
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local popup="$HOME/bin/omni/popup.sh"
   if [[ -z "$query" ]]; then
     query=$("$popup" --input "Search: ")
     [[ -z "$query" ]] && return 1
@@ -41,5 +41,5 @@ __fzf-search() {
   rm -f "$tmp_data"
 }
 
-alias s='__fzf-search'
-alias a='__fzf-open-app'
+alias s='__omni-fzf-web-search'
+alias a='__omni-fzf-open-app'

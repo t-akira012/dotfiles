@@ -16,10 +16,10 @@ __query-projects() {
   [[ -f "$PROJECT_MD" ]] && grep -n '^#' "$PROJECT_MD"
 }
 
-__fzf-projects() {
+__omni-fzf-projects() {
   [[ -z "$EDITOR" ]] && { echo "EDITOR is not set" >&2; return 1; }
 
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local popup="$HOME/bin/omni/popup.sh"
   local selected
   selected="$(__query-projects | "$popup")"
 
@@ -36,4 +36,4 @@ __fzf-projects() {
   fi
 }
 
-alias p='__fzf-projects'
+alias p='__omni-fzf-projects'

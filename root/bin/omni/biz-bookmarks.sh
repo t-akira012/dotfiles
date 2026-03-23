@@ -1,9 +1,3 @@
-# source functions
-for f in "$HOME/bin/func"/fzf-biz-*.sh; do
-  [[ -e "$f" ]] && source "$f"
-done
-
-# data sources: output "url\ttitle" lines
 __action-bookmarks() {
   open "$(echo "$1" | cut -f1)"
 }
@@ -33,9 +27,8 @@ __query-history() {
   rm -f "$tmp"
 }
 
-# select and open: takes "url\ttitle" from stdin
-__fzf-open-url() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+__omni-fzf-open-url() {
+  local popup="$HOME/bin/omni/popup.sh"
   local tmp_data=$(mktemp)
   cat > "$tmp_data"
   local selected
@@ -48,10 +41,9 @@ __fzf-open-url() {
   rm -f "$tmp_data"
 }
 
-__fzf-bookmarks() { __query-bookmarks | __fzf-open-url; }
-__fzf-chrome-history() { __query-history | __fzf-open-url; }
-__fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __fzf-open-url; }
+__omni-fzf-bookmarks() { __query-bookmarks | __omni-fzf-open-url; }
+__omni-fzf-chrome-history() { __query-history | __omni-fzf-open-url; }
+__omni-fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __omni-fzf-open-url; }
 
-# alias h='__fzf-chrome-history'
-# alias b='__fzf-bookmarks'
-alias b='__fzf-bookmarks-and-history'
+alias b='__omni-fzf-bookmarks-and-history'
+alias t='__omni-fzf-todo'
