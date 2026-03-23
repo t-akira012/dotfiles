@@ -1,4 +1,4 @@
-PROJECT_MD="$HOME/docs/doc/omnipj.md"
+PROJECT_MD="$HOME/docs/doc/DRAFT.md"
 
 __fzf-projects() {
   [[ -z "$EDITOR" ]] && { echo "EDITOR is not set" >&2; return 1; }
