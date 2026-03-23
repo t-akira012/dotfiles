@@ -178,7 +178,6 @@ alias gg='__fzf-ghq-cd'
 . $HOME/bin/func/fzf.sh
 [[ $(whoami) == 't-akira012' ]] && . $HOME/bin/func/fzf-prv.sh
 [[ $(whoami) != 't-akira012' ]] && . $HOME/bin/func/fzf-biz.sh
-. $HOME/bin/func/fzf-omni-launcher-function.sh
 . $HOME/bin/func/git.sh
 . $HOME/bin/func/git-fzf-worktree.sh
 . $HOME/bin/aws-lock.sh

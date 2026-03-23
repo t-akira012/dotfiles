@@ -1,4 +1,4 @@
-# 短縮型 → query関数サフィックス
+# サフィックス → 短縮型（単一情報源）
 typeset -A __omni_type_map=(
   apps        a
   search      s
@@ -9,16 +9,12 @@ typeset -A __omni_type_map=(
   todo        t
 )
 
-# 短縮型 → action関数サフィックス（逆引き）
-typeset -A __omni_action_map=(
-  a  apps
-  s  search
-  c  today-calendar
-  gt today-tasks
-  p  projects
-  b  bookmarks
-  t  todo
-)
+# 逆引き（短縮型 → サフィックス）を自動生成
+typeset -A __omni_action_map
+for __k __v in ${(kv)__omni_type_map}; do
+  __omni_action_map[$__v]=$__k
+done
+unset __k __v
 
 __omni-format() {
   awk -F'\t' -v OFS='\t' '{$2 = sprintf("%-50.50s", $2); print}'
@@ -33,12 +29,11 @@ __omni-action() {
   "__action-${suffix}" "$body"
 }
 
-__fzf-omni-search() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-  local query
-  query=$("$popup" --input "Omni: ")
+__omni-search() {
+  local query="$1"
   [[ -z "$query" ]] && return
 
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
   local tmp_data=$(mktemp)
   for func in ${(k)functions[(I)__query-*]}; do
     local suffix="${func#__query-}"
@@ -51,4 +46,10 @@ __fzf-omni-search() {
 
   __omni-action "$selected"
   rm -f "$tmp_data"
+}
+
+__fzf-omni-search() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local query=$("$popup" --input "Omni: ")
+  __omni-search "$query"
 }

@@ -1,17 +1,24 @@
 #!/bin/bash
-# run a single shell command via tmux popup input
-POPUP="$HOME/bin/func/fzf-tmux-popup.sh"
-CMD=$("$POPUP" --input "Launch: ")
-[[ -z "$CMD" ]] && exit 0
 
-check_cmd(){
-  if ! zsh -ic "command -v ${CMD%% *}" >/dev/null 2>&1; then
-    CMD=""
+direct_action() {
+  zsh -ic "$1"
+}
+
+omni_search() {
+  zsh -ic "__omni-search $1"
+}
+
+main() {
+  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
+  local cmd
+  cmd=$("$popup" --input "Omni: ")
+  [[ -z "$cmd" ]] && exit 0
+
+  if [[ ${#cmd} -le 2 ]]; then
+    direct_action "$cmd"
+  else
+    omni_search "$cmd"
   fi
 }
-case "${CMD%% *}" in
-  b|s|a|t|c|tc|p) check_cmd ;;
-  *) CMD="__fzf-search $CMD" ;;
-esac
-[[ -n "$CMD" ]] && zsh -ic "$CMD"
-exit 0
+
+main
