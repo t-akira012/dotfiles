@@ -134,3 +134,5 @@ alias fnamecopy='__fzf-filename-copy'
 alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
 
+
+. ./fzf-projects.sh
