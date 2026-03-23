@@ -40,7 +40,7 @@ __gog_get-today-calendar() {
     __gog_fetch-today-calendar
   fi
 
-  jq -r '.events[]? | "\t\t" + (.htmlLink // "") + "\t" + "(Calendar - " + (if .start.date then .start.date else ((.startLocal // .start.dateTime) | .[:10] + " " + .[11:16]) end) + " - " + (.calendarName // "") + ") " + (.summary // "(無題)")' "$__gog_cache_dir/calendar.json" \
+  jq -r '.events[]? | "\t\t" + (.htmlLink // "") + "\t" + "- (Calendar - " + (if .start.date then .start.date else ((.startLocal // .start.dateTime) | .[:10] + " " + .[11:16]) end) + " - " + (.calendarName // "") + ") " + (.summary // "(無題)")' "$__gog_cache_dir/calendar.json" \
     | sort -t$'\t' -k4
 }
 
