@@ -72,7 +72,7 @@ __gog_fzf-today-calendar() {
 
 __gog_fzf-today-tasks() {
   local selected key
-  selected="$(__gog_get-today-tasks "$@" | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-o)"
+  selected="$(__gog_get-today-tasks "$@" | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x)"
 
   [[ -z "$selected" ]] && return
 
@@ -80,11 +80,7 @@ __gog_fzf-today-tasks() {
   local line
   line="$(echo "$selected" | tail -1)"
 
-  if [[ "$key" == "ctrl-o" ]]; then
-    local url
-    url="$(echo "$line" | cut -f3)"
-    [[ -n "$url" ]] && "${BROWSER:-open}" "$url"
-  else
+  if [[ "$key" == "ctrl-x" ]]; then
     local tasklist_id task_id
     tasklist_id="$(echo "$line" | cut -f1)"
     task_id="$(echo "$line" | cut -f2)"
@@ -94,12 +90,16 @@ __gog_fzf-today-tasks() {
       gog tasks done "$tasklist_id" "$task_id"
     fi
     __gog_fetch-today-tasks &
+  else
+    local url
+    url="$(echo "$line" | cut -f3)"
+    [[ -n "$url" ]] && "${BROWSER:-open}" "$url"
   fi
 }
 
 __gog_fzf-today-all() {
   local selected key
-  selected="$({ __gog_get-today-calendar "$@"; __gog_get-today-tasks "$@"; } | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-o)"
+  selected="$({ __gog_get-today-calendar "$@"; __gog_get-today-tasks "$@"; } | fzf --with-nth=4.. --delimiter=$'\t' --preview-window=hidden --expect=ctrl-x)"
 
   [[ -z "$selected" ]] && return
 
@@ -107,11 +107,7 @@ __gog_fzf-today-all() {
   local line
   line="$(echo "$selected" | tail -1)"
 
-  if [[ "$key" == "ctrl-o" ]]; then
-    local url
-    url="$(echo "$line" | cut -f3)"
-    [[ -n "$url" ]] && "${BROWSER:-open}" "$url"
-  else
+  if [[ "$key" == "ctrl-x" ]]; then
     local tasklist_id task_id
     tasklist_id="$(echo "$line" | cut -f1)"
     task_id="$(echo "$line" | cut -f2)"
@@ -122,11 +118,11 @@ __gog_fzf-today-all() {
         gog tasks done "$tasklist_id" "$task_id"
       fi
       __gog_fetch-today-tasks &
-    else
-      local url
-      url="$(echo "$line" | cut -f3)"
-      [[ -n "$url" ]] && "${BROWSER:-open}" "$url"
     fi
+  else
+    local url
+    url="$(echo "$line" | cut -f3)"
+    [[ -n "$url" ]] && "${BROWSER:-open}" "$url"
   fi
 }
 
