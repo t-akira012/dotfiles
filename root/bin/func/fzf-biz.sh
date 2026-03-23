@@ -1,3 +1,8 @@
+# source functions
+for f in "$HOME/bin/func"/fzf-biz-*.sh; do
+  [[ -e "$f" ]] && source "$f"
+done
+
 # data sources: output "url\ttitle" lines
 __query-bookmarks() {
   local chrome_dir="$HOME/Library/Application Support/Google/Chrome"
