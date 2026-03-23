@@ -15,15 +15,18 @@ __biz_fzf-todo() {
   key="$(echo "$selected" | head -1)"
   line="$(echo "$selected" | tail -1)"
 
+  local line_num="${line%%:*}"
   if [[ "$key" == "ctrl-x" ]]; then
-    local line_num="${line%%:*}"
     if echo "$line" | grep -q '\- \[x\]'; then
       sed -i '' "${line_num}s/\- \[x\]/- [ ]/" "$TASK_MD"
     else
       sed -i '' "${line_num}s/\- \[ \]/- [x]/" "$TASK_MD"
     fi
-    __biz_fzf-todo
+  else
+    local stamp=$(date '+%m/%d %H:%M')
+    sed -i '' "${line_num}s/$/ ${stamp}/" "$TASK_MD"
   fi
+  __biz_fzf-todo
 }
 
 alias t='__biz_fzf-todo'
