@@ -26,7 +26,7 @@ __omni-action() {
   [[ -z "$selected" ]] && return
   local type="$(echo "$selected" | cut -f1)"
   local suffix="${__omni_action_map[$type]:-$type}"
-  local body="$(echo "$selected" | cut -f2- | sed 's/[[:space:]]*\t/\t/g; s/[[:space:]]*$//')"
+  local body="$(echo "$selected" | cut -f2-)"
   "__action-${suffix}" "$body"
 }
 
@@ -44,6 +44,7 @@ __omni-search() {
 
   local selected
   selected=$(cat "$tmp_data" | __omni-format | "$popup" "--with-nth=1..5 --delimiter=$'\t' --tabstop=8 --query=$query")
+  selected=$(echo "$selected" | sed 's/[[:space:]]*\t/\t/g; s/[[:space:]]*$//')
 
   __omni-action "$selected"
   rm -f "$tmp_data"
