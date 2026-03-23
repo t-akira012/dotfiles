@@ -16,7 +16,18 @@ __biz_fzf-todo() {
   line="$(echo "$selected" | tail -1)"
 
   local line_num="${line%%:*}"
-  if [[ "$key" == "ctrl-o" ]]; then
+  if [[ "$key" == "ctrl-x" ]]; then
+    if echo "$line" | grep -q '\- \[x\]'; then
+      sed -i '' "${line_num}s/\- \[x\]/- [ ]/" "$TASK_MD"
+    else
+      sed -i '' "${line_num}s/\- \[ \]/- [x]/" "$TASK_MD"
+    fi
+    __biz_fzf-todo
+  elif [[ "$key" == "ctrl-o" ]]; then
+    local stamp=$(date '+%m/%d %H:%M')
+    sed -i '' "${line_num}s|$| ${stamp}|" "$TASK_MD"
+    __biz_fzf-todo
+  else
     if ! tmux select-window -t :9 2>/dev/null; then
       tmux new-window -t :9 -n doc
       tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
@@ -25,18 +36,7 @@ __biz_fzf-todo() {
     else
       tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
     fi
-    return
-  elif [[ "$key" == "ctrl-x" ]]; then
-    if echo "$line" | grep -q '\- \[x\]'; then
-      sed -i '' "${line_num}s/\- \[x\]/- [ ]/" "$TASK_MD"
-    else
-      sed -i '' "${line_num}s/\- \[ \]/- [x]/" "$TASK_MD"
-    fi
-  else
-    local stamp=$(date '+%m/%d %H:%M')
-    sed -i '' "${line_num}s|$| ${stamp}|" "$TASK_MD"
   fi
-  __biz_fzf-todo
 }
 
 alias t='__biz_fzf-todo'
