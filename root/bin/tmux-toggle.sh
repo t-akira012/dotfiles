@@ -3,6 +3,10 @@ set -eux
 
 CURRENT_SESSION=$(tmux display-message -p -F "#{session_name}")
 
+if [[ "$CURRENT_SESSION" == "popup"* ]] ; then
+		tmux detach-client
+		exit 0
+fi
 if [[ "$CURRENT_SESSION" == "term_on_vim"* ]] ; then
 	$HOME/bin/tmux-popup.sh
 else
