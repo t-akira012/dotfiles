@@ -6,6 +6,7 @@ typeset -A __omni_type_map=(
   today-tasks gt
   projects    p
   bookmarks   b
+  history     h
   todo        t
 )
 

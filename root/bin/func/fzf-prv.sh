@@ -4,6 +4,14 @@ for f in "$HOME/bin/func"/fzf-prv-*.sh; do
 done
 
 # data sources: output "url\ttitle" lines
+__action-bookmarks() {
+  open "$(echo "$1" | cut -f1)"
+}
+
+__action-history() {
+  open "$(echo "$1" | cut -f1)"
+}
+
 __query-bookmarks() {
   local file="$HOME/src/github.com/t-akira012/prv/README.md"
   [[ -e "$file" ]] && sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\2\t\1/p' "$file"
