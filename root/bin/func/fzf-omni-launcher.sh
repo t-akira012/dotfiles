@@ -10,7 +10,7 @@ check_cmd(){
   fi
 }
 case "${CMD%% *}" in
-  b|s|a|t|c|tc) check_cmd ;;
+  b|s|a|t|c|tc|p) check_cmd ;;
   *) CMD="__fzf-search $CMD" ;;
 esac
 [[ -n "$CMD" ]] && zsh -ic "$CMD"
