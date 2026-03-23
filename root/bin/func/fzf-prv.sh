@@ -1,3 +1,8 @@
+# source functions
+for f in "$HOME/bin/func"/fzf-prv-*.sh; do
+  [[ -e "$f" ]] && source "$f"
+done
+
 # data sources: output "url\ttitle" lines
 __query-bookmarks() {
   local file="$HOME/src/github.com/t-akira012/prv/README.md"
