@@ -198,6 +198,7 @@ alias s='__fzf-search'
 alias b='__fzf-bookmarks-and-history'
 alias o='__fzf-open'
 alias a='__fzf-open-app'
+alias tw='$HOME/bin/func/fzf-tmux-window.sh'
 # replace zoxide
 # alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
@@ -210,4 +211,3 @@ alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
 alias dev='__fzf-open-code-workspace'
 
-alias t='$HOME/bin/func/fzf-tmux-window.sh'
