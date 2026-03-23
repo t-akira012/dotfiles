@@ -6,23 +6,21 @@
 #   fzf-tmux-popup.sh --input "Prompt: "               -> user input in popup
 
 input_mode() {
-  local prompt="${1:-Input: }"
-  local tmp=$(mktemp)
+  local PROMPT="${1:-Input: }"
+  local TMP=$(mktemp)
   tmux display-popup -E -w 60% -h 3 \
-    "bash -c 'read -r -e -p \"$prompt\" q && printf \"%s\" \"\$q\" > \"$tmp\"'"
-  cat "$tmp"
-  rm -f "$tmp"
+    "bash -c 'read -r -e -p \"$PROMPT\" q && printf \"%s\" \"\$q\" > \"$TMP\"'"
+  cat "$TMP"
+  rm -f "$TMP"
 }
 
 select_mode() {
-  local tmp_in=$(mktemp)
-  local tmp_out=$(mktemp)
-  cat > "$tmp_in"
-  local fzf_opts=""
-  [[ -n "$1" ]] && fzf_opts="--preview '$1'"
-  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$tmp_in' > '$tmp_out'" || true
-  cat "$tmp_out"
-  rm -f "$tmp_in" "$tmp_out"
+  local INPUT_FZF_LIST=$(mktemp)
+  local OUTPUT_FZF_SELECTED=$(mktemp)
+  cat > "$INPUT_FZF_LIST"
+  tmux display-popup -E -w 80% -h 60% "fzf < '$INPUT_FZF_LIST' > '$OUTPUT_FZF_SELECTED'" || true
+  cat "$OUTPUT_FZF_SELECTED"
+  rm -f "$INPUT_FZF_LIST" "$OUTPUT_FZF_SELECTED"
 }
 
 main() {
