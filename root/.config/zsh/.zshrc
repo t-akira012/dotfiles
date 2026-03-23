@@ -178,6 +178,7 @@ alias gg='__fzf-ghq-cd'
 . $HOME/bin/func/fzf.sh
 . $HOME/bin/func/git.sh
 . $HOME/bin/func/git-fzf-worktree.sh
+. $HOME/bin/func/gog-functions.sh
 . $HOME/bin/aws-lock.sh
 
 # alias
