@@ -57,6 +57,14 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 - `__omni-engine-dispatch` は型から逆引きし `__action-{suffix}` にディスパッチする
 - `__action-*` は `__query-*` 出力（型プレフィックスなし）を受け取る
 
+## __omni-autofetch-* 命名規則
+
+- バックグラウンド自動取得関数は `__omni-autofetch-*` を命名規則とする
+- `omni` 起動時に `__omni-autofetch-run` をバックグラウンドで呼び出す
+- `__omni-autofetch-run` は動的発見 `${(k)functions[(I)__omni-autofetch-*]}` で走査し、1時間以上経過していればバックグラウンドで実行
+- タイムスタンプは `$HOME/.cache/omni/unixtime` に記録
+- `prv-*.sh` に配置（prv マシンのみで発火）
+
 ## アーキテクチャ
 
 ```
@@ -65,4 +73,8 @@ __query-* → 動的発見 ${(k)functions[(I)__query-*]}
          → __omni-engine-format（一元整形、型非依存）
          → fzf
          → __omni-engine-dispatch → 逆引き対応表 → __action-*
+
+__omni-autofetch-* → 動的発見 ${(k)functions[(I)__omni-autofetch-*]}
+                   → 1時間経過判定（$HOME/.cache/omni/unixtime）
+                   → バックグラウンド実行（& fork）
 ```
