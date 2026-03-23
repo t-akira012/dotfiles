@@ -176,6 +176,8 @@ alias gg='__fzf-ghq-cd'
 . $HOME/bin/path/aliases.sh
 . $HOME/bin/path/export.sh
 . $HOME/bin/func/fzf.sh
+. $HOME/bin/func/fzf-private.sh
+. $HOME/bin/func/fzf-omni-launcher.sh
 . $HOME/bin/func/git.sh
 . $HOME/bin/func/git-fzf-worktree.sh
 . $HOME/bin/func/gog-functions.sh

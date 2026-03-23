@@ -121,84 +121,8 @@ __fzf-multi-move(){
   fi
 }
 
-__fzf-open-app(){
-    local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-    local app=$(find /Applications -name "*.app" -type d -maxdepth 2 | sed 's|/Applications/||' | "$popup")
-    [[ -n "$app" ]] && open -a "/Applications/$app"
-}
 
-
-__fzf-open-code-workspace(){
-    local workspace=$(ls -1 $HOME/dev | fzf)
-    [ -n "$workspace" ] && open $HOME/dev/$workspace
-}
-
-# data sources: output "url\ttitle" lines
-__query-bookmarks() {
-  local file="$HOME/src/github.com/t-akira012/prv/README.md"
-  [[ -e "$file" ]] && sed -n 's/.*\[\([^]]*\)\](\([^)]*\)).*/\2\t\1/p' "$file"
-}
-
-__query-history() {
-  local profile_dir="$HOME/Library/Application Support/zen/Profiles"
-  local dbs=("${(@f)$(find "$profile_dir" -name "places.sqlite" 2>/dev/null)}")
-  [[ ${#dbs[@]} -eq 0 ]] && return 1
-  local tmp=$(mktemp)
-  {
-    for db in "${dbs[@]}"; do
-      command cp "$db" "$tmp"
-      sqlite3 "$tmp" "SELECT p.url, p.title FROM moz_places p INNER JOIN moz_historyvisits v ON p.id = v.place_id ORDER BY v.visit_date DESC LIMIT 5000;" -separator $'\t'
-    done
-  } | awk -F'\t' '!seen[$1]++'
-  rm -f "$tmp"
-}
-
-# select and open: takes "url\ttitle" from stdin
-__fzf-open-url() {
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-  local tmp_data=$(mktemp)
-  cat > "$tmp_data"
-  local selected
-  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
-  if [[ -n "$selected" ]]; then
-    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
-    local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
-    open "$url"
-  fi
-  rm -f "$tmp_data"
-}
-
-__fzf-bookmarks() { __query-bookmarks | __fzf-open-url; }
-__fzf-firefox-history() { __query-history | __fzf-open-url; }
-__fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __fzf-open-url; }
-
-__fzf-search() {
-  local query="$*"
-  local popup="$HOME/bin/func/fzf-tmux-popup.sh"
-  if [[ -z "$query" ]]; then
-    query=$("$popup" --input "Search: ")
-    [[ -z "$query" ]] && return 1
-  fi
-  local tmp_data=$(mktemp)
-  "$HOME/bin/func/curlDuckduckgo.sh" "$query" > "$tmp_data"
-  local selected
-  selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
-  if [[ -n "$selected" ]]; then
-    local line=$(grep -nF "$selected" <(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data") | head -1 | cut -d: -f1)
-    local url=$(sed -n "${line}p" "$tmp_data" | cut -f1)
-    open "$url"
-  fi
-  rm -f "$tmp_data"
-}
-alias s='__fzf-search'
-
-
-# alias h='__fzf-firefox-history'
-# alias b='__fzf-bookmarks'
-alias b='__fzf-bookmarks-and-history'
 alias o='__fzf-open'
-alias a='__fzf-open-app'
-alias tw='$HOME/bin/func/fzf-tmux-window.sh'
 # replace zoxide
 # alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
@@ -209,5 +133,4 @@ alias cdg='ghq-cd'
 alias fnamecopy='__fzf-filename-copy'
 alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
-alias dev='__fzf-open-code-workspace'
 
