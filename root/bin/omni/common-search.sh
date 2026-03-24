@@ -20,7 +20,11 @@ done
 unset __k __v
 
 __omni-engine-format() {
-  awk -F'\t' -v OFS='\t' '{$2 = sprintf("%-50.50s", $2); print}'
+  awk -F'\t' -v OFS='\t' '{
+    $2 = sprintf("%-50.50s", $2)
+    if ($3 != "") $3 = sprintf("%-60.60s", $3)
+    print
+  }'
 }
 
 __omni-engine-dispatch() {

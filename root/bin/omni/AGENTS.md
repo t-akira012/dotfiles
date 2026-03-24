@@ -13,6 +13,13 @@ col6+: 隠蔽文字列（action用メタデータ）
 
 fzf: `--with-nth=1..5 --delimiter=$'\t'`
 
+## view 定義
+
+- URL を表記するスキーマでは、常に url title の順で view する
+- col2(url): 50文字で切り詰め・伸ばし
+- col3(title): 60文字で切り詰め・伸ばし
+- 整形は `__omni-engine-format` が一元的に行う
+
 ## __query-* 命名規則
 
 - データ生成関数は全て `__query-*` を命名規則とする
