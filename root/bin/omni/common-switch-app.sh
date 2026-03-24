@@ -10,8 +10,9 @@ __action-switch-app() {
 
 __omni-fzf-switch-app() {
   local popup="$HOME/bin/omni/popup.sh"
+  local fzf_opts="--with-nth=2..5 --delimiter=$'\t'"
   local selected
-  selected=$(__query-switch-app | sed 's/^/_\t/' | __omni-engine-format | "$popup" --with-nth=2..5 --delimiter=$'\t' "$*")
+  selected=$(__query-switch-app | sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts "$*")
   [[ -n "$selected" ]] && __action-switch-app "$selected"
 }
 
