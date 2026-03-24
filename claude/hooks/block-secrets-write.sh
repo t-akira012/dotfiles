@@ -4,10 +4,12 @@ set -euo pipefail
 
 SECRETS_PATTERNS=(
   'AKIA[0-9A-Z]{16}'
+  'ASIA[0-9A-Z]{16}'
+  '[a-zA-Z0-9+/]{40}'
   'sk-[a-zA-Z0-9]{20,}'
   'ghp_[a-zA-Z0-9]{36}'
   'gho_[a-zA-Z0-9]{36}'
-  'glpat-[a-zA-Z0-9\-_]{20,}'
+  'glpat-[a-zA-Z0-9_-]{20,}'
   '-----BEGIN.*PRIVATE KEY'
   'password\s*=\s*['"'"'"][^'"'"'"]+['"'"'"]'
 )
