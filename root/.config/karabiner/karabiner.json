@@ -5,6 +5,7 @@
                 "rules": [
                     {
                         "description": "Change cmd+tab to F13 (for Raycast Window Switch)",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": {
