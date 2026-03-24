@@ -1,11 +1,7 @@
-__query-search() {
+__manual_query-search() {
   local query="$1"
   [[ -z "$query" ]] && return 1
   "$HOME/bin/omni/curlDuckduckgo.sh" "$query"
-}
-
-__action-search() {
-  open "$(echo "$1" | cut -f1)"
 }
 
 __omni-fzf-web-search() {
@@ -16,7 +12,7 @@ __omni-fzf-web-search() {
     [[ -z "$query" ]] && return 1
   fi
   local tmp_data=$(mktemp)
-  __query-search "$query" > "$tmp_data"
+  __manual_query-search "$query" > "$tmp_data"
   local selected
   selected=$(awk -F'\t' '{printf "%-40.40s  %.70s\n", $1, $2}' "$tmp_data" | "$popup")
   if [[ -n "$selected" ]]; then

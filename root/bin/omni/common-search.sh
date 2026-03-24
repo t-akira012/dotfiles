@@ -1,7 +1,6 @@
 # サフィックス → 短縮型（単一情報源）
 typeset -A __omni_engine_type_map=(
   apps        a
-  search      s
   today-calendar c
   today-tasks gt
   projects    p
