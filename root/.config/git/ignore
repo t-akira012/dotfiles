@@ -14,4 +14,9 @@ Thumbs.db
 
 TF_VAR*
 .env
+.env.*
+*.secret
+*credential*
+*.pem
+*.key
 .serena

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# global pre-commit hook
+# git config --global core.hooksPath $HOME/.config/git-hooks
+
+scan_secrets() {
+  if command -v betterleaks >/dev/null 2>&1; then
+    betterleaks protect --staged --redact
+  elif command -v gitleaks >/dev/null 2>&1; then
+    gitleaks protect --staged --redact
+  else
+    echo "WARNING: betterleaks/gitleaks not installed. Skipping secrets scan." >&2
+  fi
+}
+
+detect_invisible_unicode() {
+  if git diff --cached --diff-filter=ACM -- '*.md' | grep -P '[\x{200B}-\x{200F}\x{2028}-\x{202F}\x{2060}-\x{206F}\x{FEFF}]' >/dev/null 2>&1; then
+    echo "ERROR: Invisible Unicode characters detected in .md files" >&2
+    exit 1
+  fi
+}
+
+main() {
+  scan_secrets
+  detect_invisible_unicode
+}
+
+main

@@ -5,3 +5,4 @@
 !deploy.sh
 !README.md
 !commands/*
+!hooks/*

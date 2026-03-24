@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+
+HOOKS_DIR="$HOME/.config/git-hooks"
+
+deploy() {
+  mkdir -p "$HOOKS_DIR"
+  cp ./pre-push "$HOOKS_DIR/pre-push"
+  cp ./pre-commit "$HOOKS_DIR/pre-commit"
+  chmod +x "$HOOKS_DIR/pre-push" "$HOOKS_DIR/pre-commit"
+  git config --global core.hooksPath "$HOOKS_DIR"
+  echo "Deployed to $HOOKS_DIR"
+}
+
+main() {
+  deploy
+}
+
+main
