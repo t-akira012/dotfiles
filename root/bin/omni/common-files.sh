@@ -39,7 +39,7 @@ __action-files-open-dir() {
 __omni-fzf-files() {
   local popup="$HOME/bin/omni/popup.sh"
   local result key selected
-  result=$(__manual_query-files | "$popup" "--expect=ctrl-o --query=$*")
+  result=$(__manual_query-files | "$popup" "--expect=ctrl-o" "$*")
   key=$(echo "$result" | head -1)
   selected=$(echo "$result" | tail -1)
   [[ -z "$selected" ]] && return

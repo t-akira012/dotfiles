@@ -49,7 +49,7 @@ __omni-engine-search() {
   done > "$tmp_data"
 
   local selected
-  selected=$(cat "$tmp_data" | __omni-engine-format | "$popup" "--with-nth=1..5 --delimiter=$'\t' --tabstop=8 --query=$query")
+  selected=$(cat "$tmp_data" | __omni-engine-format | "$popup" "--with-nth=1..5 --delimiter=$'\t' --tabstop=8" "$query")
   selected=$(echo "$selected" | sed 's/[[:space:]]*\t/\t/g; s/[[:space:]]*$//')
 
   __omni-engine-dispatch "$selected"

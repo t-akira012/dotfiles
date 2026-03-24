@@ -23,11 +23,13 @@ save_history() {
 }
 
 select_mode() {
-  local fzf_opts="$*"
+  local query="${@: -1}"
+  local fzf_opts="${*:1:$#-1}"
   local input_list=$(mktemp)
   local output_file=$(mktemp)
   cat > "$input_list"
-  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$input_list' > '$output_file'" || true
+  tmux display-popup -E -w 80% -h 60% \
+    "fzf $fzf_opts --query='$query' < '$input_list' > '$output_file'" || true
   cat "$output_file"
   rm -f "$input_list" "$output_file"
   return 0
@@ -35,7 +37,7 @@ select_mode() {
 
 main() {
   if [[ "$1" != "--input" ]]; then
-    select_mode "$1"
+    select_mode "$@"
     return
   fi
 

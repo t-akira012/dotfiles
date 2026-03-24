@@ -8,7 +8,7 @@ __action-apps() {
 
 __omni-fzf-open-app() {
   local popup="$HOME/bin/omni/popup.sh"
-  local app=$(__query-apps | "$popup" "--query=$*")
+  local app=$(__query-apps | "$popup" "" "$*")
   [[ -n "$app" ]] && open -a "/Applications/$app"
 }
 

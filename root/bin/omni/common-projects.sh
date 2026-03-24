@@ -19,7 +19,7 @@ __omni-fzf-projects() {
 
   local popup="$HOME/bin/omni/popup.sh"
   local selected
-  selected="$(__query-projects | "$popup" "--query=$*")"
+  selected="$(__query-projects | "$popup" "" "$*")"
 
   [[ -z "$selected" ]] && return
 

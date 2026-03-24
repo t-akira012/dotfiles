@@ -36,9 +36,9 @@ __action-urls() {
 
 __omni-fzf-urls() {
   local popup="$HOME/bin/omni/popup.sh"
-  local fzf_opts="--with-nth=2..5 --delimiter=$'\t' --query=$*"
+  local fzf_opts="--with-nth=2..5 --delimiter=$'\t'"
   local selected
-  selected=$(__query-urls | sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts)
+  selected=$(__query-urls | sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts "$*")
   [[ -n "$selected" ]] && __action-urls "$selected"
 }
 alias u='__omni-fzf-urls'

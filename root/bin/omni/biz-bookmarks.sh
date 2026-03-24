@@ -29,9 +29,9 @@ __query-history() {
 
 __omni-fzf-open-url() {
   local popup="$HOME/bin/omni/popup.sh"
-  local fzf_opts="--with-nth=2..5 --delimiter=$'\t' --query=$*"
+  local fzf_opts="--with-nth=2..5 --delimiter=$'\t'"
   local selected
-  selected=$(sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts)
+  selected=$(sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts "$*")
   [[ -n "$selected" ]] && open "$(echo "$selected" | awk -F'\t' '{print $NF}')"
 }
 

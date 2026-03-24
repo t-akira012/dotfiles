@@ -21,14 +21,14 @@ direct_action() {
   local resolved
   resolved=$(zsh -ic "whence $cmd" 2>/dev/null)
   if [[ "$resolved" == __* ]]; then
-    zsh -ic "$cmd $args"
+    zsh -ic "$cmd '$args'"
   else
     send_to_pane "$cmd $args"
   fi
 }
 
 omni_search() {
-  zsh -ic "__omni-engine-search $1"
+  zsh -ic "__omni-engine-search '$1'"
 }
 
 main() {

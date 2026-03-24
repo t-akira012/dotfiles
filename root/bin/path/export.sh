@@ -123,7 +123,8 @@ _gen_fzf_default_opts() {
 	else
 	  export COLOR_OPTS="$FZF_DARK"
 	fi
-	local OPTS="--bind='ctrl-o:execute(open {}),ctrl-z:ignore,btab:up,tab:down' --height=100% --layout=reverse --cycle --keep-right --border --info=inline --exit-0 --preview-window=down,30%,sharp --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
+	# local OPTS="--bind='ctrl-o:execute(open {}),ctrl-z:ignore,btab:up,tab:down' --height=100% --layout=reverse --cycle --keep-right --border --info=inline --preview-window=down,30%,sharp --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
+	local OPTS="--bind='ctrl-o:execute(open {}),ctrl-z:ignore,btab:up,tab:down' --height=100% --layout=reverse --cycle --keep-right --border --info=inline --preview-window=down,30%,sharp"
 	export FZF_DEFAULT_OPTS="$COLOR_OPTS $OPTS"
 	export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!.git/*"'
 	export FZF_TMUX_OPTS="-p 80%"

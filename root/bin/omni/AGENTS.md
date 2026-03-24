@@ -53,7 +53,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 
 - standalone fzf 関数は `__omni-fzf-*` を命名規則とする
 - 整形は `__omni-engine-format` を一元使用する。standalone では dummy type を付与して通す: `sed 's/^/_\t/' | __omni-engine-format`
-- 引数は `--query=$*` で popup に渡し、fzf の初期クエリとする（例: `b chatgpt` → fzf が `chatgpt` で絞り込み）
+- 引数は `--query='$*'` で popup に渡す（シングルクォートで空白を保護。例: `b chatgpt ai` → fzf が `chatgpt ai` で絞り込み）
 
 ## omni ルーティング（6段）
 

@@ -24,7 +24,7 @@ __action-dirs() {
 __omni-fzf-dirs() {
   local popup="$HOME/bin/omni/popup.sh"
   local selected
-  selected=$(__manual_query-dirs | "$popup" "--query=$*")
+  selected=$(__manual_query-dirs | "$popup" "" "$*")
   [[ -n "$selected" ]] && __action-dirs "$selected"
 }
 alias d='__omni-fzf-dirs'
