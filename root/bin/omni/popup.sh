@@ -5,29 +5,55 @@
 #   echo "data" | popup.sh "preview cmd {}"   -> select with preview
 #   popup.sh --input "Prompt: "               -> user input in popup
 
-input_mode() {
-  local PROMPT="${1:-Input: }"
-  local TMP=$(mktemp)
+input_read() {
+  local prompt="$1" output_file="$2"
   tmux display-popup -E -w 60% -h 3 \
-    "bash -c 'read -r -e -p \"$PROMPT\" q && printf \"%s\" \"\$q\" > \"$TMP\"'"
-  cat "$TMP"
-  rm -f "$TMP"
+    "bash -c 'read -r -e -p \"$prompt\" q && printf \"%s\" \"\$q\" > \"$output_file\"'"
+}
+
+input_fzf() {
+  local prompt="$1" output_file="$2" history_file="$3"
+  tmux display-popup -E -w 60% -h 40% \
+    "fzf --prompt='$prompt' --no-info --scheme=history --tac --bind='tab:replace-query,enter:become(echo {q})' < '$history_file' > '$output_file'" || true
+}
+
+save_history() {
+  echo "$1" >> "$2"
+  sort "$2" | uniq > "$2.tmp" && mv "$2.tmp" "$2"
 }
 
 select_mode() {
   local fzf_opts="$*"
-  local INPUT_FZF_LIST=$(mktemp)
-  local OUTPUT_FZF_SELECTED=$(mktemp)
-  cat > "$INPUT_FZF_LIST"
-  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$INPUT_FZF_LIST' > '$OUTPUT_FZF_SELECTED'" || true
-  cat "$OUTPUT_FZF_SELECTED"
-  rm -f "$INPUT_FZF_LIST" "$OUTPUT_FZF_SELECTED"
+  local input_list=$(mktemp)
+  local output_file=$(mktemp)
+  cat > "$input_list"
+  tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$input_list' > '$output_file'" || true
+  cat "$output_file"
+  rm -f "$input_list" "$output_file"
   return 0
 }
 
 main() {
-  [[ "$1" == "--input" ]] && { input_mode "$2"; return; }
-  select_mode "$1"
+  if [[ "$1" != "--input" ]]; then
+    select_mode "$1"
+    return
+  fi
+
+  local prompt="${2:-Input: }"
+  local history_file="$HOME/.cache/omni/history"
+  local output_file=$(mktemp)
+  mkdir -p "${history_file%/*}"
+  touch "$history_file"
+
+  # fzfは使わない
+  input_read "$prompt" "$output_file"
+
+  local result
+  result=$(head -1 "$output_file")
+  rm -f "$output_file"
+  [[ -z "$result" ]] && return
+  save_history "$result" "$history_file"
+  printf '%s' "$result"
 }
 
 main "$@"

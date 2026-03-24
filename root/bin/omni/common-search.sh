@@ -10,8 +10,6 @@ typeset -A __omni_engine_type_map=(
   todo        t
   tmux-windows tw
   urls        u
-  dirs        d
-  files       f
 )
 
 # 逆引き（短縮型 → サフィックス）を自動生成

@@ -5,7 +5,7 @@
 TASK_MD="$HOME/docs/doc/DRAFT.md"
 PROJECT_MD="$HOME/docs/doc/DRAFT.md"
 URLS_MD="$HOME/docs/doc/urls.md"
-__gog_cache_dir="$HOME/.local/cache/gog-function"
+__gog_cache_dir="$HOME/.cache/omni/gog-function"
 INCLUDE_EXTS=(
   png jpg jpeg gif webp svg bmp ico tiff tif heic heif avif
   mp4 mkv avi mov wmv flv webm m4v mpg mpeg ts
