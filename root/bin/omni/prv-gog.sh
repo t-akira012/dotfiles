@@ -35,7 +35,7 @@ __action-today-tasks() {
 }
 
 __query-today-calendar() {
-  if [[ "$1" == "reload" ]] || [[ ! -f "$__gog_cache_dir/calendar.json" ]]; then
+  if [[ "$1" == "r" ]] || [[ ! -f "$__gog_cache_dir/calendar.json" ]]; then
     __gog_fetch-today-calendar
   fi
 
@@ -47,7 +47,7 @@ __query-today-tasks() {
   local today
   today="$(date +%Y-%m-%d)"
 
-  if [[ "$1" == "reload" ]] || [[ ! -f "$__gog_cache_dir/tasks.json" ]]; then
+  if [[ "$1" == "r" ]] || [[ ! -f "$__gog_cache_dir/tasks.json" ]]; then
     __gog_fetch-today-tasks
   fi
 
