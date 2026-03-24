@@ -987,7 +987,7 @@
                         ]
                     },
                     {
-                        "description": "Activate Ghostty and launch tmux omni-launcher",
+                        "description": "Ctrl+] to activate Ghostty and launch omni-launcher (outside Ghostty)",
                         "manipulators": [
                             {
                                 "conditions": [
@@ -1000,29 +1000,23 @@
                                 ],
                                 "from": {
                                     "key_code": "close_bracket",
-                                    "modifiers": {
-                                        "mandatory": ["control"]
-                                    }
+                                    "modifiers": { "mandatory": ["control"] }
                                 },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt"
-                                    }
-                                ],
+                                "to": [{ "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt" }],
                                 "type": "basic"
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Cmd+/ to activate Ghostty and launch omni-launcher",
+                        "enabled": false,
+                        "manipulators": [
                             {
                                 "from": {
                                     "key_code": "slash",
-                                    "modifiers": {
-                                        "mandatory": ["command"]
-                                    }
+                                    "modifiers": { "mandatory": ["command"] }
                                 },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt"
-                                    }
-                                ],
+                                "to": [{ "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt" }],
                                 "type": "basic"
                             }
                         ]
