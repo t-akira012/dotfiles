@@ -13,34 +13,6 @@ col6+: 隠蔽文字列（action用メタデータ）
 
 fzf: `--with-nth=1..5 --delimiter=$'\t'`
 
-## 型対応表
-
-| 短縮型 | query関数 | action関数 |
-|---|---|---|
-| `a` | `__query-apps` | `__action-apps` |
-| `s` | `__query-search` | `__action-search` |
-| `c` | `__query-today-calendar` | `__action-today-calendar` |
-| `gt` | `__query-today-tasks` | `__action-today-tasks` |
-| `p` | `__query-projects` | `__action-projects` |
-| `b` | `__query-bookmarks` | `__action-bookmarks` |
-| `h` | `__query-history` | `__action-history` |
-| `t` | `__query-todo` | `__action-todo` |
-| `u` | `__query-urls` | `__action-urls` |
-
-## 各ソースの列割り当て
-
-| 短縮型 | col2 | col3 | col4 | col5 | col6+ (隠蔽) |
-|---|---|---|---|---|---|
-| `a` | AppName | | | | |
-| `s` | url | title | | | |
-| `c` | 表示文字列 | | | | url |
-| `gt` | 表示文字列 | | | | url |
-| `p` | 行番号:見出し | | | | |
-| `b` | url | title | | | url |
-| `h` | url | title | | | url |
-| `t` | 行番号:タスク行 | | | | |
-| `u` | url | title | | | url |
-
 ## __query-* 命名規則
 
 - データ生成関数は全て `__query-*` を命名規則とする
@@ -60,6 +32,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 - アクション関数は全て `__action-*` を命名規則とする（`__query-*` と同じサフィックス）
 - `__omni-engine-dispatch` は型から逆引きし `__action-{suffix}` にディスパッチする
 - `__action-*` は `__query-*` 出力（型プレフィックスなし）を受け取る
+- 隠蔽列からの値取得は `awk -F'\t' '{print $NF}'` で末尾フィールドを参照する（フィールド番号に依存しない）
 
 ## __omni-autofetch-* 命名規則
 
@@ -68,6 +41,23 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 - `__omni-autofetch-run` は動的発見 `${(k)functions[(I)__omni-autofetch-*]}` で走査し、1時間以上経過していればバックグラウンドで実行
 - タイムスタンプは `$HOME/.cache/omni/unixtime` に記録
 - `prv-*.sh` に配置（prv マシンのみで発火）
+
+## __omni-fzf-* 規則
+
+- standalone fzf 関数は `__omni-fzf-*` を命名規則とする
+- 整形は `__omni-engine-format` を一元使用する。standalone では dummy type を付与して通す: `sed 's/^/_\t/' | __omni-engine-format`
+- 引数は `--query=$*` で popup に渡し、fzf の初期クエリとする（例: `b chatgpt` → fzf が `chatgpt` で絞り込み）
+
+## omni ルーティング（6段）
+
+```
+"kill"              → __omni-fzf-kill-process
+"q"                 → tmux display-panes
+数字                → tmux select-window
+1-2文字 + スペース  → direct_action(cmd, args)
+1-2文字             → direct_action(cmd)
+3文字以上           → __omni-engine-search
+```
 
 ## アーキテクチャ
 
