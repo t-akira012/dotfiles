@@ -37,4 +37,6 @@ __omni-fzf-bookmarks() { __query-bookmarks | __omni-fzf-open-url "$@"; }
 __omni-fzf-zen-history() { __query-history | __omni-fzf-open-url "$@"; }
 __omni-fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __omni-fzf-open-url "$@"; }
 
-alias b='__omni-fzf-bookmarks-and-history'
+alias b='__omni-fzf-bookmarks'
+alias h='__omni-fzf-zen-history'
+alias bh='__omni-fzf-bookmarks-and-history'
