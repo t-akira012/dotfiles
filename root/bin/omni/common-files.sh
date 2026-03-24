@@ -1,4 +1,4 @@
-__manual_query-files() {
+__lazy_query-files() {
   local ext_args=()
   local dir
 
@@ -9,16 +9,16 @@ __manual_query-files() {
   for dir in "${FIND_FILE_DIRS[@]}"; do
     [[ -d "$dir" ]] || continue
     fd --max-depth 3 --type f "${ext_args[@]}" . "$dir" 2>/dev/null
-  done | awk '!seen[$0]++'
+  done | awk -v OFS='\t' '!seen[$0]++ { print $0, "", "", "", $0 }'
 }
 
 __action-files() {
-  local file="$(echo "$1" | cut -f1)"
+  local file="$(echo "$1" | awk -F'\t' '{print $NF}')"
   [[ -f "$file" ]] && open "$file"
 }
 
 __action-files-open-dir() {
-  local file="$(echo "$1" | cut -f1)"
+  local file="$(echo "$1" | awk -F'\t' '{print $NF}')"
   local dir="${file%/*}"
   local POPUP_SESSION="popup"
   [[ -d "$dir" ]] || return
@@ -39,7 +39,7 @@ __action-files-open-dir() {
 __omni-fzf-files() {
   local popup="$HOME/bin/omni/popup.sh"
   local result key selected
-  result=$(__manual_query-files | "$popup" "--expect=ctrl-o" "$*")
+  result=$(__lazy_query-files | "$popup" "--expect=ctrl-o" "$*")
   key=$(echo "$result" | head -1)
   selected=$(echo "$result" | tail -1)
   [[ -z "$selected" ]] && return

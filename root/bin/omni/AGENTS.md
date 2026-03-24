@@ -40,6 +40,14 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 - `__query-*` の動的発見パターンにマッチしないため、omni-searchに自動統合されない
 - `__omni-fzf-*` から直接呼び出して使用する
 
+## __lazy_query-* 命名規則
+
+- 遅延ロードのデータ生成関数は `__lazy_query-*` を命名規則とする
+- `__query-*` の動的発見パターンにマッチしないため、即時ロードされない
+- `__omni-engine-search` が `${(k)functions[(I)__lazy_query-*]}` で動的発見し、1,2,3,4,5秒のスタガーでバックグラウンド投入
+- fzf のストリーミング stdin により、遅延結果がリストに順次追加される
+- `__omni-fzf-*` からも直接呼び出し可能（standalone 用途）
+
 ## __action-* 命名規則
 
 - アクション関数は全て `__action-*` を命名規則とする（`__query-*` と同じサフィックス）
@@ -75,11 +83,10 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 ## アーキテクチャ
 
 ```
-__query-* → 動的発見 ${(k)functions[(I)__query-*]}
-         → 型対応表で短縮型付与（未登録は関数名サフィックス）
-         → __omni-engine-format（一元整形、型非依存）
-         → fzf
-         → __omni-engine-dispatch → 逆引き対応表 → __action-*
+{ __query-*      → 即時実行（動的発見）
+  __lazy_query-* → sleep 1,2,3,4,5 でスタガー実行（動的発見）
+} | __omni-engine-format → fzf（ストリーミング stdin）
+                         → __omni-engine-dispatch → 逆引き対応表 → __action-*
 
 __omni-autofetch-* → 動的発見 ${(k)functions[(I)__omni-autofetch-*]}
                    → 1時間経過判定（$HOME/.cache/omni/unixtime）

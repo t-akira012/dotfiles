@@ -1,10 +1,10 @@
-__manual_query-dirs() {
-  { zoxide query -l 2>/dev/null } | awk '!seen[$0]++'
+__lazy_query-dirs() {
+  { zoxide query -l 2>/dev/null } | awk -v OFS='\t' '!seen[$0]++ { print $0, "", "", "", $0 }'
 }
 
 __action-dirs() {
   local POPUP_SESSION="popup"
-  local dir="$(echo "$1" | cut -f1)"
+  local dir="$(echo "$1" | awk -F'\t' '{print $NF}')"
   # [[ -d "$dir" ]] && tmux display-popup -E -w 80% -h 70% "yazi '$dir'"
 
   # 既存 session がある場合でも毎回 $dir で新しい window を 1 枚作って、そこを前面にして popup 内で attach
@@ -24,7 +24,7 @@ __action-dirs() {
 __omni-fzf-dirs() {
   local popup="$HOME/bin/omni/popup.sh"
   local selected
-  selected=$(__manual_query-dirs | "$popup" "" "$*")
+  selected=$(__lazy_query-dirs | "$popup" "" "$*")
   [[ -n "$selected" ]] && __action-dirs "$selected"
 }
 alias d='__omni-fzf-dirs'

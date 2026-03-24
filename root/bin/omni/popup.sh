@@ -25,13 +25,15 @@ save_history() {
 select_mode() {
   local query="${@: -1}"
   local fzf_opts="${*:1:$#-1}"
-  local input_list=$(mktemp)
+  local fifo=$(mktemp -u)
   local output_file=$(mktemp)
-  cat > "$input_list"
+  mkfifo "$fifo"
   tmux display-popup -E -w 80% -h 60% \
-    "fzf $fzf_opts --query='$query' < '$input_list' > '$output_file'" || true
+    "fzf $fzf_opts --query='$query' < '$fifo' > '$output_file'" &
+  cat > "$fifo" 2>/dev/null
+  wait 2>/dev/null
   cat "$output_file"
-  rm -f "$input_list" "$output_file"
+  rm -f "$fifo" "$output_file"
   return 0
 }
 

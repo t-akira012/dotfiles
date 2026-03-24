@@ -10,6 +10,9 @@ typeset -A __omni_engine_type_map=(
   tmux-windows tw
   urls        u
   switch-app  w
+  dirs        d
+  files       f
+  search      s
 )
 
 # 逆引き（短縮型 → サフィックス）を自動生成
@@ -41,19 +44,26 @@ __omni-engine-search() {
   [[ -z "$query" ]] && return
 
   local popup="$HOME/bin/omni/popup.sh"
-  local tmp_data=$(mktemp)
-  for func in ${(k)functions[(I)__query-*]}; do
-    local suffix="${func#__query-}"
-    local type="${__omni_engine_type_map[$suffix]:-$suffix}"
-    "$func" "$query" 2>/dev/null | sed "s/^/${type}\t/"
-  done > "$tmp_data"
-
   local selected
-  selected=$(cat "$tmp_data" | __omni-engine-format | "$popup" "--with-nth=1..5 --delimiter=$'\t' --tabstop=8" "$query")
+  selected=$({
+    for func in ${(k)functions[(I)__query-*]}; do
+      local suffix="${func#__query-}"
+      local type="${__omni_engine_type_map[$suffix]:-$suffix}"
+      "$func" "$query" 2>/dev/null | sed "s/^/${type}\t/"
+    done
+
+    local delay=1
+    for func in ${(k)functions[(I)__lazy_query-*]}; do
+      local suffix="${func#__lazy_query-}"
+      local type="${__omni_engine_type_map[$suffix]:-$suffix}"
+      ( sleep $delay; "$func" "$query" 2>/dev/null | sed "s/^/${type}\t/" ) &
+      delay=$((delay + 1))
+    done
+    wait
+  } | __omni-engine-format | "$popup" "--with-nth=1..5 --delimiter=$'\t' --tabstop=8" "$query")
   selected=$(echo "$selected" | sed 's/[[:space:]]*\t/\t/g; s/[[:space:]]*$//')
 
   __omni-engine-dispatch "$selected"
-  rm -f "$tmp_data"
 }
 
 __omni-fzf-search() {
