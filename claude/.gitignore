@@ -4,5 +4,7 @@
 !settings.json
 !deploy.sh
 !README.md
+!commands/
 !commands/*
+!hooks/
 !hooks/*
