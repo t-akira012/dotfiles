@@ -987,7 +987,7 @@
                         ]
                     },
                     {
-                        "description": "Ctrl+] to activate Ghostty and launch tmux omni-launcher (outside Ghostty)",
+                        "description": "Activate Ghostty and launch tmux omni-launcher",
                         "manipulators": [
                             {
                                 "conditions": [
@@ -1002,6 +1002,20 @@
                                     "key_code": "close_bracket",
                                     "modifiers": {
                                         "mandatory": ["control"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "slash",
+                                    "modifiers": {
+                                        "mandatory": ["command"]
                                     }
                                 },
                                 "to": [
