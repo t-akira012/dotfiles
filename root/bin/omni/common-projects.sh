@@ -4,7 +4,7 @@ __action-projects() {
     tmux new-window -t :9 -n doc
     tmux send-keys -t :9 "$EDITOR +${line_num} ${PROJECT_MD}" Enter
   elif [[ "$(tmux list-panes -t :9 -F '#{pane_current_command}')" == "nvim" ]]; then
-    tmux send-keys -t :9 ":tabnew +${line_num} ${PROJECT_MD}" Enter
+    tmux send-keys -t :9 ":drop +${line_num} ${PROJECT_MD}" Enter
   else
     tmux send-keys -t :9 "$EDITOR +${line_num} ${PROJECT_MD}" Enter
   fi
@@ -28,7 +28,7 @@ __omni-fzf-projects() {
     tmux new-window -t :9 -n doc
     tmux send-keys -t :9 "$EDITOR +${line_num} ${PROJECT_MD}" Enter
   elif [[ "$(tmux list-panes -t :9 -F '#{pane_current_command}')" == "nvim" ]]; then
-    tmux send-keys -t :9 ":tabnew +${line_num} ${PROJECT_MD}" Enter
+    tmux send-keys -t :9 ":drop +${line_num} ${PROJECT_MD}" Enter
   else
     tmux send-keys -t :9 "$EDITOR +${line_num} ${PROJECT_MD}" Enter
   fi

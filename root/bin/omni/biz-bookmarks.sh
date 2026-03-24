@@ -40,4 +40,3 @@ __omni-fzf-chrome-history() { __query-history | __omni-fzf-open-url "$@"; }
 __omni-fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __omni-fzf-open-url "$@"; }
 
 alias b='__omni-fzf-bookmarks-and-history'
-alias t='__omni-fzf-todo'

@@ -4,7 +4,7 @@ __action-todo() {
     tmux new-window -t :9 -n doc
     tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
   elif [[ "$(tmux list-panes -t :9 -F '#{pane_current_command}')" == "nvim" ]]; then
-    tmux send-keys -t :9 ":tabnew +${line_num} ${TASK_MD}" Enter
+    tmux send-keys -t :9 ":drop +${line_num} ${TASK_MD}" Enter
   else
     tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
   fi
@@ -42,9 +42,10 @@ __omni-fzf-todo() {
       tmux new-window -t :9 -n doc
       tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
     elif [[ "$(tmux list-panes -t :9 -F '#{pane_current_command}')" == "nvim" ]]; then
-      tmux send-keys -t :9 ":tabnew +${line_num} ${TASK_MD}" Enter
+      tmux send-keys -t :9 ":drop +${line_num} ${TASK_MD}" Enter
     else
       tmux send-keys -t :9 "$EDITOR +${line_num} ${TASK_MD}" Enter
     fi
   fi
 }
+alias t='__omni-fzf-todo'
