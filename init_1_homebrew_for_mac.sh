@@ -31,7 +31,7 @@ fi
 if [[ $(uname) == "Darwin" ]]; then
 	echo "=== Install Homebrew packages"
 	brew install --quiet \
-		git gh curl wget tree tmux watch expect z unar nvim shfmt bash-completion git-delta yazi zoxide
+		git gh curl wget tree tmux watch expect z unar nvim shfmt bash-completion git-delta yazi zoxide betterleaks
 
 	echo "=== Install GNU core packages for macOS"
 	brew install --quiet \
