@@ -27,18 +27,18 @@ __query-urls() {
       first = 0
     }
     printf "\n]\n"
-  }' "$URLS_MD" | jq -r '.[] | (.url | .[:40] | . + " " * (40 - length)) + "\t" + (.title | .[:70]) + "\t\t\t" + .url'
+  }' "$URLS_MD" | jq -r '.[] | .url + "\t" + .title + "\t\t\t" + .url'
 }
 
 __action-urls() {
-  "${BROWSER:-open}" "$(echo "$1" | cut -f5)"
+  "${BROWSER:-open}" "$(echo "$1" | awk -F'\t' '{print $NF}')"
 }
 
 __omni-fzf-urls() {
   local popup="$HOME/bin/omni/popup.sh"
-  local fzf_opts="--with-nth=1..4 --delimiter=$'\t'"
+  local fzf_opts="--with-nth=2..5 --delimiter=$'\t' --query=$*"
   local selected
-  selected=$(__query-urls | "$popup" $fzf_opts)
+  selected=$(__query-urls | sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts)
   [[ -n "$selected" ]] && __action-urls "$selected"
 }
 alias u='__omni-fzf-urls'

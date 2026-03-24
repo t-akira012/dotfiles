@@ -9,7 +9,7 @@ __action-tmux-windows() {
 __omni-fzf-tmux-select-window() {
   local popup="$HOME/bin/omni/popup.sh"
   local selected
-  selected=$(__query-tmux-windows | "$popup")
+  selected=$(__query-tmux-windows | "$popup" "--query=$*")
   [[ -n "$selected" ]] && __action-tmux-windows "$selected"
 }
 alias tw='__omni-fzf-tmux-select-window'

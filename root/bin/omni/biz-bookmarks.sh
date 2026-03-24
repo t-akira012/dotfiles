@@ -1,9 +1,9 @@
 __action-bookmarks() {
-  open "$(echo "$1" | cut -f5)"
+  open "$(echo "$1" | awk -F'\t' '{print $NF}')"
 }
 
 __action-history() {
-  open "$(echo "$1" | cut -f5)"
+  open "$(echo "$1" | awk -F'\t' '{print $NF}')"
 }
 
 __query-bookmarks() {
@@ -29,15 +29,15 @@ __query-history() {
 
 __omni-fzf-open-url() {
   local popup="$HOME/bin/omni/popup.sh"
-  local fzf_opts="--with-nth=1..4 --delimiter=$'\t'"
+  local fzf_opts="--with-nth=2..5 --delimiter=$'\t' --query=$*"
   local selected
-  selected=$(cat | "$popup" $fzf_opts)
-  [[ -n "$selected" ]] && open "$(echo "$selected" | cut -f5)"
+  selected=$(sed 's/^/_\t/' | __omni-engine-format | "$popup" $fzf_opts)
+  [[ -n "$selected" ]] && open "$(echo "$selected" | awk -F'\t' '{print $NF}')"
 }
 
-__omni-fzf-bookmarks() { __query-bookmarks | __omni-fzf-open-url; }
-__omni-fzf-chrome-history() { __query-history | __omni-fzf-open-url; }
-__omni-fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __omni-fzf-open-url; }
+__omni-fzf-bookmarks() { __query-bookmarks | __omni-fzf-open-url "$@"; }
+__omni-fzf-chrome-history() { __query-history | __omni-fzf-open-url "$@"; }
+__omni-fzf-bookmarks-and-history() { { __query-bookmarks; __query-history; } | __omni-fzf-open-url "$@"; }
 
 alias b='__omni-fzf-bookmarks-and-history'
 alias t='__omni-fzf-todo'

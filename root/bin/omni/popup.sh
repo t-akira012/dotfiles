@@ -22,6 +22,7 @@ select_mode() {
   tmux display-popup -E -w 80% -h 60% "fzf $fzf_opts < '$INPUT_FZF_LIST' > '$OUTPUT_FZF_SELECTED'" || true
   cat "$OUTPUT_FZF_SELECTED"
   rm -f "$INPUT_FZF_LIST" "$OUTPUT_FZF_SELECTED"
+  return 0
 }
 
 main() {

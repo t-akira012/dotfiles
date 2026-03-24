@@ -18,7 +18,6 @@
       "Write(~/.ssh/*)"
     ]
   },
-  "model": "opus",
   "skipDangerousModePermissionPrompt": true,
   "ignorePatterns": [
     "node_modules/**",

@@ -17,7 +17,7 @@ __query-todo() {
 __omni-fzf-todo() {
   local popup="$HOME/bin/omni/popup.sh"
   local selected
-  selected="$(__query-todo | "$popup" --expect=ctrl-x,ctrl-o)"
+  selected="$(__query-todo | "$popup" "--expect=ctrl-x,ctrl-o --query=$*")"
 
   [[ -z "$selected" ]] && return
 

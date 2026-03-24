@@ -51,6 +51,7 @@ main() {
   else
     omni_search "$cmd"
   fi
+  return 0
 }
 
 main

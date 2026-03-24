@@ -10,6 +10,6 @@ __action-kill-process() {
 __omni-fzf-kill-process() {
   local popup="$HOME/bin/omni/popup.sh"
   local selected
-  selected=$(__dangerous_query-kill-process | "$popup")
+  selected=$(__dangerous_query-kill-process | "$popup" "--query=$*")
   [[ -n "$selected" ]] && __action-kill-process "$selected"
 }

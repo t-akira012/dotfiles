@@ -11,6 +11,11 @@ INCLUDE_EXTS=(
   mp4 mkv avi mov wmv flv webm m4v mpg mpeg ts
   pdf
 )
+FIND_FILE_DIRS=(
+  "$HOME/Downloads/"
+  "$HOME/Documents/"
+  "/Volumes/ssd/Dropbox/"
+)
 
 # common
 for __f in "$HOME/bin/omni"/common-*.sh; do source "$__f"; done
