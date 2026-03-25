@@ -989,6 +989,7 @@
                     },
                     {
                         "description": "Ctrl+] to activate Ghostty and launch omni-launcher (outside Ghostty)",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
