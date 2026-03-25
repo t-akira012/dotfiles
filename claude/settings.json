@@ -7,6 +7,25 @@
           {
             "type": "command",
             "command": "$HOME/.config/claude/hooks/block-secrets-write.sh"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.config/claude/hooks/pre-edit-approval.sh"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.config/claude/hooks/block-wrong-settings.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.config/claude/hooks/post-edit-report.sh"
           }
         ]
       }
