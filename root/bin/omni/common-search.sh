@@ -52,12 +52,10 @@ __omni-engine-search() {
       "$func" "$query" 2>/dev/null | sed "s/^/${type}\t/"
     done
 
-    local delay=1
     for func in ${(k)functions[(I)__lazy_query-*]}; do
       local suffix="${func#__lazy_query-}"
       local type="${__omni_engine_type_map[$suffix]:-$suffix}"
-      ( sleep $delay; "$func" "$query" 2>/dev/null | sed "s/^/${type}\t/" ) &
-      delay=$((delay + 1))
+      ( timeout 10 "$func" "$query" 2>/dev/null | sed "s/^/${type}\t/" ) &
     done
     wait
   } | __omni-engine-format | "$popup" "--with-nth=1..5 --delimiter=$'\t' --tabstop=8" "$query")

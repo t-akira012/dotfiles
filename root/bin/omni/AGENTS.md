@@ -44,7 +44,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 
 - 遅延ロードのデータ生成関数は `__lazy_query-*` を命名規則とする
 - `__query-*` の動的発見パターンにマッチしないため、即時ロードされない
-- `__omni-engine-search` が `${(k)functions[(I)__lazy_query-*]}` で動的発見し、1,2,3,4,5秒のスタガーでバックグラウンド投入
+- `__omni-engine-search` が `${(k)functions[(I)__lazy_query-*]}` で動的発見し、即時並列でバックグラウンド投入
 - fzf のストリーミング stdin により、遅延結果がリストに順次追加される
 - `__omni-fzf-*` からも直接呼び出し可能（standalone 用途）
 
@@ -84,7 +84,7 @@ fzf: `--with-nth=1..5 --delimiter=$'\t'`
 
 ```
 { __query-*      → 即時実行（動的発見）
-  __lazy_query-* → sleep 1,2,3,4,5 でスタガー実行（動的発見）
+  __lazy_query-* → 即時並列実行（動的発見）
 } | __omni-engine-format → fzf（ストリーミング stdin）
                          → __omni-engine-dispatch → 逆引き対応表 → __action-*
 
