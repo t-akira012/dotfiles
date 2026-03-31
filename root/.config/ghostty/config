@@ -8,4 +8,5 @@ macos-titlebar-style = hidden
 quick-terminal-size = 40%
 quick-terminal-position = right
 quick-terminal-animation-duration = 0
+confirm-close-surface = false
 # keybind = global:cmd+semicolon=toggle_quick_terminal
