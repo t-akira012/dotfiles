@@ -13,6 +13,7 @@ typeset -A __omni_engine_type_map=(
   dirs        d
   files       f
   search      s
+  n-memo      n
 )
 
 # 逆引き（短縮型 → サフィックス）を自動生成
