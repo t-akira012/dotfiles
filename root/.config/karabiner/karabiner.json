@@ -27,6 +27,7 @@
                     },
                     {
                         "description": "Double tap 'left_command' to 'escape'",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
