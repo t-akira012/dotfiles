@@ -260,8 +260,8 @@
       "modifierFlags" : 1572864
     },
     "center" : {
-      "keyCode" : 8,
-      "modifierFlags" : 786432
+      "keyCode" : 36,
+      "modifierFlags" : 1441792
     },
     "centerHalf" : {
       "keyCode" : 41,
