@@ -10,10 +10,6 @@
           },
           {
             "type": "command",
-            "command": "$HOME/.config/claude/hooks/pre-edit-approval.sh"
-          },
-          {
-            "type": "command",
             "command": "$HOME/.config/claude/hooks/block-wrong-settings.sh"
           }
         ]

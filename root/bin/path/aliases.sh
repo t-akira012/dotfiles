@@ -76,6 +76,12 @@ start_tmux() {
 }
 alias ta='start_tmux'
 
+ipcheck(){
+  set -x
+  curl http://checkip.amazonaws.com/
+  set +x
+}
+
 on_vpn(){
 	# tmuxの中にいる場合は実行しない
 	if [[ -n $TMUX ]]; then
