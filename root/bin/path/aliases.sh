@@ -81,7 +81,7 @@ ipcheck(){
   curl http://checkip.amazonaws.com/
   set +x
 }
-alias unset_aws="unset AWS_PROFILE"
+alias unsetawsprofile="unset AWS_PROFILE"
 
 on_vpn(){
 	# tmuxの中にいる場合は実行しない
