@@ -9,7 +9,7 @@ if [ $? \!= 0 ]; then
     # セッションが存在しない場合、新規作成
     
     tmux new-session -d -s $SESSION_NAME -n "dev"
-    tmux new-window -t $SESSION_NAME:8 -n "dotfiles"
+    tmux new-window -t $SESSION_NAME:8 -n "dotfiles" -c "$HOME/dotfiles"
     tmux new-window -t $SESSION_NAME:9 -n "doc" -c $HOME/docs/doc/
     
     # 最初のウィンドウを選択
