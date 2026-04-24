@@ -12,32 +12,6 @@ alias o.='open .'
 alias qa='$HOME/bin/quit_app.sh'
 alias br='cd ..'
 
-run_cloud_code_container(){
-	local GIT_ROOT_CLAUDE_CODE_DIR=$(git rev-parse --show-superproject-working-tree --show-toplevel)/.claude-code
-	if [[ -d $GIT_ROOT_CLAUDE_CODE_DIR ]];then
-		echo "==========================================================="
-		echo "Claude Code コンテナに入ります"
-		echo "対象: $GIT_ROOT_CLAUDE_CODE_DIR"
-		echo "==========================================================="
-		echo
-		cd $GIT_ROOT_CLAUDE_CODE_DIR
-		make
-		cd -
-	elif [[ -n $CCC_DIR ]];then
-		echo "==========================================================="
-		echo "Claude Code コンテナに入ります"
-		echo "対象: $CCC"
-		echo "==========================================================="
-		echo
-		cd $CCC_DIR
-		make
-		cd -
-	else
-		echo '$CCC_DIR required.'
-	fi
-}
-alias ccc=run_cloud_code_container
-
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
 alias cdot='cd $HOME/dotfiles'
