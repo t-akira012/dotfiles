@@ -9,9 +9,8 @@ if ! type nvim >/dev/null 2>&1; then
     if [[ $(uname) == "Darwin" ]]; then
         brew install nvim
     elif type apt >/dev/null 2>&1; then
-        sudo apt update
-        sudo apt install -y systemtap-sdt-dev gettext
-        ./_build_neovim_stable.sh
+        # TODO: 修正する
+        brew install nvim
     elif type pacman >/dev/null 2>&1; then
         sudo pacman -Syy
         yes | sudo pacman -S neovim
