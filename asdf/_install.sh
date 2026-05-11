@@ -40,7 +40,7 @@ check(){
 check golang
 check nodejs
 check python
-check ruby
+# check ruby
 
 if ! type cargo > /dev/null 2>&1;then
   ./rust.sh
