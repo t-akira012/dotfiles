@@ -14,9 +14,6 @@ export IGNOREEOF=9999
 [[ -d /home/linuxbrew ]] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 # M1 brew
 [[ -d /opt/homebrew/ ]] && export PATH="/opt/homebrew/bin:$PATH"
-# asdf
-[[ -f $HOME/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
-type brew >/dev/null 2>&1 && [[ -f $(brew --prefix asdf)/libexec/asdf.sh ]] && . $(brew --prefix asdf)/libexec/asdf.sh
 
 # bash-completion
 type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/bash_completion ]] && . $(brew --prefix)/etc/bash_completion

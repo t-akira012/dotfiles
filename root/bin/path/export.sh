@@ -66,32 +66,6 @@ export GO111MODULE=auto
 # deno
 [[ -e $HOME/deno/.env ]] && . "$HOME/.deno/env" && export PATH="$HOME/.deno/bin:$PATH"
 
-# ruby
-if [[ $(command -v asdf) ]]; then
-	:
-elif [[ $(command -v rbenv) ]]; then
-	eval "$(rbenv init - zsh)"
-fi
-
-# python
-if [[ $(command -v asdf) ]]; then
-	:
-elif [[ $(command -v pyenv) ]]; then
-	export PYENV_ROOT="$HOME/.pyenv"
-	export PATH="$PYENV_ROOT/bin:$PATH"
-	eval "$(pyenv init -)"
-fi
-
-# node
-if [[ $(command -v asdf) ]]; then
-	:
-elif [[ $(command -v nodebrew) ]]; then
-	export PATH="$HOME/.nodebrew/current/bin:$PATH"
-elif [[ $(command -v nodenv) ]]; then
-	export PATH="$HOME/.nodenv/bin:$PATH"
-	eval "$(nodenv init -)"
-fi
-
 # bun completions & bun
 [ -s "$HOME/.bun/_bun" ] &&
 	source "$HOME/.bun/_bun" &&

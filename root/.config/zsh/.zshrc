@@ -16,13 +16,10 @@ setopt IGNOREEOF
 [[ -d /home/linuxbrew ]] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 # M1 brew
 [[ -d /opt/homebrew/ ]] && eval $(/opt/homebrew/bin/brew shellenv)
-# asdf
-[[ -f $HOME/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
 # z
 type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
 [[ -e $HOME/.local/bin/z.sh ]] && . $HOME/.local/bin/z.sh
 unalias z 2> /dev/null
-
 
 # zsh-settings
 bindkey -e
@@ -180,6 +177,12 @@ alias gg='__fzf-ghq-cd'
 . $HOME/bin/func/git-fzf-worktree.sh
 . $HOME/bin/aws-lock.sh
 . $HOME/bin/omni/entrypoint.sh
+
+
+# lang
+export PATH="$HOME/.tfenv/bin:$PATH"
+eval "$(uv generate-shell-completion zsh)"
+eval "$(fnm env --use-on-cd --shell zsh)"
 
 # alias
 alias reload="exec zsh -l"
