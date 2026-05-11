@@ -180,9 +180,9 @@ alias gg='__fzf-ghq-cd'
 
 
 # lang
-export PATH="$HOME/.tfenv/bin:$PATH"
-eval "$(uv generate-shell-completion zsh)"
-eval "$(fnm env --use-on-cd --shell zsh)"
+[[ $(command -v tfenv) ]] && export PATH="$HOME/.tfenv/bin:$PATH"
+[[ $(command -v uv) ]] && eval "$(uv generate-shell-completion zsh)"
+[[ $(command -v fnm) ]] && eval "$(fnm env --use-on-cd --shell zsh)"
 
 # alias
 alias reload="exec zsh -l"
