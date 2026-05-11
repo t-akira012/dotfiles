@@ -5,8 +5,7 @@ cd $(dirname $0)
 [[ ! -d $HOME/.local/repos ]] && mkdir $HOME/.local/repos
 [[ ! -d $HOME/.local/bin ]] && mkdir $HOME/.local/bin
 
-# TODO: asdfを消す
-brew install go uv fnm tfenv
+brew install go uv fnm tfenv python3
 
 #########################################################
 echo Install Rust
