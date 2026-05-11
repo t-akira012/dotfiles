@@ -14,7 +14,8 @@ if [[ $(uname) == "Darwin" ]];then
 	./init_2/defaults_write.sh
 fi
 
-./asdf/_install.sh
+# TODO: 要修正 
+./init_2_lang.sh
 
 echo '== install tools =='
 echo './asdf/_install_tools.sh'
