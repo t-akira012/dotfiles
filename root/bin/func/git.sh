@@ -14,8 +14,8 @@ alias gl1='git log --oneline -1 --graph'
 alias gl3='git log --oneline -3 --graph'
 alias gl5='git log --oneline -5 --graph'
 alias gl9='git log --oneline -9 --graph'
-alias hb='open $(git remote -v | awk "NR==1 {print \$2}")'
-alias ghp='open https://$(git remote -v | awk "NR==1 {print \$2}" | sed "s#.*/##" | sed -e "s/\.git$//")/?version=$(git rev-parse master)'
+alias hb='open_browser.sh $(git remote -v | awk "NR==1 {print \$2}")'
+alias ghp='open_browser.sh https://$(git remote -v | awk "NR==1 {print \$2}" | sed "s#.*/##" | sed -e "s/\.git$//")/?version=$(git rev-parse master)'
 alias hbr="gitViewWeb"
 alias branchname="git rev-parse --abbrev-ref HEAD"
 alias gdfc="git diff --cached"
@@ -38,7 +38,7 @@ getGitRootDir() {
 gitViewWeb() {
 	local url=$(__getGitHttpsUrl)
 	local branch=$(git rev-parse --abbrev-ref @)
-	open $url/tree/$branch
+	open_browser.sh "${url}/tree/${branch}"
 }
 
 gitCheckoutBranchFile() {
@@ -173,7 +173,7 @@ gitBlob() {
 		local httpsUrl=$(__getGitHttpsUrl)
 		local prefix=$(__getGitPrefix)
 		local fileUrl="$httpsUrl/$([[ $file == "." ]] && echo tree || echo blob)/$hash/$prefix$file"
-		open "$fileUrl"
+		open_browser.sh "${fileUrl}"
 	fi
 }
 
