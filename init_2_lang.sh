@@ -7,46 +7,45 @@ cd $(dirname $0)
 
 brew install go uv fnm tfenv python3
 
-#########################################################
-echo Install Rust
-#########################################################
-#
-if ! type cargo > /dev/null 2>&1 ;then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
-else
-    echo "Rust already installed."
-fi
+install_nodejs(){
+    fnm install $(fnm ls-remote|tail -n 1)
+    fnm use $(fnm ls-remote|tail -n 1)
+}
+
+install_rust(){
+    if ! type cargo > /dev/null 2>&1 ;then
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    else
+        echo "Rust already installed."
+    fi
+}
 
 
-#########################################################
-echo Install deno
-#########################################################
+install_deno(){
+    if which deno >>/dev/null 2>&1 ;then
+        echo "Deno already installed."
+        exit 0
+    fi
 
-if which deno >>/dev/null 2>&1 ;then
-    echo "Deno already installed."
-    exit 0
-fi
-
-curl -fsSL https://deno.land/x/install/install.sh | sh
-
-#########################################################
-echo Install Go packages
-#########################################################
-
-go install golang.org/x/tools/cmd/goimports@latest
-go install golang.org/x/tools/gopls@latest
-go install github.com/google/yamlfmt/cmd/yamlfmt@latest
-
-brew install ghq fzf
+    curl -fsSL https://deno.land/x/install/install.sh | sh
+}
 
 
-#########################################################
-echo Install rust tools
-#########################################################
-source "$HOME/.cargo/env"
-cargo install \
-    ripgrep \
-    exa \
-    bat \
-    fd-find \
-    starship
+install_go_packages(){
+    go install golang.org/x/tools/cmd/goimports@latest
+    go install golang.org/x/tools/gopls@latest
+    go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+
+    brew install ghq fzf
+}
+
+
+install_rust_tools(){
+    source "$HOME/.cargo/env"
+    cargo install \
+        ripgrep \
+        exa \
+        bat \
+        fd-find \
+        starship
+}
