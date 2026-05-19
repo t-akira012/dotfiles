@@ -1,7 +1,12 @@
 #!/bin/bash
 set -eu
 
-BROWSER="Zen"
+
+if [[ -d "/Applications/Zen.app/" ]];then
+	BROWSER="Zen"
+elif [[ -d "/Applications/Google Chrome.app/" ]];then
+	BROWSER="Google Chrome"
+else
 
 open_browser() {
 	local url="${1}"
