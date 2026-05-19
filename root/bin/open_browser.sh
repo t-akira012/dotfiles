@@ -6,7 +6,7 @@ if [[ -d "/Applications/Zen.app/" ]];then
 	BROWSER="Zen"
 elif [[ -d "/Applications/Google Chrome.app/" ]];then
 	BROWSER="Google Chrome"
-else
+fi
 
 open_browser() {
 	local url="${1}"
