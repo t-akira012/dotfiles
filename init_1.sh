@@ -7,7 +7,7 @@ if type apt > /dev/null 2>&1;then
         sudo apt install -y \
         git build-essential coreutils \
         cmake gettext fontconfig \
-        gh curl wget tree tmux watch expect unar shfmt xsel wl-clipboard bash-completion zsh unzip python3.12-venv
+        gh curl wget tree tmux watch expect unar shfmt xsel wl-clipboard bash-completion zsh unzip python3.12-venv libclang-dev
 fi
 
 if type pacman > /dev/null 2>&1;then
