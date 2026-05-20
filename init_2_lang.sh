@@ -7,6 +7,12 @@ cd $(dirname $0)
 
 brew install go uv fnm tfenv python3
 
+install_uv_tools(){
+    uv tool install black
+    uv tool install isort
+    uv tool install shandy-sqlfmt
+}
+
 install_nodejs(){
     fnm install $(fnm ls-remote|tail -n 1)
     fnm use $(fnm ls-remote|tail -n 1)
@@ -47,5 +53,14 @@ install_rust_tools(){
         exa \
         bat \
         fd-find \
-        starship
+        starship \
+        tree-sitter-cli
+}
+
+main(){
+    install_uv_tools
+    install_nodejs
+    install_rust
+    install_go_packages
+    install_rust_tools
 }
