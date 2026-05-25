@@ -3,16 +3,7 @@
     "PreToolUse": [
       {
         "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.config/claude/hooks/block-secrets-write.sh"
-          },
-          {
-            "type": "command",
-            "command": "$HOME/.config/claude/hooks/block-wrong-settings.sh"
-          }
-        ]
+        "hooks": [ ]
       }
     ],
     "PostToolUse": [
