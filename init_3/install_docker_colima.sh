@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -eux
 
+if [[ $(uname) != Darwin ]];then
+  echo "macOSで実行してください"
+  exit 1
+fi
+
 brew install docker
 brew install colima
 
