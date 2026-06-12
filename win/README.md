@@ -42,6 +42,7 @@ C:\Users\{WIN_USERNAME}\
 │   └── rm.bat          ごみ箱に送る削除
 ├── exe\
 │   ├── install_exefiles.bat  外部バイナリ一括DLスクリプト
+│   ├── update_nvim.bat       nvim設定をkickstart.nvimから更新
 │   ├── fzf.exe
 │   ├── ghq.exe
 │   ├── fd.exe

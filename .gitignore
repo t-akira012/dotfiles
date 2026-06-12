@@ -5,3 +5,4 @@ tmux-client-*.log
 root/.gitconfig
 .vscode/*
 gitignore-docs/
+settings.local.json

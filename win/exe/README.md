@@ -15,6 +15,10 @@
 
 PATH は `cmdrun.bat` で設定済み。
 
+## update_nvim.bat で nvim 設定を更新
+
+`update_nvim.bat` を実行すると、`t-akira012/kickstart.nvim` の main ブランチ zip を取得し、`%USERPROFILE%\.config\nvim` を完全置換で更新する。既存ファイルは残さない。
+
 ## cargo / go
 
 ### cargo install
