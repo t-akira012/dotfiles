@@ -130,3 +130,24 @@ function git-worktree-purge() {
 alias gwd=fzf-worktree-delete
 alias gw=fzf-worktree
 alias gwa=fzf-worktree-add
+
+
+function git-worktree-new-branch() {
+    local base_branch=$(git branch -a --format='%(refname:short)' | fzf --prompt="base branch > " --header="Select base branch for new worktree")
+    [ -z "$base_branch" ] && return 0
+
+    echo -n "New branch name: "
+    read new_branch
+    [ -z "$new_branch" ] && return 0
+
+    local remote=$(echo $(git remote get-url origin))
+    local platform=$(echo $remote | grep -oE '(@|://)[^/:]+' | cut -d@ -f2 | cut -d: -f3)
+    local owner_repo=$(echo $remote | grep -oE '[^/:]+/[^/]+$' | cut -d. -f1)
+    local timestamp=$(date +%Y%m%d%H%M%S)
+
+    local worktree_path="$HOME/worktree/${platform}/${owner_repo}/${new_branch}_${timestamp}"
+
+    git worktree add -b "$new_branch" "$worktree_path" "$base_branch" && cd "$worktree_path"
+}
+
+alias gwan=git-worktree-new-branch

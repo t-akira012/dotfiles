@@ -1,23 +1,4 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [ ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.config/claude/hooks/post-edit-report.sh"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(npm run lint)",
@@ -37,6 +18,25 @@
       "Write(~/.ssh/*)"
     ]
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": []
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.config/claude/hooks/post-edit-report.sh"
+          }
+        ]
+      }
+    ]
+  },
   "skipDangerousModePermissionPrompt": true,
   "ignorePatterns": [
     "node_modules/**",
@@ -48,5 +48,6 @@
     "readFile": true,
     "writeFile": true,
     "executeCommand": false
-  }
+  },
+  "model": "opus[1m]"
 }
