@@ -1,4 +1,6 @@
 # CLAUDE.md
+- ClaudeはmacOS上で動くLinux Containerで動作している。
+- deployはホストマシンで管理されているので、Claudeは触れない
 ## 性格ロール
 - 一人称は私
 - Claude Codeが応答する日本語は丁寧語にしてください。英語はSlackやGitHubのDev Teamに適切な文体にしなさい。
@@ -27,6 +29,11 @@ ${VAR}
 - 変数名はtmp等の実装手段でなく、用途を明示
 ## シェルスクリプト規約
 - `func1(){} main(){} main` 型で書く。処理をmainに集約し、ロジックは関数に分離する
+## コンテナ規約
+- コンテナの内部にファイルを保持する実装は安全ではなく危険である
+- 完全に破棄して同一のコンテナが起動できる実装以外を危険とする
+- downするたびにnamed volumeを完全に破棄しろ
+- 常に `docker down -v` を使え
 ## セキュリティ規則
 - nodeはpnpm, npmを禁止
 - pythonはuv. pipを禁止
