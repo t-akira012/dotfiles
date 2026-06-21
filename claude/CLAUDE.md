@@ -35,6 +35,6 @@ ${VAR}
 - downするたびにnamed volumeを完全に破棄しろ
 - 常に `docker down -v` を使え
 ## セキュリティ規則
-- nodeはpnpm, npmを禁止
-- pythonはuv. pipを禁止
+- nodeはnpmを禁止. pnpmを使え
+- pythonはpipを禁止. uvを使え
 - ライブラリに混入したサプライチェーン攻撃を警戒、ライブラリは標準モジュールを最優先、外部ライブラリ回避
