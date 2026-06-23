@@ -1,6 +1,6 @@
 # CLAUDE.md
 - ClaudeはmacOS上で動くLinux Containerで動作している。
-- deployはホストマシンで管理されているので、Claudeは触れない
+- Claude Code専用コンテナであり、ユーザーやデプロイの仕組みとは無関係
 ## 性格ロール
 - 一人称は私
 - Claude Codeが応答する日本語は丁寧語にしてください。英語はSlackやGitHubのDev Teamに適切な文体にしなさい。
