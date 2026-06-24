@@ -5,15 +5,15 @@ if [[ $TMUX_SESSION_NAME = 'term_on_vim'* ]]; then
 	__toggle_tmux_popup() {
 		$HOME/bin/tmux-popup.sh
 	}
-	zle -N __toggle_tmux_popup
-	bindkey '^g' __toggle_tmux_popup
+zle -N __toggle_tmux_popup
+bindkey '^g' __toggle_tmux_popup
 fi
 
 # docウィンドウなら、docs/docを開く
 change_dir_doc(){
-  if [[ $(tty) == $(tmux list-panes -F '#{pane_tty}') ]] && [[ $TMUX_WINDOW_PANES -eq 1 ]] && [[ "$TMUX_WINDOW_NAME" == "doc" ]] ; then
-    cd $HOME/docs/doc
-  fi
+	if [[ $(tty) == $(tmux list-panes -F '#{pane_tty}') ]] && [[ $TMUX_WINDOW_PANES -eq 1 ]] && [[ "$TMUX_WINDOW_NAME" == "doc" ]] ; then
+		cd $HOME/docs/doc
+	fi
 }
 
 change_dir_doc
@@ -24,8 +24,8 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+	*":$PNPM_HOME:"*) ;;
+	*) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 # alias claude="$HOME/.claude/local/claude"
@@ -93,9 +93,9 @@ _gen_fzf_default_opts() {
 	--no-separator
 	"
 	if [[ "$TERM_COLOR_MODE" == "LIGHT" ]]; then
-	  export COLOR_OPTS="$FZF_LIGHT"
+		export COLOR_OPTS="$FZF_LIGHT"
 	else
-	  export COLOR_OPTS="$FZF_DARK"
+		export COLOR_OPTS="$FZF_DARK"
 	fi
 	# local OPTS="--bind='ctrl-o:execute(open {}),ctrl-z:ignore,btab:up,tab:down' --height=100% --layout=reverse --cycle --keep-right --border --info=inline --preview-window=down,30%,sharp --preview '[[ -d {} ]] && exa -T {} | head -200 || bat {}'"
 	local OPTS="--bind='ctrl-o:execute(open {}),ctrl-z:ignore,btab:up,tab:down' --height=100% --layout=reverse --cycle --keep-right --border --info=inline --preview-window=down,30%,sharp"
@@ -104,3 +104,15 @@ _gen_fzf_default_opts() {
 	export FZF_TMUX_OPTS="-p 80%"
 }
 _gen_fzf_default_opts
+
+
+aws_switch_profile() {
+	local profile="${1}"
+	export AWS_PROFILE="${profile}"
+
+	if aws sts get-caller-identity --profile "${profile}" > /dev/null 2>&1; then
+		echo "AWS_PROFILE=${profile} (token valid, login skipped)"
+	else
+		aws sso login --profile "${profile}"
+	fi
+}

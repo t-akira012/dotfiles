@@ -177,6 +177,15 @@ gitBlob() {
 	fi
 }
 
+gitBlobBranch() {
+	[[ -n $1 ]] && local file="$1" || local file="."
+	local branch=$(git rev-parse --abbrev-ref HEAD)
+	local httpsUrl=$(__getGitHttpsUrl)
+	local prefix=$(__getGitPrefix)
+	local fileUrl="$httpsUrl/$([[ $file == "." ]] && echo tree || echo blob)/$branch/$prefix$file"
+	open_browser.sh "${fileUrl}"
+}
+
 gitAdd() {
 	local selected=$(unbuffer git -C $(getGitRootDir) status -s | fzf --ansi --preview="git diff --color $(echo {} | awk '{print $2}')" | awk '{print substr($0,index($0,$2))}')
 	if [[ -n $selected ]]; then
@@ -260,4 +269,5 @@ alias giss="gitOpenIssue"
 alias gpr="gitOpenPr"
 alias grepo="gitOpenRepo"
 alias gb="gitBlob"
+alias gbb="gitBlobBranch"
 alias gd="gitDiff"
