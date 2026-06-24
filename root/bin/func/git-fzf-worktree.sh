@@ -132,7 +132,7 @@ alias gw=fzf-worktree
 alias gwa=fzf-worktree-add
 
 
-function git-worktree-new-branch() {
+function gitWorktreeAddNewBranch() {
     local base_branch=$(git branch -a --format='%(refname:short)' | fzf --prompt="base branch > " --header="Select base branch for new worktree")
     [ -z "$base_branch" ] && return 0
 
@@ -150,4 +150,4 @@ function git-worktree-new-branch() {
     git worktree add -b "$new_branch" "$worktree_path" "$base_branch" && cd "$worktree_path"
 }
 
-alias gwan=git-worktree-new-branch
+alias gwan=gitWorktreeAddNewBranch
