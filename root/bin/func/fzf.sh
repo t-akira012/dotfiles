@@ -122,6 +122,13 @@ __fzf-multi-move(){
 }
 
 
+# 直下の md を fzf で選んで leaf に渡す
+__fzf-leaf-markdown(){
+  local selected=$(fd --max-depth 1 --extension md | fzf --preview "bat {}")
+  [[ -n $selected ]] && leaf "$selected"
+}
+
+
 alias o='__fzf-open'
 # replace zoxide
 # alias z='__fzf-z-cd'
@@ -131,5 +138,6 @@ alias tf='__fzf-tree'
 alias ghqw='__fzf-ghq-web'
 alias cdg='ghq-cd'
 alias fnamecopy='__fzf-filename-copy'
+alias le='__fzf-leaf-markdown'
 alias mmv='__fzf-multi-move'
 alias mcp='__fzf-multi-copy'
