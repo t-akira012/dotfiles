@@ -12,6 +12,11 @@ set -eux
 #     ln -si "${EXTERNAL_SSD_PATH}/nextcloud/mirror/Works" "$HOME/Works"
 # fi
 
+
+if [[ $(whoami) != t-akira012 ]]; then
+    echo "user is not t-akira012"
+fi
+
 if [[ ! -L $HOME/iCloud ]];then
     ln -si "$HOME/Library/Mobile Documents/com~apple~CloudDocs/" "$HOME/iCloud"
 fi
