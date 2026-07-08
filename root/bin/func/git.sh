@@ -21,6 +21,8 @@ alias branchname="git rev-parse --abbrev-ref HEAD"
 alias gdfc="git diff --cached"
 alias gp=gitPull
 alias gr="cdGitRoot"
+alias glp="git log -p -n 1"
+alias gdif="git diff"
 
 gitPull() {
 	echo "git pull origin $(git rev-parse --abbrev-ref HEAD)"

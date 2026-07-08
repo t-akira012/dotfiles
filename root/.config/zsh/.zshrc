@@ -207,3 +207,10 @@ if [[ -e /etc/arch-release ]]; then
 elif type starship > /dev/null 2>&1; then
     eval "$(starship init zsh)"
 fi
+
+# bun completions
+[ -s "/Users/t-akira012/.bun/_bun" ] && source "/Users/t-akira012/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
