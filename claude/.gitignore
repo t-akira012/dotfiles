@@ -25,3 +25,6 @@ skills/*
 
 !skills/git-commit-staged/
 !skills/git-commit-staged/**
+
+!skills/terraform-create-aws-logs-tail/
+!skills/terraform-create-aws-logs-tail/**
