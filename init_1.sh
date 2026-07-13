@@ -24,4 +24,5 @@ if [[ $(uname) == "Darwin" ]];then
     bash -c ./init_1_homebrew_for_mac.sh
 fi
 
+source $HOME/.zshrc
 bash -c ./init_2.sh
