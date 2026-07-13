@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 cd $(dirname $0)
 
+. $HOME/.zshrc
+
 [[ ! -d $HOME/.local/ ]] && mkdir $HOME/.local/
 [[ ! -d $HOME/.local/repos ]] && mkdir $HOME/.local/repos
 [[ ! -d $HOME/.local/bin ]] && mkdir $HOME/.local/bin
