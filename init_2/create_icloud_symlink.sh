@@ -27,3 +27,7 @@ fi
 if [[ ! -L $HOME/Downloads ]];then
     ln -si "$HOME/Library/Mobile Documents/com~apple~CloudDocs/_Works/PxDownloader" "$HOME/Downloads/PxDownloader"
 fi
+
+if [[ ! -L $HOME/docs/doc ]];then
+    ln -si "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/memo" "$HOME/docs/doc"
+fi
