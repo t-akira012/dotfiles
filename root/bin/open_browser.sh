@@ -1,7 +1,11 @@
 #!/bin/bash
 set -eu
 
-target_browser="safari"
+if [[ $(whoami) == "t-akira012" ]];then
+	target_browser="safari"
+else
+	target_browser="chrome"
+fi
 
 case "${target_browser}" in
 	chrome)
