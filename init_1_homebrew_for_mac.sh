@@ -41,6 +41,7 @@ if [[ $(uname) == "Darwin" ]]; then
 
 	CASKS=(
 		coteditor
+		firefox@developer-edition
 		ghostty
 		karabiner-elements
 		raycast
