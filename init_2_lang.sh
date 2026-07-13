@@ -64,3 +64,5 @@ main(){
     install_go_packages
     install_rust_tools
 }
+
+main
