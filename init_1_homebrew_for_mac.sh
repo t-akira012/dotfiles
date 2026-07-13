@@ -40,19 +40,13 @@ if [[ $(uname) == "Darwin" ]]; then
 	echo "=== Install cask packages"
 
 	CASKS=(
-		google-chrome
-		zen
-		firefox@developer-edition
 		coteditor
 		ghostty
 		karabiner-elements
 		raycast
 		rectangle
 		dropbox
-		discord
-		slack
 		vlc
-		zoom
 	)
 
 	for app in "${CASKS[@]}"; do
