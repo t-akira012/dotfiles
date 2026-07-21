@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ $(whoami) == 't-akira012' ]];then
+  echo 'user is t-akira012'
+  exit 1
+fi
+
 setup_repo() {
     local codename arch
     codename="$(. /etc/os-release && echo "${VERSION_CODENAME}")"
