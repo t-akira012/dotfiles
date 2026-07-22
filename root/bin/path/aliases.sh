@@ -41,16 +41,10 @@ alias va='. .venv/bin/activate'
 [[ -d "/opt/homebrew/opt/util-linux/bin/" ]] && alias cal='/opt/homebrew/opt/util-linux/bin/cal -m'
 
 start_tmux() {
-	if [[ $__CFBundleIdentifier == 'com.microsoft.VSCode' ]]; then
-		[[ -z "$(tmux ls | grep code)" ]] && tmux new -s 'code' || tmux a -t 'code'
-	elif [[ $THIS_ITERM2 == 'DOC' ]]; then
-		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
-	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]] || [[ $__CFBundleIdentifier == 'com.mitchellh.ghostty' ]]; then
+	if [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]] || [[ $__CFBundleIdentifier == 'com.mitchellh.ghostty' ]]; then
 		[[ -z "$(tmux ls | grep Dev)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'Dev'
 	elif [[ -n $SSH_CONNECTION ]] && [[ $(hostname -s) == 'm4mini-prv' ]]; then
-		[[ -z "$(tmux ls | grep ssh-mini)" ]] && tmux new -s 'ssh-mini' || tmux a -t 'ssh-mini'
-	elif [[ $ALACRITTY_SOCKET ]]; then
-		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
+		[[ -z "$(tmux ls | grep ssh-mini)" ]] && $HOME/bin/tmux-ssh-mini.sh || tmux a -t 'ssh-mini'
 	else
 		[[ -z $TMUX ]] && [[ -z "$(tmux ls | grep $(whoami))" ]] && tmux new -s $(whoami) || tmux a -t $(whoami)
 	fi
