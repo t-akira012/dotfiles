@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -eux
 
-if [[ $(whoami) == 't-akira012' ]];then
-  echo 'user is t-akira012'
-  exit 1
-fi
-
 if [[ $(uname) != Darwin ]];then
   echo "macOSで実行してください"
   exit 1
