@@ -15,13 +15,20 @@ alias br='cd ..'
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
 alias cdot='cd $HOME/dotfiles'
+alias cdot='cd $HOME/dev'
 alias cdbin='cd $HOME/bin'
 alias cdr='cd $_'
 alias k='kubectl'
 
-alias prv='ssh prv'
-alias pss='ssh prvssh'
-alias prvtmux='ssh -t prv tmux new-session -s prv'
+ssh_mini(){
+	if [[ -n $TMUX ]]; then
+		echo 'on tmux'
+		return
+	fi
+	ssh mini
+}
+
+alias mini='ssh_mini'
 
 alias tree="tree -I node_modules"
 alias rg="rg --hidden -g '!{node_modules/*,.git/*}'"
@@ -51,9 +58,9 @@ start_tmux() {
 alias ta='start_tmux'
 
 ipcheck(){
-  set -x
-  curl http://checkip.amazonaws.com/
-  set +x
+	set -x
+	curl http://checkip.amazonaws.com/
+	set +x
 }
 alias unsetawsprofile="unset AWS_PROFILE"
 
@@ -79,11 +86,11 @@ else
 	export EDITOR="vim"
 fi
 start_nvim() {
-  if [[ $TMUX_SESSION_NAME == *"term_on_vim"* ]]; then
-    echo "This terminal on tmux pop window."
-  else
-    $EDITOR $*
-  fi
+	if [[ $TMUX_SESSION_NAME == *"term_on_vim"* ]]; then
+		echo "This terminal on tmux pop window."
+	else
+		$EDITOR $*
+	fi
 }
 alias v='start_nvim'
 alias vi='start_nvim'
