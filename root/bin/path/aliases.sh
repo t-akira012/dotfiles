@@ -14,7 +14,7 @@ alias br='cd ..'
 
 alias cdssh='cd $HOME/.ssh'
 alias cdtmp='cd $HOME/tmp'
-alias cdot='cd $HOME/dotfiles'
+alias cdev='cd $HOME/dotfiles'
 alias cdot='cd $HOME/dev'
 alias cdbin='cd $HOME/bin'
 alias cdr='cd $_'
