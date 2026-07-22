@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eux
+
 if [[ $(whoami) == 't-akira012' ]];then
     $HOME/bin/tmux-macmini.sh
 else

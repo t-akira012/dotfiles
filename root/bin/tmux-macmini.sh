@@ -59,7 +59,7 @@ case "$CURRENT_HOST" in
 		create_ssh_popup_window
 		;;
 	m4mini-prv)
-		create_agent_popup_window
+		tmux detach-client
 		;;
 	*)
 		echo "Unsupported host: $CURRENT_HOST" >&2
