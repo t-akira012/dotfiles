@@ -44,7 +44,7 @@ create_ssh_popup_window() {
 		-w '96%' \
 		-h '100%' \
 		-E \
-		"ssh -tt '$SSH_HOST' '/opt/homebrew/bin/tmux new-session -A -s $REMOTE_SESSION' || {
+		"ssh -tt '$SSH_HOST' 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin tmux new-session -A -s $REMOTE_SESSION' || {
 			status=\$?
 			echo
 			echo \"SSHまたはtmuxの起動に失敗しました: \$status\"
