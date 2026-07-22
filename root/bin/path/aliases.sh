@@ -21,8 +21,8 @@ alias cdr='cd $_'
 alias k='kubectl'
 
 ssh_mini(){
-	if [[ -n $TMUX ]]; then
-		echo 'on tmux'
+	if [[ -z $TMUX ]]; then
+		echo 'not on tmux'
 		return
 	fi
 	ssh mini
