@@ -47,8 +47,8 @@ start_tmux() {
 		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
 	elif [[ $__CFBundleIdentifier == 'com.googlecode.iterm2' ]] || [[ $__CFBundleIdentifier == 'com.mitchellh.ghostty' ]]; then
 		[[ -z "$(tmux ls | grep Dev)" ]] && $HOME/bin/tmux-dev.sh || tmux a -t 'Dev'
-	elif [[ -n $SSH_CONNECTION ]]; then
-		[[ -z "$(tmux ls | grep ssh-prv)" ]] && tmux new -s 'ssh-prv' || tmux a -t 'ssh-prv'
+	elif [[ -n $SSH_CONNECTION ]] && [[ $(hostname -s) == 'm4mini-prv' ]]; then
+		[[ -z "$(tmux ls | grep ssh-mini)" ]] && tmux new -s 'ssh-mini' || tmux a -t 'ssh-mini'
 	elif [[ $ALACRITTY_SOCKET ]]; then
 		[[ -z "$(tmux ls | grep doc)" ]] && tmux new -s 'doc' || tmux a -t 'doc'
 	else
