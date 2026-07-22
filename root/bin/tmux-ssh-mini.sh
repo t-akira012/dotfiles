@@ -1,6 +1,6 @@
 #!/bin/bash
 # tmuxセッション名
-SESSION_NAME="ssh-prv"
+SESSION_NAME="ssh-mini"
 
 # セッションが既に存在するかチェック
 tmux has-session -t $SESSION_NAME 2>/dev/null
@@ -8,7 +8,7 @@ tmux has-session -t $SESSION_NAME 2>/dev/null
 if [ $? \!= 0 ]; then
     # セッションが存在しない場合、新規作成
     
-    tmux new-session -d -s $SESSION_NAME -n "ssh-prv"
+    tmux new-session -d -s $SESSION_NAME -n "ssh-mini"
     tmux new-window -t $SESSION_NAME:2 -n "mini" -c "$HOME/src/github.com/t-akira012/aki012/macmini"
     tmux new-window -t $SESSION_NAME:8 -n "dotfiles" -c "$HOME/dotfiles"
     tmux new-window -t $SESSION_NAME:9 -n "doc" -c $HOME/docs/doc/
