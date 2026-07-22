@@ -208,6 +208,14 @@ elif type starship > /dev/null 2>&1; then
     eval "$(starship init zsh)"
 fi
 
+# SSH で入った対話シェルでは、プロンプトの1行目を警告色にする。
+# SSH_CONNECTION は通常の ssh、SSH_CLIENT/SSH_TTY は古い環境や構成差の補助。
+if [[ -o interactive && -n "${SSH_CONNECTION:-${SSH_CLIENT:-${SSH_TTY:-}}}" ]]; then
+  typeset -g SSH_REMOTE_PROMPT_BASE="$PROMPT"
+  typeset -g SSH_REMOTE_HOST="${HOST%%.*}"
+  PROMPT="%K{yellow}%F{black}%B ⚠ SSH:${SSH_REMOTE_HOST} %b%f%k ${SSH_REMOTE_PROMPT_BASE}"
+fi
+
 # bun completions
 [ -s "/Users/t-akira012/.bun/_bun" ] && source "/Users/t-akira012/.bun/_bun"
 
