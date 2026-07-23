@@ -118,29 +118,39 @@ aws_switch_profile() {
 }
 
 _ssh_agent_init() {
-    local trigger_file="${HOME}/.ssh/ssh_init"
-    [[ -f "${trigger_file}" ]] || return 0
+	local trigger_file="${HOME}/.ssh/ssh_init"
+	[[ -f "${trigger_file}" ]] || return 0
 
-    local env_file="${HOME}/.ssh/agent.env"
-    [[ -f "${env_file}" ]] && . "${env_file}" > /dev/null
+	local env_file="${HOME}/.ssh/agent.env"
+	[[ -f "${env_file}" ]] && . "${env_file}" > /dev/null
 
-    if ! ps -p "${SSH_AGENT_PID}" > /dev/null 2>&1; then
-        ssh-agent -s > "${env_file}"
-        chmod 600 "${env_file}"
-        . "${env_file}" > /dev/null
-    fi
+	if ! ps -p "${SSH_AGENT_PID}" > /dev/null 2>&1; then
+		ssh-agent -s > "${env_file}"
+		chmod 600 "${env_file}"
+		. "${env_file}" > /dev/null
+	fi
 
-    local loaded_fps
-    loaded_fps=$(ssh-add -l)
+	local loaded_fps
+	loaded_fps=$(ssh-add -l)
 
-    local pub_file key_file key_fp
-    fd --type f --max-depth 1 --extension pub . "${HOME}/.ssh" | while IFS= read -r pub_file; do
-        key_file="${pub_file%.pub}"
-        [[ -f "${key_file}" ]] || continue
-        key_fp=$(ssh-keygen -lf "${pub_file}" | awk '{print $2}')
-        echo "${loaded_fps}" | rg -qF "${key_fp}" && continue
-        ssh-add "${key_file}" < /dev/tty
-    done
+	local pub_file key_file key_fp
+	fd --type f --max-depth 1 --extension pub . "${HOME}/.ssh" | while IFS= read -r pub_file; do
+	key_file="${pub_file%.pub}"
+	[[ -f "${key_file}" ]] || continue
+	key_fp=$(ssh-keygen -lf "${pub_file}" | awk '{print $2}')
+	echo "${loaded_fps}" | rg -qF "${key_fp}" && continue
+	ssh-add "${key_file}" < /dev/tty
+done
 }
 _ssh_agent_init
 unset -f _ssh_agent_init
+
+caffe() {
+	if pgrep -x caffeinate >/dev/null; then
+		killall caffeinate
+		echo 'caffeinate: stopped'
+	else
+		caffeinate -dimsu >/dev/null 2>&1 &
+		echo 'caffeinate: started'
+	fi
+}
