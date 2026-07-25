@@ -2,7 +2,7 @@
 set -eu
 
 if [[ $(whoami) == "t-akira012" ]];then
-	target_browser="safari"
+	target_browser="firefox"
 else
 	target_browser="chrome"
 fi
@@ -13,6 +13,9 @@ case "${target_browser}" in
 		;;
 	safari)
 		browser_path="/Applications/Safari.app"
+		;;
+	firefox)
+		browser_path="/Applications/Firefox.app"
 		;;
 	zen)
 		browser_path="/Applications/Zen.app"
