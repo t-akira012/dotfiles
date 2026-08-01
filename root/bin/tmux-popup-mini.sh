@@ -28,7 +28,7 @@ create_agent_popup_window() {
 
 create_ssh_popup_window() {
 	local REMOTE_SESSION='ssh-mini'
-	local HOST_PRIMARY_IP='192.168.52.100'
+	local HOST_PRIMARY_IP='192.168.50.100'
 	local SSH_HOST
 
 	if ping -c 1 -W 1 "$HOST_PRIMARY_IP" >/dev/null 2>&1; then
