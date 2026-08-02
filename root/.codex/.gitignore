@@ -1,0 +1,20 @@
+# Codex は認証情報、履歴、セッション、キャッシュ、データベースなど、
+# マシン固有の状態を $CODEX_HOME に書き込む。すべてを原則無視し、
+# 内容を確認したうえで以下に明示したファイルだけを Git の管理対象にする。
+*
+
+!.gitignore
+!AGENTS.md
+!README.md
+!deploy.sh
+
+# ユーザー共通のフック設定
+!hooks.json
+
+# 個人用サブエージェントの定義
+!agents/
+!agents/*.toml
+
+# サンドボックス外で実行するコマンドの規則
+!rules/
+!rules/*.rules
