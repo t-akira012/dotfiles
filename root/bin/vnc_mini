@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eux
+
+vnc_connect() {
+	local HOST_PRIMARY_IP='192.168.50.100'
+	local VNC_HOST
+
+	if ping -c 1 -W 1 "$HOST_PRIMARY_IP" >/dev/null 2>&1; then
+		VNC_HOST=$HOST_PRIMARY_IP
+	else
+		VNC_HOST=$(tailscale status --json | jq -r '.Peer[] | select(.HostName=="mini") | .TailscaleIPs[0]')
+	fi
+
+	open vnc://$VNC_HOST
+}
+
+vnc_connect
