@@ -85,9 +85,10 @@ bindkey "^I" menu-complete
 bindkey "\e[Z" reverse-menu-complete
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# replace z
-# . $HOME/bin/func/cd-well
-[[ $(command -v zoxide) ]] && eval "$(zoxide init zsh --cmd cd)" && alias z="cdi"
+# zoxide: 標準の cd を維持し、ディレクトリの移動履歴を記録する
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
 
 # functions
 __zle-nothing() {
