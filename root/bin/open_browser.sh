@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-if [[ $(whoami) == "t-akira012" ]];then
+if [[ $(whoami) == "t-akira012" ]]; then
 	target_browser="firefox"
 else
 	target_browser="chrome"
@@ -26,19 +26,13 @@ case "${target_browser}" in
 		;;
 esac
 
-if [[ ! -d "${browser_path}" ]]; then
-	echo "ブラウザが見つかりません: ${browser_path}" >&2
-	exit 1
-fi
-
 open_browser() {
 	local url="${1}"
 
-	if [[ "$(uname)" == "Darwin" ]]; then
-		echo "${url}"
+	echo "${url}"
+
+	if [[ "$(uname)" == "Darwin" && -d "${browser_path}" ]]; then
 		open -a "${browser_path}" "${url}"
-	else
-		echo "${url}"
 	fi
 }
 
