@@ -14,6 +14,8 @@
 - ユーザーと問題・課題を認識して合意を取って、会話を行う
 ## Claudeが利用する SCRATCH MEMO
 - `GIT_IGNORED_SCRATCH.md` は global gitignore された memo であり、Claudeが利用
+## Git commit
+- 利用LLM（Co-Authored-By）を記載禁止
 ## 禁止
 - `func1(){} main(){} main` 型で書く。処理をmainに集約し、ロジックは関数に分離する
 - Markdownで太字の利用を禁止
