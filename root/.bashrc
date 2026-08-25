@@ -63,14 +63,44 @@ __share_history() {
     history -r
 }
 
-# z
-type brew >/dev/null 2>&1 && [[ -f $(brew --prefix)/etc/profile.d/z.sh ]] && . $(brew --prefix)/etc/profile.d/z.sh
-. $HOME/bin/func/cd-well
+# zoxide: keep cd as the shell builtin and use fzf when z has no arguments.
+if command -v zoxide >/dev/null 2>&1; then
+  __zoxide_add_pwd() {
+    command zoxide add -- "$PWD" >/dev/null 2>&1
+  }
+
+  z() {
+    local result
+
+    if [ "$#" -gt 0 ]; then
+      result=$(command zoxide query --exclude "$PWD" -- "$@")
+    else
+      result=$(command zoxide query --interactive)
+    fi
+
+    if [ -z "$result" ]; then
+      return 1
+    fi
+
+    builtin cd -- "$result"
+  }
+
+  if printf '%s\n' "${PROMPT_COMMAND}" | grep -F '__zoxide_add_pwd' >/dev/null 2>&1; then
+    :
+  else
+    if [ -n "${PROMPT_COMMAND}" ]; then
+      PROMPT_COMMAND="__zoxide_add_pwd; ${PROMPT_COMMAND}"
+    else
+      PROMPT_COMMAND="__zoxide_add_pwd"
+    fi
+  fi
+fi
 
 # bindkey functions
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 __fzf-z-insert() {
-  local selected=$(_z -l 2>&1 | sort | awk '{print $2}' | fzf | sed 's/^[0-9,.]* *//')
+  local selected
+  selected=$(zoxide query --interactive)
   [[ -n $selected ]] && \
     READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}\"$selected\"${READLINE_LINE:$READLINE_POINT}" && \
     READLINE_POINT=$(( READLINE_POINT + ${#selected} + 2 ))

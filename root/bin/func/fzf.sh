@@ -4,12 +4,6 @@ __fzf-open() {
   [[ -f "$SELECTED" ]] && open "$SELECTED"
 }
 
-# replace zoxide
-# __fzf-z-cd() {
-#   [ $# -gt 0 ] && _z "$*" && return
-#   cd "$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
-# }
-
 __fzf-la-cd() {
   local selected=$(unbuffer ls -lA --color | rg ^d | awk '{print substr($0,index($0,$9))}' | fzf --ansi --bind='ctrl-o:execute(open {})' --preview "exa -T {}" | xargs echo) 
   [[ -n $selected ]] && cd $selected 
@@ -62,7 +56,8 @@ __fzf-multi-copy(){
   if [[ ! -z $SELECTED ]]; then
       local DIR_SELECT_MODE=$(echo -e "CURRENT_DIR\nz\ntree" | fzf --preview "")
       if [[ $DIR_SELECT_MODE == 'z' ]];then
-          local TARGET_DIR="$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
+          local TARGET_DIR
+          TARGET_DIR="$(zoxide query --interactive)"
       fi
       if [[ $DIR_SELECT_MODE == 'tree' ]];then
           local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
@@ -93,7 +88,8 @@ __fzf-multi-move(){
   if [[ ! -z $SELECTED ]]; then
       local DIR_SELECT_MODE=$(echo -e "CURRENT_DIR\nz\ntree\nDropbox\nHome" | fzf --preview "")
       if [[ $DIR_SELECT_MODE == 'z' ]];then
-          local TARGET_DIR="$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')"
+          local TARGET_DIR
+          TARGET_DIR="$(zoxide query --interactive)"
       fi
       if [[ $DIR_SELECT_MODE == 'tree' ]];then
           local DEPTH=$([ -z $1 ] && echo 9 || echo $1)
@@ -130,8 +126,6 @@ __fzf-leaf-markdown(){
 
 
 alias o='__fzf-open'
-# replace zoxide
-# alias z='__fzf-z-cd'
 alias l='__fzf-la-cd'
 alias vz='__fzf-find-vi'
 alias tf='__fzf-tree'

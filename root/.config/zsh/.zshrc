@@ -88,22 +88,20 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # zoxide: 標準の cd を維持し、ディレクトリの移動履歴を記録する
 if (( $+commands[zoxide] )); then
   eval "$(zoxide init zsh)"
+  z() {
+    if [ "$#" -gt 0 ]; then
+      __zoxide_z "$@"
+      return
+    fi
+
+    __zoxide_zi
+  }
 fi
 
 # functions
 __zle-nothing() {
     return
 }
-
-# replace zoxide
-# __zle-fzf-z-insert() {
-#   local SELECTED=$(__cd-well | sort | uniq | fzf | sed 's/^[0-9,.]* *//')
-#   if [[ -n $SELECTED ]]; then
-#       BUFFER="${BUFFER}\"${SELECTED}\""
-#       CURSOR=${#BUFFER}
-#   fi
-#   zle reset-prompt
-# }
 
 __zle-fzf-find() {
   local SELECTED=$(rg --files --follow --no-ignore-vcs --hidden -g '!{node_modules/*,.git/*}' | fzf)
@@ -147,15 +145,12 @@ __zle-fzf-find-dir() {
 
 # bindkey
 zle -N __nothing
-# replace zoxide
-# zle -N __zle-fzf-z-insert
 zle -N __zle-fzf-la
 zle -N __zle-fzf-history
 zle -N __zle-fzf-find
 zle -N __zle-fzf-ghq-cd
 zle -N __zle-fzf-find-dir
 bindkey '\el' __zle-fzf-la
-bindkey '\ez' __zle-fzf-z-insert
 bindkey '^@' __zle-nothing
 bindkey '^s' __zle-nothing
 bindkey '^r' __zle-fzf-history
