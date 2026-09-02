@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+fail() {
+    echo "pbpaste: usable clipboard backend was not found" >&2
+    exit 1
+}
+
+is_wsl() {
+    if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+        return 0
+    fi
+
+    if [ -r /proc/version ]; then
+        if grep -i microsoft /proc/version >/dev/null 2>&1; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+paste_with_powershell() {
+    # PowerShell must expand these variables; the shell must preserve them literally.
+    # shellcheck disable=SC2016
+    powershell_command='$OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; $text = Get-Clipboard -Raw; if ($null -ne $text) { [Console]::Out.Write($text.Replace("`r`n", "`n")) }'
+
+    if command -v powershell.exe >/dev/null 2>&1; then
+        powershell.exe -NoLogo -NoProfile -NonInteractive -Command "${powershell_command}"
+        return $?
+    fi
+
+    powershell_path='/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
+    if [ -x "${powershell_path}" ]; then
+        "${powershell_path}" -NoLogo -NoProfile -NonInteractive -Command "${powershell_command}"
+        return $?
+    fi
+
+    return 1
+}
+
+paste_on_wsl() {
+    if command -v win32yank.exe >/dev/null 2>&1; then
+        win32yank.exe -o --lf
+        return $?
+    fi
+
+    paste_with_powershell
+    return $?
+}
+
+paste_on_linux() {
+    if [ -n "${WAYLAND_DISPLAY}" ]; then
+        if command -v wl-paste >/dev/null 2>&1; then
+            wl-paste --no-newline
+            return $?
+        fi
+    fi
+
+    if [ -n "${DISPLAY}" ]; then
+        if command -v xsel >/dev/null 2>&1; then
+            xsel --clipboard --output
+            return $?
+        fi
+    fi
+
+    return 1
+}
+
+main() {
+    operating_system=$(uname -s)
+
+    if [ "${operating_system}" = "Darwin" ]; then
+        /usr/bin/pbpaste
+        exit $?
+    fi
+
+    if is_wsl; then
+        paste_on_wsl
+        status=$?
+        if [ "${status}" -eq 0 ]; then
+            exit 0
+        fi
+        fail
+    fi
+
+    paste_on_linux
+    status=$?
+    if [ "${status}" -eq 0 ]; then
+        exit 0
+    fi
+
+    fail
+}
+
+main
