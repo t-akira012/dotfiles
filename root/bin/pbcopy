@@ -19,12 +19,43 @@ is_wsl() {
     return 1
 }
 
+copy_with_powershell() {
+    # PowerShell must expand these variables; the shell must preserve them literally.
+    # shellcheck disable=SC2016
+    powershell_command='[Console]::InputEncoding = [System.Text.Encoding]::UTF8; $text = [Console]::In.ReadToEnd(); Set-Clipboard -Value $text'
+
+    if command -v powershell.exe >/dev/null 2>&1; then
+        powershell.exe -NoLogo -NoProfile -NonInteractive -Command "${powershell_command}"
+        return $?
+    fi
+
+    powershell_path='/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
+    if [ -x "${powershell_path}" ]; then
+        "${powershell_path}" -NoLogo -NoProfile -NonInteractive -Command "${powershell_command}"
+        return $?
+    fi
+
+    return 1
+}
+
 copy_on_wsl() {
     if command -v win32yank.exe >/dev/null 2>&1; then
         win32yank.exe -i --crlf
         return $?
     fi
 
+    if command -v powershell.exe >/dev/null 2>&1; then
+        copy_with_powershell
+        return $?
+    fi
+
+    if [ -x /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe ]; then
+        copy_with_powershell
+        return $?
+    fi
+
+    # Last resort for systems without PowerShell. Non-ASCII text can depend on
+    # the active Windows code page, so this backend is intentionally last.
     if command -v clip.exe >/dev/null 2>&1; then
         clip.exe
         return $?
