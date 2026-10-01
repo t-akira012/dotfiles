@@ -6,3 +6,4 @@ root/.gitconfig
 .vscode/*
 gitignore-docs/
 settings.local.json
+root/.codex/rules/

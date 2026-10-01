@@ -14,7 +14,3 @@
 # 個人用サブエージェントの定義
 !agents/
 !agents/*.toml
-
-# サンドボックス外で実行するコマンドの規則
-!rules/
-!rules/*.rules

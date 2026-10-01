@@ -172,7 +172,6 @@ alias gg='__fzf-ghq-cd'
 . $HOME/bin/func/git.sh
 . $HOME/bin/func/git-fzf-worktree.sh
 . $HOME/bin/aws-lock.sh
-. $HOME/bin/omni/entrypoint.sh
 
 
 # lang

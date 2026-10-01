@@ -987,42 +987,6 @@
                                 "type": "basic"
                             }
                         ]
-                    },
-                    {
-                        "description": "Ctrl+] to activate Ghostty and launch omni-launcher (outside Ghostty)",
-                        "enabled": false,
-                        "manipulators": [
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
-                                        ],
-                                        "type": "frontmost_application_unless"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "close_bracket",
-                                    "modifiers": { "mandatory": ["control"] }
-                                },
-                                "to": [{ "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt" }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Cmd+/ to activate Ghostty and launch omni-launcher",
-                        "enabled": false,
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "slash",
-                                    "modifiers": { "mandatory": ["command"] }
-                                },
-                                "to": [{ "shell_command": "osascript $HOME/bin/macos/omni-launcher.scpt" }],
-                                "type": "basic"
-                            }
-                        ]
                     }
                 ]
             },
