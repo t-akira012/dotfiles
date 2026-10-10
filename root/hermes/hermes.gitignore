@@ -1,0 +1,66 @@
+# このファイルは ~/.hermes private repository の allowlist である。
+# ~/.hermes へコピーせず、core.excludesFile から直接参照する。
+*
+
+# Agent identity and configuration
+!config.yaml
+!SOUL.md
+!AGENTS.md
+!mcp.json
+
+# Reusable capabilities
+!skills/
+!skills/**
+!plugins/
+!plugins/**
+!scripts/
+!scripts/**
+
+# Durable knowledge
+!memories/
+!memories/MEMORY.md
+!memories/USER.md
+!knowledge/
+!knowledge/**
+!preferences/
+!preferences/**
+
+# Scheduled definitions
+!cron/
+!cron/jobs.json
+
+# Named profiles
+!profiles/
+!profiles/*/
+!profiles/*/config.yaml
+!profiles/*/SOUL.md
+!profiles/*/AGENTS.md
+!profiles/*/mcp.json
+!profiles/*/skills/
+!profiles/*/skills/**
+!profiles/*/plugins/
+!profiles/*/plugins/**
+!profiles/*/scripts/
+!profiles/*/scripts/**
+!profiles/*/memories/
+!profiles/*/memories/MEMORY.md
+!profiles/*/memories/USER.md
+!profiles/*/knowledge/
+!profiles/*/knowledge/**
+!profiles/*/preferences/
+!profiles/*/preferences/**
+!profiles/*/cron/
+!profiles/*/cron/jobs.json
+
+# Authentication material is never eligible for Git management.
+.env
+.env.*
+auth.json
+**/.env
+**/.env.*
+**/auth.json
+**/*credential*
+**/*credentials*
+**/*token*
+**/*.pem
+**/*.key
