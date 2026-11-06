@@ -15,6 +15,10 @@
 
 PATH は `cmdrun.bat` で設定済み。
 
+## winget/install_apps.bat でアプリを導入
+
+`%USERPROFILE%\exe\winget\install_apps.bat` を実行すると、Microsoft Visual C++ 2015+ 再頒布可能パッケージ（x64 と x86）、Firefox、Google 日本語入力を winget からインストールする。`dl.bat` はこの bat を配置する。
+
 ## update_nvim.bat で nvim 設定を更新
 
 `update_nvim.bat` を実行すると、`t-akira012/kickstart.nvim` の main ブランチ zip を取得し、`%USERPROFILE%\.config\nvim` を完全置換で更新する。既存ファイルは残さない。
