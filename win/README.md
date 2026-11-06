@@ -108,3 +108,7 @@ OS全体に適用されるキーバインド設定。
 | `Win+;` | WindowsTerminalを最前面トグル |
 
 対象アプリ: Chrome, Edge WebView2, Notepad, PowerToys Launcher, cmd.exe（Nvim除外）
+
+## Google 日本語入力
+
+`dl.bat` は `keybind.txt` を `%USERPROFILE%\.config\googleime\` に配置する。Google 日本語入力へ反映するには、インストール後に「プロパティ」→「一般」→「キー設定の選択」→「編集」→「インポート」からそのファイルを選び、キー設定を「カスタム」にする。ファイルの配置だけでは反映されない。
