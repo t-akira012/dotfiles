@@ -120,7 +120,7 @@ OS全体に適用されるキーバインド設定。
 | `Win+Tab` | 無効化 |
 | `Win+V` | 無効化 |
 
-対象アプリ: Chrome, Edge WebView2, Notepad, PowerToys Launcher, cmd.exe（Nvim除外）
+対象アプリ: Chrome, Microsoft Edge, Edge WebView2, 秀丸エディタ, Notepad, PowerToys Launcher, cmd.exe（Nvim除外）
 
 `Win+L` は Keyhac 2 に割り当てを記述しているが、Windows がキーボードフックより先に処理するため、Keyhac では無効化できない。
 

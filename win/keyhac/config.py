@@ -40,7 +40,7 @@ def configure(keymap):
 
     emacs_keybinds(
         keymap.define_keytable(
-            app="msedgewebview2|chrome|notepad|PowerToys.PowerLauncher"
+            app="msedge|msedgewebview2|chrome|hidemaru|notepad|PowerToys.PowerLauncher"
         )
     )
     emacs_keybinds(
