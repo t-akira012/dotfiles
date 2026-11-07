@@ -19,12 +19,14 @@ dl.bat が行うこと:
 2. %USERPROFILE%\Tools\ と %USERPROFILE%\.dir_history がなければ作成
 3. bin\ を %USERPROFILE%\bin\ に上書きコピー
 4. googleime\keybind.txt を %USERPROFILE%\.config\googleime\ にコピー
-5. 公式の Keyhac for Windows 1.x リリースを %USERPROFILE%\Tools\keyhac\ にDL・展開（既存ならスキップ）
+5. 公式の Keyhac 2 Windows x64 最新リリースを %USERPROFILE%\Tools\keyhac\ にDL・展開（配置先は毎回置換）
 6. このリポジトリの keyhac\config.py を %USERPROFILE%\Tools\keyhac\ にコピー
-7. install_exefiles.bat と update_nvim.bat を %USERPROFILE%\exe\ に配置・実行
+7. CLISM excellent の最新版を %USERPROFILE%\Tools\clism\ にDL・展開（配置先は毎回置換）
+8. install_exefiles.bat と update_nvim.bat を %USERPROFILE%\exe\ に配置・実行
    （fzf, ghq, fd, eza, bat, rg, nvim, git-bash を既存でなければDL）
    （Neovim 設定は既存の %USERPROFILE%\.config\nvim\ を削除して kickstart.nvim に置き換え）
-8. winget\install_apps.bat を %USERPROFILE%\exe\winget\ にコピー
+9. winget\install_apps.bat を %USERPROFILE%\exe\winget\ にコピー
+10. create_startup.bat を %USERPROFILE%\exe\ に配置・実行し、Keyhac と CLISM excellent をスタートアップに登録
 ```
 
 `%USERPROFILE%\bin\cmdrun.bat` を実行して起動する。
@@ -47,6 +49,7 @@ C:\Users\{WIN_USERNAME}\
 ├── exe\
 │   ├── install_exefiles.bat  外部バイナリ一括DLスクリプト
 │   ├── update_nvim.bat       nvim設定をkickstart.nvimから更新
+│   ├── create_startup.bat    常駐ソフトのスタートアップ登録
 │   ├── fzf.exe
 │   ├── ghq.exe
 │   ├── fd.exe
@@ -58,9 +61,14 @@ C:\Users\{WIN_USERNAME}\
 │   ├── git-bash\       bin/, usr/bin/ のUnixコマンドをPATH供給
 │   └── nvim-win64\
 ├── Tools\
-│   └── keyhac\
-│       ├── keyhac.exe
-│       └── config.py    このリポジトリのキーバインド設定
+│   ├── keyhac\
+│   │   ├── Keyhac.exe
+│   │   └── config.py    このリポジトリのキーバインド設定
+│   └── clism\
+│       ├── CLISM64.EXE
+│       ├── CLISM64.DLL
+│       ├── CLISM.EXE
+│       └── CLISM.DLL
 ├── .dir_history       ディレクトリ移動履歴
 └── .config\
     └── googleime\
@@ -100,8 +108,7 @@ C:\Users\{WIN_USERNAME}\
 ## keyhac
 
 OS全体に適用されるキーバインド設定。
-`%USERPROFILE%\Tools\keyhac\keyhac.exe` を起動する。設定ファイルは実行ファイルと同じディレクトリに置く。
-この設定は Keyhac for Windows 1.x 用なので、公式の旧版リリースを使用する。
+`%USERPROFILE%\Tools\keyhac\Keyhac.exe` を起動する。Keyhac 2 の Windows ポータブルモードを使い、設定ファイルを実行ファイルと同じディレクトリに置く。
 
 | キー | 動作 |
 |---|---|
@@ -110,8 +117,18 @@ OS全体に適用されるキーバインド設定。
 | `C-h/d` | BackSpace/Delete |
 | `C-k` | 行末まで削除 |
 | `Win+;` | WindowsTerminalを最前面トグル |
+| `Win+Tab` | 無効化 |
+| `Win+V` | 無効化 |
 
 対象アプリ: Chrome, Edge WebView2, Notepad, PowerToys Launcher, cmd.exe（Nvim除外）
+
+`Win+L` は Keyhac 2 に割り当てを記述しているが、Windows がキーボードフックより先に処理するため、Keyhac では無効化できない。
+
+## CLISM excellent
+
+[公式配布ページ](https://toroidj.github.io/slwin4.html#clismex) から最新版を取得する。Windows x64 版の `CLISM64.EXE` を起動し、同じディレクトリにある x86 版も併用できるよう zip の内容をまとめて配置する。
+
+`%USERPROFILE%\exe\create_startup.bat` を実行すると、Keyhac と CLISM excellent のショートカットを現在のユーザーのスタートアップフォルダーに作成する。`dl.bat` からも実行される。
 
 ## Google 日本語入力
 
