@@ -22,11 +22,12 @@ dl.bat が行うこと:
 5. 公式の Keyhac 2 Windows x64 最新リリースを %USERPROFILE%\Tools\keyhac\ にDL・展開（配置先は毎回置換）
 6. このリポジトリの keyhac\config.py を %USERPROFILE%\Tools\keyhac\ にコピー
 7. CLISM excellent の最新版を %USERPROFILE%\Tools\clism\ にDL・展開（配置先は毎回置換）
-8. install_exefiles.bat と update_nvim.bat を %USERPROFILE%\exe\ に配置・実行
+8. install/ のスクリプトを %USERPROFILE%\exe\install\ に配置し、install_exefiles.bat と update_nvim.bat を実行
    （fzf, ghq, fd, eza, bat, rg, nvim, git-bash を既存でなければDL）
    （Neovim 設定は既存の %USERPROFILE%\.config\nvim\ を削除して kickstart.nvim に置き換え）
-9. winget\install_apps.bat を %USERPROFILE%\exe\winget\ にコピー
-10. create_startup.bat を %USERPROFILE%\exe\ に配置・実行し、Keyhac と CLISM excellent をスタートアップに登録
+9. install_plemoljp_nf.bat を実行し、PlemolJP NF を現在のユーザーに導入
+10. install_apps.bat を %USERPROFILE%\exe\install\ に配置（winget からのアプリ導入は手動実行）
+11. create_startup.bat を %USERPROFILE%\exe\ に配置・実行し、Keyhac と CLISM excellent をスタートアップに登録
 ```
 
 `%USERPROFILE%\bin\cmdrun.bat` を実行して起動する。
@@ -47,8 +48,6 @@ C:\Users\{WIN_USERNAME}\
 │   ├── tf.bat          fdでディレクトリ検索→fzfで選択してジャンプ
 │   └── rm.bat          ごみ箱に送る削除
 ├── exe\
-│   ├── install_exefiles.bat  外部バイナリ一括DLスクリプト
-│   ├── update_nvim.bat       nvim設定をkickstart.nvimから更新
 │   ├── create_startup.bat    常駐ソフトのスタートアップ登録
 │   ├── fzf.exe
 │   ├── ghq.exe
@@ -56,7 +55,11 @@ C:\Users\{WIN_USERNAME}\
 │   ├── eza.exe
 │   ├── bat.exe
 │   ├── rg.exe
-│   ├── winget\
+│   ├── install\
+│   │   ├── install_exefiles.bat  外部バイナリ一括DLスクリプト
+│   │   ├── update_nvim.bat       nvim設定をkickstart.nvimから更新
+│   │   ├── install_plemoljp_nf.bat  PlemolJP NF導入
+│   │   ├── install_plemoljp_nf.ps1  フォント登録処理
 │   │   └── install_apps.bat  Visual C++、Google 日本語入力を導入
 │   ├── git-bash\       bin/, usr/bin/ のUnixコマンドをPATH供給
 │   └── nvim-win64\

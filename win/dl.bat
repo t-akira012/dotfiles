@@ -100,14 +100,9 @@ move "%TEMP_DIR%\clism" "%CLISM_DIR%"
 if errorlevel 1 goto :fail
 
 echo.
-echo Copying install_exefiles.bat ...
+echo Copying install scripts ...
 mkdir "%USERPROFILE%\exe" 2>nul
-copy /y "%SRC%\exe\install_exefiles.bat" "%USERPROFILE%\exe\install_exefiles.bat"
-if errorlevel 1 goto :fail
-
-echo.
-echo Copying update_nvim.bat ...
-copy /y "%SRC%\exe\update_nvim.bat" "%USERPROFILE%\exe\update_nvim.bat"
+xcopy /s /y "%SRC%\exe\install" "%USERPROFILE%\exe\install\"
 if errorlevel 1 goto :fail
 
 echo.
@@ -116,18 +111,17 @@ copy /y "%SRC%\exe\create_startup.bat" "%USERPROFILE%\exe\create_startup.bat"
 if errorlevel 1 goto :fail
 
 echo.
-echo Copying winget\install_apps.bat ...
-mkdir "%USERPROFILE%\exe\winget" 2>nul
-copy /y "%SRC%\exe\winget\install_apps.bat" "%USERPROFILE%\exe\winget\install_apps.bat"
-if errorlevel 1 goto :fail
-
-echo.
 echo Running install_exefiles.bat ...
-call "%USERPROFILE%\exe\install_exefiles.bat"
+call "%USERPROFILE%\exe\install\install_exefiles.bat"
 
 echo.
 echo Running update_nvim.bat ...
-call "%USERPROFILE%\exe\update_nvim.bat"
+call "%USERPROFILE%\exe\install\update_nvim.bat"
+if errorlevel 1 goto :fail
+
+echo.
+echo Running install_plemoljp_nf.bat ...
+call "%USERPROFILE%\exe\install\install_plemoljp_nf.bat"
 if errorlevel 1 goto :fail
 
 echo.
