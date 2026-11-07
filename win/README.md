@@ -57,7 +57,7 @@ C:\Users\{WIN_USERNAME}\
 │   ├── bat.exe
 │   ├── rg.exe
 │   ├── winget\
-│   │   └── install_apps.bat  Visual C++、Firefox、Google 日本語入力を導入
+│   │   └── install_apps.bat  Visual C++、Google 日本語入力を導入
 │   ├── git-bash\       bin/, usr/bin/ のUnixコマンドをPATH供給
 │   └── nvim-win64\
 ├── Tools\

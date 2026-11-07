@@ -12,8 +12,6 @@ call :install "Microsoft.VCRedist.2015+.x64"
 if errorlevel 1 set "FAILED=1"
 call :install "Microsoft.VCRedist.2015+.x86"
 if errorlevel 1 set "FAILED=1"
-call :install "Mozilla.Firefox"
-if errorlevel 1 set "FAILED=1"
 call :install "Google.JapaneseIME"
 if errorlevel 1 set "FAILED=1"
 
