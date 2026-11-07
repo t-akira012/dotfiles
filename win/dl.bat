@@ -39,6 +39,10 @@ if errorlevel 1 goto :fail
 
 echo.
 echo Installing Keyhac 2 ...
+if exist "%KEYHAC_DIR%\" (
+    echo   SKIP: %KEYHAC_DIR% already exists
+    goto :keyhac_ready
+)
 set "KEYHAC_URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/crftwr/keyhac/releases/latest').assets | Where-Object { $_.name -like 'Keyhac-2.*-win64.zip' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "KEYHAC_URL=%%u"
 if not defined KEYHAC_URL (
@@ -51,17 +55,10 @@ if errorlevel 1 goto :fail
 tar xvf "%TEMP_DIR%\keyhac.zip" -C "%TEMP_DIR%"
 if errorlevel 1 goto :fail
 if not exist "%TEMP_DIR%\Keyhac\Keyhac.exe" goto :fail
-if exist "%KEYHAC_DIR%\" (
-    echo Stopping Keyhac from %KEYHAC_DIR% ...
-    powershell -NoProfile -Command "$ErrorActionPreference='Stop'; $target=Join-Path $env:USERPROFILE 'Tools\keyhac\Keyhac.exe'; Get-CimInstance Win32_Process -Filter 'Name=''Keyhac.exe''' | Where-Object { $_.ExecutablePath -eq $target } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction Stop }"
-    if errorlevel 1 goto :fail
-    echo Removing previous Keyhac ...
-    rd /s /q "%KEYHAC_DIR%"
-    if errorlevel 1 goto :fail
-)
 move "%TEMP_DIR%\Keyhac" "%KEYHAC_DIR%"
 if errorlevel 1 goto :fail
 
+:keyhac_ready
 echo.
 echo Copying keyhac\config.py ...
 if not exist "%KEYHAC_DIR%\Keyhac.exe" (
@@ -73,6 +70,10 @@ if errorlevel 1 goto :fail
 
 echo.
 echo Installing CLISM excellent ...
+if exist "%CLISM_DIR%\" (
+    echo   SKIP: %CLISM_DIR% already exists
+    goto :clism_ready
+)
 set "CLISM_URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "$page=(Invoke-WebRequest -UseBasicParsing 'https://toroidj.github.io/slwin4.html').Content; [regex]::Match($page, 'https://toroidj.github.io/win/clisme[0-9]+\.zip').Value"') do set "CLISM_URL=%%u"
 if not defined CLISM_URL (
@@ -88,17 +89,10 @@ tar xvf "%TEMP_DIR%\clism.zip" -C "%TEMP_DIR%\clism"
 if errorlevel 1 goto :fail
 if not exist "%TEMP_DIR%\clism\CLISM64.EXE" goto :fail
 if not exist "%TEMP_DIR%\clism\CLISM64.DLL" goto :fail
-if exist "%CLISM_DIR%\" (
-    echo Stopping CLISM excellent from %CLISM_DIR% ...
-    powershell -NoProfile -Command "$ErrorActionPreference='Stop'; $root=Join-Path $env:USERPROFILE 'Tools\clism\'; Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -and $_.ExecutablePath.StartsWith($root,[StringComparison]::OrdinalIgnoreCase) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction Stop }"
-    if errorlevel 1 goto :fail
-    echo Removing previous CLISM excellent ...
-    rd /s /q "%CLISM_DIR%"
-    if errorlevel 1 goto :fail
-)
 move "%TEMP_DIR%\clism" "%CLISM_DIR%"
 if errorlevel 1 goto :fail
 
+:clism_ready
 echo.
 echo Copying install scripts ...
 mkdir "%USERPROFILE%\exe" 2>nul

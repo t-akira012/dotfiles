@@ -19,9 +19,9 @@ dl.bat が行うこと:
 2. %USERPROFILE%\Tools\ と %USERPROFILE%\.dir_history がなければ作成
 3. bin\ を %USERPROFILE%\bin\ に上書きコピー
 4. googleime\keybind.txt を %USERPROFILE%\.config\googleime\ にコピー
-5. 公式の Keyhac 2 Windows x64 最新リリースを %USERPROFILE%\Tools\keyhac\ にDL・展開（配置先は毎回置換）
-6. このリポジトリの keyhac\config.py を %USERPROFILE%\Tools\keyhac\ にコピー
-7. CLISM excellent の最新版を %USERPROFILE%\Tools\clism\ にDL・展開（配置先は毎回置換）
+5. 公式の Keyhac 2 Windows x64 最新リリースを %USERPROFILE%\Tools\keyhac\ にDL・展開（配置先があればスキップ）
+6. このリポジトリの keyhac\config.py を %USERPROFILE%\Tools\keyhac\ にコピー（毎回更新）
+7. CLISM excellent の最新版を %USERPROFILE%\Tools\clism\ にDL・展開（配置先があればスキップ）
 8. install/ のスクリプトを %USERPROFILE%\exe\install\ に配置し、install_exefiles.bat と update_nvim.bat を実行
    （fzf, ghq, fd, eza, bat, rg, nvim, git-bash を既存でなければDL）
    （Neovim 設定は既存の %USERPROFILE%\.config\nvim\ を削除して kickstart.nvim に置き換え）
