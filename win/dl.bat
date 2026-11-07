@@ -107,6 +107,7 @@ if errorlevel 1 goto :fail
 echo.
 echo Running install_exefiles.bat ...
 call "%USERPROFILE%\exe\install\install_exefiles.bat"
+if errorlevel 1 goto :fail
 
 echo.
 echo Running update_nvim.bat ...
