@@ -21,7 +21,7 @@ def configure(keymap):
         else:
             LaunchApplication("wt.exe")()
 
-    global_keys["Win-Semicolon"] = toggle_windows_terminal
+    global_keys["Alt-Semicolon"] = toggle_windows_terminal
     global_keys["Win-Tab"] = lambda: None
     global_keys["Win-V"] = lambda: None
     # Windows intercepts Win+L before Keyhac's hook; this binding cannot stop locking.

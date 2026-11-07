@@ -116,7 +116,7 @@ OS全体に適用されるキーバインド設定。
 | `C-a/e` | Home/End |
 | `C-h/d` | BackSpace/Delete |
 | `C-k` | 行末まで削除 |
-| `Win+;` | WindowsTerminalを最前面トグル |
+| `Alt+;` | WindowsTerminalを最前面トグル |
 | `Win+Tab` | 無効化 |
 | `Win+V` | 無効化 |
 
