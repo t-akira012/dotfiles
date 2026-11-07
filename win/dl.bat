@@ -10,7 +10,18 @@ curl -sL "%ZIP_URL%" -o "%TEMP_DIR%\dotfiles.zip"
 tar xvf "%TEMP_DIR%\dotfiles.zip" -C "%TEMP_DIR%"
 
 set SRC=%TEMP_DIR%\dotfiles-main\win
-set KEYHAC_DIR=%USERPROFILE%\exe\keyhac
+set KEYHAC_DIR=%USERPROFILE%\Tools\keyhac
+
+echo.
+echo Preparing user directories ...
+if not exist "%USERPROFILE%\Tools\" (
+    mkdir "%USERPROFILE%\Tools"
+    if errorlevel 1 goto :fail
+)
+if not exist "%USERPROFILE%\.dir_history" (
+    type nul > "%USERPROFILE%\.dir_history"
+    if errorlevel 1 goto :fail
+)
 
 echo.
 echo Copying bin ...
@@ -24,7 +35,6 @@ if errorlevel 1 goto :fail
 
 echo.
 echo Installing keyhac ...
-mkdir "%USERPROFILE%\exe" 2>nul
 if not exist "%KEYHAC_DIR%\keyhac.exe" (
     set "KEYHAC_URL="
     for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/crftwr/keyhac-win/releases/latest').assets | Where-Object { $_.name -like 'keyhac_*.zip' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "KEYHAC_URL=%%u"
@@ -34,7 +44,7 @@ if not exist "%KEYHAC_DIR%\keyhac.exe" (
         if errorlevel 1 (
             echo   ERROR: keyhac download failed
         ) else (
-            tar xvf "%TEMP_DIR%\keyhac.zip" -C "%USERPROFILE%\exe"
+            tar xvf "%TEMP_DIR%\keyhac.zip" -C "%USERPROFILE%\Tools"
             if errorlevel 1 (
                 echo   ERROR: keyhac extraction failed
             ) else (
@@ -59,7 +69,14 @@ if errorlevel 1 goto :fail
 
 echo.
 echo Copying install_exefiles.bat ...
+mkdir "%USERPROFILE%\exe" 2>nul
 copy /y "%SRC%\exe\install_exefiles.bat" "%USERPROFILE%\exe\install_exefiles.bat"
+if errorlevel 1 goto :fail
+
+echo.
+echo Copying update_nvim.bat ...
+copy /y "%SRC%\exe\update_nvim.bat" "%USERPROFILE%\exe\update_nvim.bat"
+if errorlevel 1 goto :fail
 
 echo.
 echo Copying winget\install_apps.bat ...
@@ -70,6 +87,11 @@ if errorlevel 1 goto :fail
 echo.
 echo Running install_exefiles.bat ...
 call "%USERPROFILE%\exe\install_exefiles.bat"
+
+echo.
+echo Running update_nvim.bat ...
+call "%USERPROFILE%\exe\update_nvim.bat"
+if errorlevel 1 goto :fail
 
 rd /s /q "%TEMP_DIR%"
 echo.

@@ -21,7 +21,7 @@ PATH は `cmdrun.bat` で設定済み。
 
 ## update_nvim.bat で nvim 設定を更新
 
-`update_nvim.bat` を実行すると、`t-akira012/kickstart.nvim` の main ブランチ zip を取得し、`%USERPROFILE%\.config\nvim` を完全置換で更新する。既存ファイルは残さない。
+`update_nvim.bat` を実行すると、`t-akira012/kickstart.nvim` の main ブランチ zip を取得し、既存の `%USERPROFILE%\.config\nvim` を削除してから設定を配置する。削除に失敗した場合は処理を中止する。`dl.bat` からも毎回呼び出す。
 
 ## cargo / go
 
