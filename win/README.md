@@ -60,7 +60,7 @@ C:\Users\{WIN_USERNAME}\
 │   │   ├── update_nvim.bat       nvim設定をkickstart.nvimから更新
 │   │   ├── install_plemoljp_nf.bat  PlemolJP NF導入
 │   │   ├── install_plemoljp_nf.ps1  フォント登録処理
-│   │   └── install_apps.bat  Visual C++、Google 日本語入力を導入
+│   │   └── install_apps.bat  Visual C++、Google 日本語入力、Tailscale を導入
 │   ├── git-bash\       bin/, usr/bin/ のUnixコマンドをPATH供給
 │   └── nvim-win64\
 ├── Tools\

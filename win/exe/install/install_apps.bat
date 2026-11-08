@@ -14,6 +14,8 @@ call :install "Microsoft.VCRedist.2015+.x86"
 if errorlevel 1 set "FAILED=1"
 call :install "Google.JapaneseIME"
 if errorlevel 1 set "FAILED=1"
+call :install "Tailscale.Tailscale"
+if errorlevel 1 set "FAILED=1"
 
 echo.
 if "%FAILED%"=="1" (
