@@ -56,7 +56,7 @@ Mac mini では Clipper 3.0.0 を Homebrew から再導入し、launchd の `sh.
 - MacBook Pro で新しい識別可能な PNG をコピーし、Ghostty → SSH → tmux → Codex に貼り付ける。貼り付けた画像が新しいものであることを確認する。
 - Mac mini の Clipper サービスとソケットの状態、Mac mini 側の画像クリップボードの変化を同時に確認し、転送経路を特定する。
 - Windows 11 → Mac mini でも文字列・画像の貼り付けを確認する。Windows では Clipper の導入と SSH 設定をまだ行っていない。
-- MacBook Pro 側の Clipper 導入、SSH config のソケット転送、ADR の最終決定は `kouzoku.md` に記録する。
+- MacBook Pro 側にも Clipper 3.0.0 を導入し、launchd 起動と `~/.clipper.sock` の待受を確認した。SSH config のソケット転送と ADR の最終決定は `kouzoku.md` に記録する。Mac mini の `StreamLocalBindUnlink yes` により旧転送行で既存ソケットパスを切り替えられるため、新しい SSH 接続で動作を確認する。
 - `tmux load-buffer -w` には tmux 3.2 以上と接続元端末の OSC 52 対応が必要。
 
 ## 参照

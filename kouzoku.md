@@ -4,9 +4,9 @@
 
 ## MacBook Pro と SSH
 
-- MacBook Pro に Clipper を導入し、launchd で起動する。Mac mini 側は復旧済み。両側の `~/.clipper.sock` がどのプロセスに接続しているか確認する。
-- MacBook Pro の `~/.ssh/config` の `Host mini` と `Host vpn` について、旧設定にあった `RemoteForward /Users/t-akira012/.clipper.sock /Users/t-akira012/.clipper.sock` の復旧要否を調べ、必要なら追加する。既存の `RemoteForward 2222 localhost:22` との共存を確認する。
-- 接続時にソケット転送が失敗しないことを確認する。Mac mini 側で待受する Clipper と SSH が同じソケットパスを使用する場合は競合を解消する。
+- MacBook Pro に Clipper 3.0.0 を導入し、launchd の `sh.brew.clipper` で起動済み。`~/.clipper.sock` の待受を確認済み。Mac mini 側も Clipper が同じ名前のソケットを待ち受けている。
+- `myhouse/setup_ssh.md` の履歴（commit `78cb403`）にあった `RemoteForward /Users/t-akira012/.clipper.sock /Users/t-akira012/.clipper.sock` を SSH 設定に戻し、既存の `RemoteForward 2222 localhost:22` と併用する。Mac mini の `/etc/ssh/sshd_config` には `StreamLocalBindUnlink yes` があるため、SSH は既存のソケットパスを外して転送用に使用できる。Mac mini 側 Clipper の待受との切り替わりを実際に確認する。
+- 新しい SSH 接続でソケット転送が成功することを確認し、Mac mini の `~/.clipper.sock` が SSH 転送を指している間に MacBook Pro のクリップボードへコピーできることを確認する。
 
 ## 実動作と ADR
 
