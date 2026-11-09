@@ -4,6 +4,8 @@
 
 `%USERPROFILE%\exe\install\install_exefiles.bat` を実行すると、以下のツールを GitHub Releases から `%USERPROFILE%\exe` にインストールする。
 
+配置に失敗したツールは後続の導入を続け、`%USERPROFILE%\Downloads\tmp` に ZIP と展開済みファイルを残して手動コピー元・配置先を表示する。
+
 * fzf
 * ghq
 * fd
@@ -19,6 +21,8 @@ PATH は `cmdrun.bat` で設定済み。
 
 `%USERPROFILE%\exe\install\install_plemoljp_nf.bat` は公式 GitHub Releases の最新 `PlemolJP_NF_v*.zip` を取得し、含まれる TrueType フォントを現在のユーザーにインストールする。`dl.bat` からも実行される。同じ版の再実行はスキップする。別の版へ更新するときは、既存の PlemolJP NF フォントを削除してから実行する。
 
+フォント導入に失敗した場合、取得済み ZIP と展開済みファイルを `%USERPROFILE%\Downloads\tmp` に残す。
+
 ## install_apps.bat でアプリを導入
 
 `%USERPROFILE%\exe\install\install_apps.bat` を実行すると、Microsoft Visual C++ 2015+ 再頒布可能パッケージ（x64 と x86）、Google 日本語入力、Tailscale クライアントを winget からインストールする。`dl.bat` はこの bat を配置する。
@@ -26,6 +30,8 @@ PATH は `cmdrun.bat` で設定済み。
 ## update_nvim.bat で nvim 設定を更新
 
 `%USERPROFILE%\exe\install\update_nvim.bat` を実行すると、`t-akira012/kickstart.nvim` の main ブランチ zip を取得し、既存の `%USERPROFILE%\.config\nvim` を削除してから設定を配置する。削除に失敗した場合は処理を中止する。`dl.bat` からも毎回呼び出す。
+
+設定の配置に失敗した場合、ZIP と展開済み設定を `%USERPROFILE%\Downloads\tmp` に残し、手動コピー元を表示する。
 
 ## create_startup.bat で常駐ソフトを登録
 

@@ -3,7 +3,8 @@ $ErrorActionPreference = 'Stop'
 $fontDirectory = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
 $registryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
 $versionFile = Join-Path $fontDirectory 'PlemolJP_NF.version'
-$workDirectory = Join-Path $env:TEMP ('PlemolJP_NF_' + [guid]::NewGuid().ToString('N'))
+$workDirectory = Join-Path (Join-Path $env:USERPROFILE 'Downloads\tmp') ('PlemolJP_NF_' + [guid]::NewGuid().ToString('N'))
+$installed = $false
 
 try {
     $release = Invoke-RestMethod 'https://api.github.com/repos/yuru7/PlemolJP/releases/latest'
@@ -57,10 +58,17 @@ public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, In
 
     [void][Win32.FontApi]::SendMessage([IntPtr]0xffff, 0x001d, [IntPtr]::Zero, [IntPtr]::Zero)
     Set-Content -Path $versionFile -Value $release.tag_name -NoNewline
+    $installed = $true
     Write-Host "Installed $($fonts.Count) PlemolJP NF font files ($($release.tag_name))."
 } catch {
-    Write-Error $_
+    Write-Host "ERROR: $_"
+    if (Test-Path (Join-Path $workDirectory 'extracted')) {
+        Write-Host "MANUAL: Install the PlemolJP NF fonts from '$workDirectory\extracted'."
+    }
+    if ($asset -and (Test-Path (Join-Path $workDirectory $asset.name))) {
+        Write-Host "        ZIP: '$workDirectory\$($asset.name)'"
+    }
     exit 1
 } finally {
-    if (Test-Path $workDirectory) { Remove-Item -LiteralPath $workDirectory -Recurse -Force }
+    if ($installed -and (Test-Path $workDirectory)) { Remove-Item -LiteralPath $workDirectory -Recurse -Force }
 }

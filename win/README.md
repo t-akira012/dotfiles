@@ -30,6 +30,8 @@ dl.bat が行うこと:
 11. create_startup.bat を %USERPROFILE%\exe\ に配置・実行し、Keyhac と CLISM excellent をスタートアップに登録
 ```
 
+ダウンロードと展開には `%USERPROFILE%\Downloads\tmp` を使う。コピーや移動がアクセス拒否などで失敗しても、残りのセットアップを続ける。画面に `MANUAL:` と元ファイル・配置先を表示し、必要な ZIP と展開済みファイルを `Downloads\tmp` に残す。手動配置後、スタートアップ登録が必要なら `create_startup.bat` を再実行する。手動作業が残った場合は終了コード 1 を返す。
+
 `%USERPROFILE%\bin\cmdrun.bat` を実行して起動する。
 
 ## 構成

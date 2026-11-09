@@ -1,136 +1,228 @@
 @echo off
 setlocal
 
-set TEMP_DIR=%TEMP%\dotfiles_%RANDOM%
-set ZIP_URL=https://github.com/t-akira012/dotfiles/archive/refs/heads/main.zip
+set "TEMP_DIR=%USERPROFILE%\Downloads\tmp\dotfiles_%RANDOM%"
+set "ZIP_URL=https://github.com/t-akira012/dotfiles/archive/refs/heads/main.zip"
+set "NEEDS_MANUAL=0"
 
 echo Downloading dotfiles ...
 mkdir "%TEMP_DIR%" 2>nul
+if errorlevel 1 goto :fail
 curl -fL "%ZIP_URL%" -o "%TEMP_DIR%\dotfiles.zip"
 if errorlevel 1 goto :fail
 tar xvf "%TEMP_DIR%\dotfiles.zip" -C "%TEMP_DIR%"
 if errorlevel 1 goto :fail
 
-set SRC=%TEMP_DIR%\dotfiles-main\win
-set KEYHAC_DIR=%USERPROFILE%\Tools\keyhac
-set CLISM_DIR=%USERPROFILE%\Tools\clism
+set "SRC=%TEMP_DIR%\dotfiles-main\win"
+set "KEYHAC_DIR=%USERPROFILE%\Tools\keyhac"
+set "CLISM_DIR=%USERPROFILE%\Tools\clism"
 
 echo.
 echo Preparing user directories ...
 if not exist "%USERPROFILE%\Tools\" (
     mkdir "%USERPROFILE%\Tools"
-    if errorlevel 1 goto :fail
+    if errorlevel 1 (
+        echo MANUAL: Create "%USERPROFILE%\Tools".
+        set "NEEDS_MANUAL=1"
+    )
 )
 if not exist "%USERPROFILE%\.dir_history" (
     type nul > "%USERPROFILE%\.dir_history"
-    if errorlevel 1 goto :fail
+    if errorlevel 1 (
+        echo MANUAL: Create "%USERPROFILE%\.dir_history".
+        set "NEEDS_MANUAL=1"
+    )
 )
 
 echo.
 echo Copying bin ...
 xcopy /s /y "%SRC%\bin" "%USERPROFILE%\bin\"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Copy "%SRC%\bin" to "%USERPROFILE%\bin".
+    set "NEEDS_MANUAL=1"
+)
 
 echo.
 echo Copying googleime\keybind.txt ...
 mkdir "%USERPROFILE%\.config\googleime" 2>nul
 copy /y "%SRC%\googleime\keybind.txt" "%USERPROFILE%\.config\googleime\keybind.txt"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Copy "%SRC%\googleime\keybind.txt" to "%USERPROFILE%\.config\googleime\keybind.txt".
+    set "NEEDS_MANUAL=1"
+)
 
 echo.
 echo Installing Keyhac 2 ...
-if exist "%KEYHAC_DIR%\" (
-    echo   SKIP: %KEYHAC_DIR% already exists
+if exist "%KEYHAC_DIR%\Keyhac.exe" (
+    echo   SKIP: %KEYHAC_DIR%\Keyhac.exe already exists
     goto :keyhac_ready
 )
 set "KEYHAC_URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/crftwr/keyhac/releases/latest').assets | Where-Object { $_.name -match '^Keyhac-2\..+-win(-x64|64)\.zip$' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "KEYHAC_URL=%%u"
 if not defined KEYHAC_URL (
     echo   ERROR: Keyhac 2 Windows asset not found
-    goto :fail
+    set "NEEDS_MANUAL=1"
+    goto :keyhac_ready
 )
 echo   %KEYHAC_URL%
 curl -fL "%KEYHAC_URL%" -o "%TEMP_DIR%\keyhac.zip"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo   ERROR: Keyhac download failed.
+    set "NEEDS_MANUAL=1"
+    goto :keyhac_ready
+)
 tar xvf "%TEMP_DIR%\keyhac.zip" -C "%TEMP_DIR%"
-if errorlevel 1 goto :fail
-if not exist "%TEMP_DIR%\Keyhac\Keyhac.exe" goto :fail
+if errorlevel 1 (
+    echo   ERROR: Keyhac extraction failed. ZIP: "%TEMP_DIR%\keyhac.zip"
+    set "NEEDS_MANUAL=1"
+    goto :keyhac_ready
+)
+if not exist "%TEMP_DIR%\Keyhac\Keyhac.exe" (
+    echo   ERROR: Keyhac.exe not found in "%TEMP_DIR%\keyhac.zip".
+    set "NEEDS_MANUAL=1"
+    goto :keyhac_ready
+)
+copy /y "%SRC%\keyhac\config.py" "%TEMP_DIR%\Keyhac\config.py" >nul
+if exist "%KEYHAC_DIR%\" (
+    echo MANUAL: "%KEYHAC_DIR%" exists without Keyhac.exe. Copy files from "%TEMP_DIR%\Keyhac" into it.
+    echo         ZIP: "%TEMP_DIR%\keyhac.zip"
+    set "NEEDS_MANUAL=1"
+    goto :keyhac_ready
+)
 move "%TEMP_DIR%\Keyhac" "%KEYHAC_DIR%"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Move "%TEMP_DIR%\Keyhac" to "%KEYHAC_DIR%".
+    echo         ZIP: "%TEMP_DIR%\keyhac.zip"
+    set "NEEDS_MANUAL=1"
+)
+if not exist "%KEYHAC_DIR%\Keyhac.exe" (
+    echo MANUAL: Keyhac.exe is missing from "%KEYHAC_DIR%". Extract "%TEMP_DIR%\keyhac.zip" and copy the Keyhac folder there.
+    set "NEEDS_MANUAL=1"
+)
 
 :keyhac_ready
 echo.
 echo Copying keyhac\config.py ...
 if not exist "%KEYHAC_DIR%\Keyhac.exe" (
-    echo   ERROR: Keyhac.exe not found; config.py was not copied
-    goto :fail
+    echo   SKIP: Keyhac.exe is not installed yet. Config is in "%SRC%\keyhac\config.py".
+    goto :clism
 )
 copy /y "%SRC%\keyhac\config.py" "%KEYHAC_DIR%\config.py"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Copy "%SRC%\keyhac\config.py" to "%KEYHAC_DIR%\config.py".
+    set "NEEDS_MANUAL=1"
+)
 
+:clism
 echo.
 echo Installing CLISM excellent ...
-if exist "%CLISM_DIR%\" (
-    echo   SKIP: %CLISM_DIR% already exists
+if exist "%CLISM_DIR%\CLISM64.EXE" (
+    echo   SKIP: %CLISM_DIR%\CLISM64.EXE already exists
     goto :clism_ready
 )
 set "CLISM_URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "$page=(Invoke-WebRequest -UseBasicParsing 'https://toroidj.github.io/slwin4.html').Content; [regex]::Match($page, 'https://toroidj.github.io/win/clisme[0-9]+\.zip').Value"') do set "CLISM_URL=%%u"
 if not defined CLISM_URL (
     echo   ERROR: CLISM excellent download link not found
-    goto :fail
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
 )
 echo   %CLISM_URL%
 curl -fL "%CLISM_URL%" -o "%TEMP_DIR%\clism.zip"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo   ERROR: CLISM download failed.
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
+)
 mkdir "%TEMP_DIR%\clism"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo   ERROR: Could not create "%TEMP_DIR%\clism".
+    echo         ZIP: "%TEMP_DIR%\clism.zip"
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
+)
 tar xvf "%TEMP_DIR%\clism.zip" -C "%TEMP_DIR%\clism"
-if errorlevel 1 goto :fail
-if not exist "%TEMP_DIR%\clism\CLISM64.EXE" goto :fail
-if not exist "%TEMP_DIR%\clism\CLISM64.DLL" goto :fail
+if errorlevel 1 (
+    echo   ERROR: CLISM extraction failed. ZIP: "%TEMP_DIR%\clism.zip"
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
+)
+if not exist "%TEMP_DIR%\clism\CLISM64.EXE" (
+    echo   ERROR: CLISM64.EXE not found in "%TEMP_DIR%\clism.zip".
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
+)
+if not exist "%TEMP_DIR%\clism\CLISM64.DLL" (
+    echo   ERROR: CLISM64.DLL not found in "%TEMP_DIR%\clism.zip".
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
+)
+if exist "%CLISM_DIR%\" (
+    echo MANUAL: "%CLISM_DIR%" exists without CLISM64.EXE. Copy files from "%TEMP_DIR%\clism" into it.
+    echo         ZIP: "%TEMP_DIR%\clism.zip"
+    set "NEEDS_MANUAL=1"
+    goto :clism_ready
+)
 move "%TEMP_DIR%\clism" "%CLISM_DIR%"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Move "%TEMP_DIR%\clism" to "%CLISM_DIR%".
+    echo         ZIP: "%TEMP_DIR%\clism.zip"
+    set "NEEDS_MANUAL=1"
+)
+if not exist "%CLISM_DIR%\CLISM64.EXE" (
+    echo MANUAL: CLISM64.EXE is missing from "%CLISM_DIR%". Extract "%TEMP_DIR%\clism.zip" and copy its files there.
+    set "NEEDS_MANUAL=1"
+)
 
 :clism_ready
 echo.
 echo Copying install scripts ...
 mkdir "%USERPROFILE%\exe" 2>nul
 xcopy /s /y "%SRC%\exe\install" "%USERPROFILE%\exe\install\"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Copy "%SRC%\exe\install" to "%USERPROFILE%\exe\install".
+    set "NEEDS_MANUAL=1"
+)
 
 echo.
 echo Copying create_startup.bat ...
 copy /y "%SRC%\exe\create_startup.bat" "%USERPROFILE%\exe\create_startup.bat"
-if errorlevel 1 goto :fail
+if errorlevel 1 (
+    echo MANUAL: Copy "%SRC%\exe\create_startup.bat" to "%USERPROFILE%\exe\create_startup.bat".
+    set "NEEDS_MANUAL=1"
+)
 
 echo.
 echo Running install_exefiles.bat ...
-call "%USERPROFILE%\exe\install\install_exefiles.bat"
-if errorlevel 1 goto :fail
+call "%SRC%\exe\install\install_exefiles.bat"
+if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
 echo Running update_nvim.bat ...
-call "%USERPROFILE%\exe\install\update_nvim.bat"
-if errorlevel 1 goto :fail
+call "%SRC%\exe\install\update_nvim.bat"
+if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
 echo Running install_plemoljp_nf.bat ...
-call "%USERPROFILE%\exe\install\install_plemoljp_nf.bat"
-if errorlevel 1 goto :fail
+call "%SRC%\exe\install\install_plemoljp_nf.bat"
+if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
 echo Running create_startup.bat ...
-call "%USERPROFILE%\exe\create_startup.bat"
-if errorlevel 1 goto :fail
+call "%SRC%\exe\create_startup.bat"
+if errorlevel 1 set "NEEDS_MANUAL=1"
 
-rd /s /q "%TEMP_DIR%"
 echo.
+if "%NEEDS_MANUAL%"=="1" (
+    echo Setup continued, but manual steps remain. Files and ZIPs: "%TEMP_DIR%"
+    echo Keep this directory until all MANUAL steps above are complete.
+    exit /b 1
+)
+rd /s /q "%TEMP_DIR%"
 echo All done!
 exit /b 0
 
 :fail
-rd /s /q "%TEMP_DIR%"
 echo.
-echo Installation failed.
+echo Installation failed. Files and ZIPs remain in "%TEMP_DIR%".
 exit /b 1
