@@ -1,12 +1,11 @@
 @echo off
 setlocal
-chcp 65001 >nul
 
 set "TEMP_DIR=%USERPROFILE%\Downloads\tmp\dotfiles_%RANDOM%"
 set "ZIP_URL=https://github.com/t-akira012/dotfiles/archive/refs/heads/main.zip"
 set "NEEDS_MANUAL=0"
 
-echo dotfiles をダウンロードしています...
+echo Downloading dotfiles ...
 mkdir "%TEMP_DIR%" 2>nul
 if errorlevel 1 goto :fail
 curl -fL "%ZIP_URL%" -o "%TEMP_DIR%\dotfiles.zip"
@@ -19,80 +18,80 @@ set "KEYHAC_DIR=%USERPROFILE%\Tools\keyhac"
 set "CLISM_DIR=%USERPROFILE%\Tools\clism"
 
 echo.
-echo ユーザーディレクトリを準備しています...
+echo Preparing user directories ...
 if not exist "%USERPROFILE%\Tools\" (
     mkdir "%USERPROFILE%\Tools"
     if errorlevel 1 (
-        echo 手動: 作成してください: "%USERPROFILE%\Tools".
+        echo MANUAL: Create "%USERPROFILE%\Tools".
         set "NEEDS_MANUAL=1"
     )
 )
 if not exist "%USERPROFILE%\.dir_history" (
     type nul > "%USERPROFILE%\.dir_history"
     if errorlevel 1 (
-        echo 手動: 作成してください: "%USERPROFILE%\.dir_history".
+        echo MANUAL: Create "%USERPROFILE%\.dir_history".
         set "NEEDS_MANUAL=1"
     )
 )
 
 echo.
-echo bin をコピーしています...
+echo Copying bin ...
 xcopy /s /y "%SRC%\bin" "%USERPROFILE%\bin\"
 if errorlevel 1 (
-    echo 手動: コピーしてください: "%SRC%\bin" → "%USERPROFILE%\bin".
+    echo MANUAL: Copy "%SRC%\bin" to "%USERPROFILE%\bin".
     set "NEEDS_MANUAL=1"
 )
 
 echo.
-echo Google 日本語入力のキー設定をコピーしています...
+echo Copying Google Japanese IME key bindings ...
 mkdir "%USERPROFILE%\.config\googleime" 2>nul
 copy /y "%SRC%\googleime\keybind.txt" "%USERPROFILE%\.config\googleime\keybind.txt"
 if errorlevel 1 (
-    echo 手動: コピーしてください: "%SRC%\googleime\keybind.txt" → "%USERPROFILE%\.config\googleime\keybind.txt".
+    echo MANUAL: Copy "%SRC%\googleime\keybind.txt" to "%USERPROFILE%\.config\googleime\keybind.txt".
     set "NEEDS_MANUAL=1"
 )
 
 echo.
-echo Keyhac 2 を導入しています...
+echo Installing Keyhac 2 ...
 if exist "%KEYHAC_DIR%\Keyhac.exe" (
-    echo   スキップ: %KEYHAC_DIR%\Keyhac.exe は配置済みです
+    echo   SKIP: %KEYHAC_DIR%\Keyhac.exe already exists
     goto :keyhac_existing
 )
 set "KEYHAC_URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/crftwr/keyhac/releases/latest').assets | Where-Object { $_.name -match '^Keyhac-2\..+-win(-x64|64)\.zip$' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "KEYHAC_URL=%%u"
 if not defined KEYHAC_URL (
-    echo   エラー: Keyhac 2 の Windows 版 ZIP が見つかりません。
+    echo   ERROR: Keyhac 2 Windows ZIP not found.
     set "NEEDS_MANUAL=1"
     goto :keyhac_done
 )
 echo   %KEYHAC_URL%
 curl -fL "%KEYHAC_URL%" -o "%TEMP_DIR%\keyhac.zip"
 if errorlevel 1 (
-    echo   エラー: Keyhac のダウンロードに失敗しました。
+    echo   ERROR: Keyhac download failed.
     set "NEEDS_MANUAL=1"
     goto :keyhac_done
 )
 tar xvf "%TEMP_DIR%\keyhac.zip" -C "%TEMP_DIR%"
 if errorlevel 1 (
-    echo   エラー: Keyhac の展開に失敗しました。ZIP: "%TEMP_DIR%\keyhac.zip"
+    echo   ERROR: Keyhac extraction failed. ZIP: "%TEMP_DIR%\keyhac.zip"
     set "NEEDS_MANUAL=1"
     goto :keyhac_done
 )
 if not exist "%TEMP_DIR%\Keyhac\Keyhac.exe" (
-    echo   エラー: Keyhac.exe が ZIP 内に見つかりません: "%TEMP_DIR%\keyhac.zip".
+    echo   ERROR: Keyhac.exe not found in ZIP: "%TEMP_DIR%\keyhac.zip".
     set "NEEDS_MANUAL=1"
     goto :keyhac_done
 )
 copy /y "%SRC%\keyhac\config.py" "%TEMP_DIR%\Keyhac\config.py" >nul
 if errorlevel 1 (
-    echo   エラー: Keyhac フォルダに config.py を組み込めませんでした。
-    echo   元ファイル: "%SRC%\keyhac\config.py"
-    echo   作業フォルダ: "%TEMP_DIR%\Keyhac"
+    echo   ERROR: Could not bundle config.py with Keyhac.
+    echo   Source: "%SRC%\keyhac\config.py"
+    echo   Working folder: "%TEMP_DIR%\Keyhac"
     set "NEEDS_MANUAL=1"
     goto :keyhac_done
 )
 if exist "%KEYHAC_DIR%\" (
-    echo 手動: "%KEYHAC_DIR%" に Keyhac.exe がありません。"%TEMP_DIR%\Keyhac" からコピーしてください。
+    echo MANUAL: "%KEYHAC_DIR%" is incomplete. Copy files from "%TEMP_DIR%\Keyhac" into it.
     echo         ZIP: "%TEMP_DIR%\keyhac.zip"
     set "NEEDS_MANUAL=1"
     goto :keyhac_done
@@ -100,9 +99,9 @@ if exist "%KEYHAC_DIR%\" (
 move "%TEMP_DIR%\Keyhac" "%KEYHAC_DIR%"
 if not exist "%KEYHAC_DIR%\Keyhac.exe" (
     if exist "%TEMP_DIR%\Keyhac\Keyhac.exe" (
-        echo 手動: "%TEMP_DIR%\Keyhac" を "%KEYHAC_DIR%" に移動してください。config.py は組み込み済みです。
+        echo MANUAL: Move "%TEMP_DIR%\Keyhac" to "%KEYHAC_DIR%". config.py is included.
     ) else (
-        echo 手動: "%TEMP_DIR%\keyhac.zip" を展開し、Keyhac フォルダに "%SRC%\keyhac\config.py" を入れてから "%KEYHAC_DIR%" に移動してください。
+        echo MANUAL: Extract "%TEMP_DIR%\keyhac.zip", add "%SRC%\keyhac\config.py" to the Keyhac folder, then move it to "%KEYHAC_DIR%".
     )
     echo         ZIP: "%TEMP_DIR%\keyhac.zip"
     set "NEEDS_MANUAL=1"
@@ -113,59 +112,59 @@ goto :clism
 
 :keyhac_existing
 echo.
-echo 既存の Keyhac の設定を更新しています...
+echo Updating existing Keyhac config ...
 copy /y "%SRC%\keyhac\config.py" "%KEYHAC_DIR%\config.py"
 if errorlevel 1 (
-    echo 手動: コピーしてください: "%SRC%\keyhac\config.py" → "%KEYHAC_DIR%\config.py".
+    echo MANUAL: Copy "%SRC%\keyhac\config.py" to "%KEYHAC_DIR%\config.py".
     set "NEEDS_MANUAL=1"
 )
 
 :clism
 echo.
-echo CLISM excellent を導入しています...
+echo Installing CLISM excellent ...
 if exist "%CLISM_DIR%\CLISM64.EXE" (
-    echo   スキップ: %CLISM_DIR%\CLISM64.EXE は配置済みです
+    echo   SKIP: %CLISM_DIR%\CLISM64.EXE already exists
     goto :clism_ready
 )
 set "CLISM_URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "$page=(Invoke-WebRequest -UseBasicParsing 'https://toroidj.github.io/slwin4.html').Content; [regex]::Match($page, 'https://toroidj.github.io/win/clisme[0-9]+\.zip').Value"') do set "CLISM_URL=%%u"
 if not defined CLISM_URL (
-    echo   エラー: CLISM excellent のダウンロード先が見つかりません。
+    echo   ERROR: CLISM excellent download link not found.
     set "NEEDS_MANUAL=1"
     goto :clism_ready
 )
 echo   %CLISM_URL%
 curl -fL "%CLISM_URL%" -o "%TEMP_DIR%\clism.zip"
 if errorlevel 1 (
-    echo   エラー: CLISM のダウンロードに失敗しました。
+    echo   ERROR: CLISM download failed.
     set "NEEDS_MANUAL=1"
     goto :clism_ready
 )
 mkdir "%TEMP_DIR%\clism"
 if errorlevel 1 (
-    echo   エラー: ディレクトリを作成できません: "%TEMP_DIR%\clism".
+    echo   ERROR: Could not create "%TEMP_DIR%\clism".
     echo         ZIP: "%TEMP_DIR%\clism.zip"
     set "NEEDS_MANUAL=1"
     goto :clism_ready
 )
 tar xvf "%TEMP_DIR%\clism.zip" -C "%TEMP_DIR%\clism"
 if errorlevel 1 (
-    echo   エラー: CLISM の展開に失敗しました。ZIP: "%TEMP_DIR%\clism.zip"
+    echo   ERROR: CLISM extraction failed. ZIP: "%TEMP_DIR%\clism.zip"
     set "NEEDS_MANUAL=1"
     goto :clism_ready
 )
 if not exist "%TEMP_DIR%\clism\CLISM64.EXE" (
-    echo   エラー: CLISM64.EXE が ZIP 内に見つかりません: "%TEMP_DIR%\clism.zip".
+    echo   ERROR: CLISM64.EXE not found in ZIP: "%TEMP_DIR%\clism.zip".
     set "NEEDS_MANUAL=1"
     goto :clism_ready
 )
 if not exist "%TEMP_DIR%\clism\CLISM64.DLL" (
-    echo   エラー: CLISM64.DLL が ZIP 内に見つかりません: "%TEMP_DIR%\clism.zip".
+    echo   ERROR: CLISM64.DLL not found in ZIP: "%TEMP_DIR%\clism.zip".
     set "NEEDS_MANUAL=1"
     goto :clism_ready
 )
 if exist "%CLISM_DIR%\" (
-    echo 手動: "%CLISM_DIR%" に CLISM64.EXE がありません。"%TEMP_DIR%\clism" からコピーしてください。
+    echo MANUAL: "%CLISM_DIR%" is incomplete. Copy files from "%TEMP_DIR%\clism" into it.
     echo         ZIP: "%TEMP_DIR%\clism.zip"
     set "NEEDS_MANUAL=1"
     goto :clism_ready
@@ -173,9 +172,9 @@ if exist "%CLISM_DIR%\" (
 move "%TEMP_DIR%\clism" "%CLISM_DIR%"
 if not exist "%CLISM_DIR%\CLISM64.EXE" (
     if exist "%TEMP_DIR%\clism\CLISM64.EXE" (
-        echo 手動: "%TEMP_DIR%\clism" を "%CLISM_DIR%" に移動してください。
+        echo MANUAL: Move "%TEMP_DIR%\clism" to "%CLISM_DIR%".
     ) else (
-        echo 手動: "%TEMP_DIR%\clism.zip" を展開し、中のファイルを "%CLISM_DIR%" にコピーしてください。
+        echo MANUAL: Extract "%TEMP_DIR%\clism.zip" and copy its files to "%CLISM_DIR%".
     )
     echo         ZIP: "%TEMP_DIR%\clism.zip"
     set "NEEDS_MANUAL=1"
@@ -183,45 +182,45 @@ if not exist "%CLISM_DIR%\CLISM64.EXE" (
 
 :clism_ready
 echo.
-echo 導入スクリプトをコピーしています...
+echo Copying install scripts ...
 mkdir "%USERPROFILE%\exe" 2>nul
 xcopy /s /y "%SRC%\exe\install" "%USERPROFILE%\exe\install\"
 if errorlevel 1 (
-    echo 手動: コピーしてください: "%SRC%\exe\install" → "%USERPROFILE%\exe\install".
+    echo MANUAL: Copy "%SRC%\exe\install" to "%USERPROFILE%\exe\install".
     set "NEEDS_MANUAL=1"
 )
 
 echo.
-echo install_exefiles.bat を実行しています...
+echo Running install_exefiles.bat ...
 call "%SRC%\exe\install\install_exefiles.bat"
 if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
-echo update_nvim.bat を実行しています...
+echo Running update_nvim.bat ...
 call "%SRC%\exe\install\update_nvim.bat"
 if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
-echo install_plemoljp_nf.bat を実行しています...
+echo Running install_plemoljp_nf.bat ...
 call "%SRC%\exe\install\install_plemoljp_nf.bat"
 if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
-echo create_startup.bat を実行しています...
+echo Running create_startup.bat ...
 call "%SRC%\exe\install\create_startup.bat"
 if errorlevel 1 set "NEEDS_MANUAL=1"
 
 echo.
 if "%NEEDS_MANUAL%"=="1" (
-    echo セットアップは継続しましたが、手動作業が残っています。ファイルと ZIP: "%TEMP_DIR%"
-    echo 上記の手動作業が終わるまで、このディレクトリを削除しないでください。
+    echo Setup continued, but manual steps remain. Files and ZIPs: "%TEMP_DIR%"
+    echo Keep this directory until all MANUAL steps above are complete.
     exit /b 1
 )
 rd /s /q "%TEMP_DIR%"
-echo セットアップが完了しました。
+echo All done!
 exit /b 0
 
 :fail
 echo.
-echo セットアップに失敗しました。ファイルと ZIP は次に残しています: "%TEMP_DIR%".
+echo Installation failed. Files and ZIPs remain in "%TEMP_DIR%".
 exit /b 1

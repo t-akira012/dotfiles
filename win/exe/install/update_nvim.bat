@@ -1,12 +1,11 @@
 @echo off
 setlocal
-chcp 65001 >nul
 
 set "TEMP_DIR=%USERPROFILE%\Downloads\tmp\nvim_update_%RANDOM%"
 set ZIP_URL=https://github.com/t-akira012/kickstart.nvim/archive/refs/heads/main.zip
 set DEST=%USERPROFILE%\.config\nvim
 
-echo kickstart.nvim をダウンロードしています...
+echo Downloading kickstart.nvim ...
 mkdir "%TEMP_DIR%" 2>nul
 if errorlevel 1 goto :fail
 curl -fL "%ZIP_URL%" -o "%TEMP_DIR%\nvim.zip"
@@ -16,9 +15,9 @@ if errorlevel 1 goto :fail
 if not exist "%TEMP_DIR%\kickstart.nvim-main\" goto :fail
 
 echo.
-echo %DEST% を更新しています...
+echo Updating %DEST% ...
 if exist "%DEST%\" (
-    echo 既存の Neovim 設定を削除しています...
+    echo Removing existing Neovim config ...
     rd /s /q "%DEST%"
     if errorlevel 1 goto :fail
 )
@@ -29,11 +28,11 @@ if errorlevel 1 goto :fail
 
 rd /s /q "%TEMP_DIR%"
 echo.
-echo Neovim 設定の更新が完了しました。
+echo Done!
 exit /b 0
 
 :fail
-echo エラー: Neovim 設定の更新に失敗しました。
-if exist "%TEMP_DIR%\kickstart.nvim-main\" echo 手動: "%TEMP_DIR%\kickstart.nvim-main" を "%DEST%" にコピーしてください。
+echo ERROR: Neovim config update failed.
+if exist "%TEMP_DIR%\kickstart.nvim-main\" echo MANUAL: Copy "%TEMP_DIR%\kickstart.nvim-main" to "%DEST%".
 if exist "%TEMP_DIR%\nvim.zip" echo         ZIP: "%TEMP_DIR%\nvim.zip"
 exit /b 1
