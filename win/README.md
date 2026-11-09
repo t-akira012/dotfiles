@@ -116,6 +116,7 @@ C:\Users\{WIN_USERNAME}\
 
 OS全体に適用されるキーバインド設定。
 `%USERPROFILE%\Tools\keyhac\Keyhac.exe` を起動する。Keyhac 2 の Windows ポータブルモードを使い、設定ファイルを実行ファイルと同じディレクトリに置く。
+起動中に `config.py` を更新した場合は、タスクトレイの Keyhac メニューから設定を再読み込みする。
 
 | キー | 動作 |
 |---|---|
@@ -124,6 +125,7 @@ OS全体に適用されるキーバインド設定。
 | `C-h/d` | BackSpace/Delete |
 | `C-k` | 行末まで削除 |
 | `Alt+;` | WindowsTerminalを最前面トグル |
+| `Win` 単独 | スタートメニューを開かない |
 | `Win+Tab` | 無効化 |
 | `Win+V` | 無効化 |
 
