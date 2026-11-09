@@ -5,9 +5,8 @@ def configure(keymap):
     keymap.editor = "notepad.exe"
 
     global_keys = keymap.define_keytable(focus_path_pattern="*")
-    # Mark Win as used before releasing it so a lone press does not open Start.
+    # Mark left Win as used before releasing it so a lone press does not open Start.
     global_keys["U-LWin"] = "D-LCtrl", "U-LCtrl", "U-LWin"
-    global_keys["U-RWin"] = "D-LCtrl", "U-LCtrl", "U-RWin"
 
     def toggle_windows_terminal():
         active = keymap.get_active_window()
