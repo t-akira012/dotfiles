@@ -87,54 +87,15 @@ copy_on_linux() {
     return 1
 }
 
-copy_with_clipper() {
-    host_name=$(hostname)
-    if [ "${host_name}" != "m4mini-prv" ]; then
-        return 1
-    fi
-
-    if [ -z "${SSH_CONNECTION}" ]; then
-        if [ -z "${SSH_CLIENT}" ]; then
-            return 1
-        fi
-    fi
-
-    if [ ! -S "${HOME}/.clipper.sock" ]; then
-        return 1
-    fi
-
-    if command -v nc >/dev/null 2>&1; then
-        nc -U "${HOME}/.clipper.sock"
-        command_status=$?
-        if [ "${command_status}" -eq 0 ]; then
-            return 0
-        fi
-        return 2
-    fi
-
-    if command -v socat >/dev/null 2>&1; then
-        socat - "UNIX-CLIENT:${HOME}/.clipper.sock"
-        command_status=$?
-        if [ "${command_status}" -eq 0 ]; then
-            return 0
-        fi
-        return 2
-    fi
-
-    return 1
-}
-
 main() {
     operating_system=$(uname -s)
 
-    copy_with_clipper
-    clipper_status=$?
-    if [ "${clipper_status}" -eq 0 ]; then
-        exit 0
-    fi
-    if [ "${clipper_status}" -eq 2 ]; then
-        echo "pbcopy: failed to send data to the Clipper socket" >&2
-        exit 1
+    if [ -n "${TMUX}" ] && { [ -n "${SSH_CONNECTION}" ] || [ -n "${SSH_CLIENT}" ]; }; then
+        if ! command -v tmux >/dev/null 2>&1; then
+            fail
+        fi
+        tmux load-buffer -w -
+        exit $?
     fi
 
     if [ "${operating_system}" = "Darwin" ]; then
