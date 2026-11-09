@@ -5,9 +5,9 @@ def configure(keymap):
     keymap.editor = "notepad.exe"
 
     global_keys = keymap.define_keytable(focus_path_pattern="*")
-    global_keys["RAlt"] = "Ctrl-Escape"
-    # Keep the Alt release from moving focus to the active application's menu bar.
-    global_keys["U-RAlt"] = "D-LCtrl", "U-LCtrl", "U-RAlt"
+    # Release Alt before opening Start; only a lone Right Alt tap triggers it.
+    global_keys["U-RAlt"] = "U-RAlt"
+    global_keys["O-RAlt"] = "Ctrl-Escape"
     # Mark left Win as used before releasing it so a lone press does not open Start.
     global_keys["U-LWin"] = "D-LCtrl", "U-LCtrl", "U-LWin"
 
