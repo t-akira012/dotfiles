@@ -18,6 +18,14 @@ set "KEYHAC_DIR=%USERPROFILE%\Tools\keyhac"
 set "CLISM_DIR=%USERPROFILE%\Tools\clism"
 
 echo.
+echo Saving Windows 11 N100 guide to Downloads ...
+copy /y "%SRC%\docs\windows11-n100-optimization.html" "%USERPROFILE%\Downloads\windows11-n100-optimization.html"
+if errorlevel 1 (
+    echo MANUAL: Copy "%SRC%\docs\windows11-n100-optimization.html" to "%USERPROFILE%\Downloads\windows11-n100-optimization.html".
+    set "NEEDS_MANUAL=1"
+)
+
+echo.
 echo Preparing user directories ...
 if not exist "%USERPROFILE%\Tools\" (
     mkdir "%USERPROFILE%\Tools"

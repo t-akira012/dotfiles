@@ -2,7 +2,7 @@
 
 cmd.exe をUnix風に使うための最小dotfiles。
 
-Windows 11 / Intel N100 の設定手順は [軽量化・高速操作環境構築手順書](docs/windows11-n100-optimization.md) を参照。
+Windows 11 / Intel N100 の設定手順は [軽量化・高速操作環境構築手順書](docs/windows11-n100-optimization.html) を参照。`dl.bat` は同じ HTML を `%USERPROFILE%\Downloads\windows11-n100-optimization.html` に保存する。
 
 ## セットアップ
 

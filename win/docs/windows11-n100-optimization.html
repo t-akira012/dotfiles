@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="Windows 11 N100 軽量化・高速操作手順：画面ごとにGUI・PowerShell・レジストリ・確認を一覧化"><title>Windows 11 軽量化・高速操作環境構築手順書</title><style>:root{font-family:system-ui,"Yu Gothic",Meiryo,sans-serif;line-height:1.8;color-scheme:dark light}body{margin:0;background:#111820;color:#e8edf3}header,main,footer{max-width:1040px;margin:auto;padding:2rem 1.5rem}header{padding-top:3rem}h1{font-size:clamp(1.9rem,4vw,3rem);line-height:1.25}h2{border-top:1px solid #354353;padding-top:1.5rem;margin-top:3rem}h3{margin-top:2rem}h4{margin-bottom:.25rem;color:#bddbf5}.muted,small{color:#a5b4c2}.panel{background:#1d2834;padding:1rem 1.4rem;border-radius:9px}.contents{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.5rem}.contents a{display:block;padding:.55rem .7rem;border:1px solid #384b5c;border-radius:6px}a{color:#9dd2ff}ol{padding-left:1.7rem}li{margin:.4rem 0}section{scroll-margin-top:1.5rem}code{font-family:Consolas,monospace;background:#253646;border-radius:3px;padding:.08rem .25rem;overflow-wrap:anywhere}pre{background:#09121d;color:#e8edf3;overflow-x:auto;padding:1rem;border-radius:7px;white-space:pre;line-height:1.6}pre code{background:transparent;padding:0;white-space:pre;overflow-wrap:normal}button{background:#dae9f9;color:#10202d;border:0;border-radius:5px;padding:.35rem .85rem;cursor:pointer}button:hover{background:#fff}.cmd{margin:.9rem 0}.cmd-head{display:flex;justify-content:space-between;gap:1rem;align-items:center}.kv{border-left:3px solid #526e85;padding:.2rem 1rem;margin:.8rem 0}footer{color:#a5b4c2}p{margin:.7rem 0}@media(prefers-color-scheme:light){body{background:#f7f9fc;color:#192938}.muted,small,footer{color:#51667a}.panel{background:#e9eff5}h2{border-color:#c8d3de}code{background:#e6edf5}}
+.table-wrap{overflow-x:auto;max-width:100%;margin:.9rem 0}
+table{border-collapse:collapse;min-width:540px;width:100%;font-size:.95rem}
+th,td{border-bottom:1px solid #384b5c;text-align:left;padding:.55rem .7rem;vertical-align:top}
+th{background:#243342;color:#dce8f3;font-weight:700}
+td:first-child{font-weight:600}
+@media(prefers-color-scheme:light){th{background:#dbe5ef;color:#18344b}th,td{border-color:#c8d3de}}
+</style></head>
+<body><header><p class="muted">OPERATIONS / WINDOWS 11 / 2026-11-09</p><h1>Windows 11 軽量化・高速操作環境構築手順書</h1><p>Intel N100 · RAM 16GB · 日本語版 Windows 11 · Win32 GUI・事務処理</p><div class="panel"><strong>同じ設定画面の操作は1節に統合</strong>。最終スイッチ・チェックボックスと設定値を表に集約し、PowerShellとレジストリは同じ節に併記しています。</div></header>
+<main><h2>目次</h2><nav class="contents"><a href="#s1">1. 前提・バージョン判定</a><a href="#s2">2. スタートアップ アプリを無効化</a><a href="#s3">3. 視覚効果・透明効果</a><a href="#s4">4. 電源モード</a><a href="#s5">5. Windows 検索・インデックスの停止</a><a href="#s6">6. 不要なプリインストール アプリの削除</a><a href="#s7">7. グループ ポリシー</a><a href="#s8">8. 停止・無効化する5サービス（各サービス個別操作）</a><a href="#s9">9. プライバシーと検索の許可</a><a href="#s10">10. 個人用設定：背景・ロック画面・スタート・タスクバー</a><a href="#s11">11. 通知・ウェルカム画面・ヒント</a><a href="#s12">12. キーボードのリピート高速化（標準設定＋FilterKeys）</a><a href="#s13">13. 固定キー・フィルターキー・切り替えキー</a><a href="#s14">14. 入力候補・自動修正・スペルチェック</a><a href="#s15">15. メニュー表示遅延を0にする</a><a href="#s16">16. 反映・全項目検証</a><a href="#s17">17. 不採用の設定</a><a href="#s18">18. WinキーとAltキーの左右入れ替え</a></nav><p><strong>対象:</strong> Intel N100 / RAM 16GB / 日本語版 Windows 11 <strong>26H2</strong> / Win32 GUI・事務処理   <strong>改訂日:</strong> 2026-11-09   <strong>構成:</strong> 同一画面で操作する項目は1節にまとめ、GUIの画面遷移は1回だけ記載します。最終操作箇所と設定値を一覧表にまとめ、CUI・レジストリは該当する画面の節に併記します。PowerShellは各コードブロックにつき物理1行で記載します。</p>
+<hr>
+<section id="s1"><h2>1. 前提・バージョン判定</h2>
+<p>Intel N100・RAM 16GBの日本語版 Windows 11を対象に、設定の変更手順を示します。GUIの記載は Windows 11 26H2（OSビルド26300系）の表示を基準とします。</p>
+<h3>1.1 OSバージョンの確認</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + R</code> → <code>winver</code> → Enter。表示されたダイアログの「バージョン」「OS ビルド」を読み取ります。</li>
+<li><code>Win + I</code> →「システム」→「バージョン情報」→「Windows の仕様」→「バージョン」「OS ビルド」を確認します。</li>
+</ol>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>OSとビルドを表示</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd0">コピー</button></div><pre><code id="cmd0">Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber; Get-ItemProperty &#39;HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion&#39; | Select-Object DisplayVersion,CurrentBuild,UBR</code></pre></div>
+<p><strong>確認条件:</strong> 「バージョン」と「OS ビルド」の表示を確認できること。</p>
+<h3>1.2 維持するWindows基盤</h3>
+<p><strong>確認条件:</strong> Windows Update、Microsoft Defender、Windows Defender Firewall、USB/ネットワーク/ドライバー基盤、Windows Event Log、Task Scheduler、SysMain、ページファイルを停止・無効化しないこと。</p>
+<p><strong>補足:</strong> この項目は変更禁止リストです。設定操作はありません。</p>
+</section>
+<section id="s2"><h2>2. スタートアップ アプリを無効化</h2>
+<p>サインイン時に起動するアプリとWindowsサービスは別物です。スタートアップ アプリの状態を一つずつ確認します。</p>
+<h3>2.1 設定アプリでスタートアップをすべてオフ</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「アプリ」→「スタートアップ」。</li>
+<li>一覧の各アプリ名の右端のスイッチをクリックし、1件ずつ「オフ」にします。最後の行までスクロールして全行を確認します。</li>
+</ol>
+<p><strong>確認条件:</strong> 一覧中の各スイッチが「オフ」。</p>
+<h3>2.2 タスク マネージャーで状態を確認</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Ctrl + Shift + Esc</code> → 左メニュー「スタートアップ アプリ」。</li>
+<li>各行を選択し、状態が「有効」の場合は対象を右クリック →「無効にする」。すべての行で「無効」を確認します。</li>
+</ol>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>スタートアップ登録の参考一覧（読み取りのみ）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd1">コピー</button></div><pre><code id="cmd1">Get-CimInstance Win32_StartupCommand | Select-Object Name,Command,Location,User</code></pre></div>
+<p><strong>確認条件:</strong> タスクマネージャーの「状態」列がすべて「無効」。</p>
+<p><strong>補足:</strong> Win32_StartupCommandは登録方式を網羅しないため、GUIの最終状態を正本とします。</p>
+</section>
+<section id="s3"><h2>3. 視覚効果・透明効果</h2>
+<p>視覚効果と透明効果の2画面について操作します。フォント設定は「視覚効果」と同じ画面内で指定します。</p>
+<h3>3.1 視覚効果とスクリーンフォント</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + R</code> → <code>SystemPropertiesPerformance.exe</code> → Enter。</li>
+<li>「パフォーマンス オプション」→「視覚効果」タブを開きます。</li>
+<li>「パフォーマンスを優先する」のラジオボタンを選択します。</li>
+<li>フォントの表示を滑らかにする場合は、同じ画面の「スクリーン フォントの縁を滑らかにする」のチェックボックスをオンにします。</li>
+<li>「適用」→「OK」を押します。</li>
+</ol>
+<p><strong>確認条件:</strong> 「パフォーマンスを優先する」が選択され、フォントのチェックボックスが選択した状態になっていること。</p>
+<h3>3.2 透明効果</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「個人用設定」→「色」。</li>
+<li>「透明効果」の右側にあるスイッチを「オフ」にします。</li>
+</ol>
+<p><strong>確認条件:</strong> 「透明効果」が「オフ」。</p>
+</section>
+<section id="s4"><h2>4. 電源モード</h2>
+<p>電源接続時のパフォーマンスモードを設定します。</p>
+<h3>4.1 電源モードを選ぶ</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「システム」→「電源」。</li>
+<li>「電源モード」の行の右端「∨」をクリックして展開します。</li>
+<li>「電源に接続」の右端「∨」をクリックし、「最適なパフォーマンス（CPUのパフォーマンスを優先）」を選択します。</li>
+</ol>
+<p><strong>確認条件:</strong> 「電源モード」→「電源に接続」で「最適なパフォーマンス」が選択されていること。</p>
+<p><strong>補足:</strong> 電源モードが選べない場合は <code>Win + R</code> → <code>powercfg.cpl</code> →「電源オプション」でカスタムプラン選択の有無を調べます。</p>
+</section>
+<section id="s5"><h2>5. Windows 検索・インデックスの停止</h2>
+<p>インデックス対象を設定します。サービスの起動設定は第8章に集約します。</p>
+<h3>5.1 検索対象とインデックスの場所</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「プライバシーとセキュリティ」→「検索」。</li>
+<li>「ファイルを検索」のラジオボタンで「クラシック」を選択します。</li>
+<li>同じ画面の「検索場所のカスタマイズ」をクリックし、「インデックスのオプション」を開きます。</li>
+<li>「変更」→「インデックスが作成された場所」で <code>C:\</code> 配下のチェックボックスを確認し、除外する場所のチェックを外します。</li>
+<li>「OK」→「閉じる」をクリックします。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>設定項目</th><th>設定値</th></tr></thead><tbody><tr><td>ファイルを検索</td><td>クラシック</td></tr><tr><td>インデックスが作成された場所</td><td><code>C:\</code> 配下の選択を解除</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> 「クラシック」が選択され、インデックスの対象一覧に除外した <code>C:\</code> の場所が残っていないこと。</p>
+<p><strong>補足:</strong> <code>WSearch</code> サービスの停止・無効化は第8章「Windows Search」で行います。</p>
+</section>
+<section id="s6"><h2>6. 不要なプリインストール アプリの削除</h2>
+<p>同じ「インストールされているアプリ」画面から、対象アプリを検索して削除します。</p>
+<h3>6.1 「インストールされているアプリ」から削除</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「アプリ」→「インストールされているアプリ」を開きます。</li>
+<li>検索欄に以下の検索語を入力し、対象アプリの名称を確認します。</li>
+<li>該当アプリの右端の「…」→「アンインストール」をクリックします。</li>
+<li>確認ダイアログの「アンインストール」を押します。削除する各アプリについて手順2～4を繰り返します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>アプリ名・種類</th><th>検索語</th><th>操作</th></tr></thead><tbody><tr><td>Microsoft OneDrive</td><td><code>OneDrive</code></td><td>対象行の「…」→「アンインストール」</td></tr><tr><td>Xbox関連アプリ</td><td><code>Xbox</code></td><td>検索結果の各対象行を個別にアンインストール</td></tr><tr><td>Microsoft Teams</td><td><code>Teams</code></td><td>使用しない場合にアンインストール</td></tr><tr><td>Microsoft Copilot</td><td><code>Copilot</code></td><td>使用しない場合にアンインストール</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> アンインストールしたアプリが「インストールされているアプリ」の検索結果に表示されないこと。最初から存在しないアプリは操作不要です。</p>
+</section>
+<section id="s7"><h2>7. グループ ポリシー</h2>
+<p>グループポリシーエディターから3つの設定を変更し、適用・検証します。</p>
+<h3>7.1 ポリシーの変更</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + R</code> → <code>gpedit.msc</code> → Enter。</li>
+<li>左ペイン「コンピューターの構成」→「管理用テンプレート」→「Windows コンポーネント」を展開します。</li>
+<li>下表の「フォルダー」を開き、右ペインにある「ポリシー名」をダブルクリックします。</li>
+<li>下表の状態に対応するラジオボタンを選択し、必要なオプションを指定して「適用」→「OK」を押します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>フォルダー</th><th>ポリシー名</th><th>状態</th><th>オプション</th></tr></thead><tbody><tr><td>ウィジェット</td><td>ウィジェットを許可する</td><td>無効</td><td>―</td></tr><tr><td>OneDrive</td><td>OneDrive をファイル記憶域として使用できないようにする</td><td>有効</td><td>―</td></tr><tr><td>配信の最適化</td><td>ダウンロード モード</td><td>有効</td><td>ダウンロード モード: HTTP のみ (0)</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> 各ポリシーの「状態」列が表の値と一致し、「ダウンロード モード」のオプションが「HTTP のみ (0)」であること。</p>
+<p><strong>補足:</strong> <code>gpedit.msc</code> は Windows 11 Pro / Enterprise / Education で使用します。</p>
+<h3>7.2 ポリシー適用と結果の確認</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li>変更したポリシー画面を再度開き、選択したラジオボタン・オプションが保存されていることを確認します。</li>
+</ol>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>ポリシー強制更新（管理者）（管理者としてPowerShellを起動）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd2">コピー</button></div><pre><code id="cmd2">gpupdate /force</code></pre></div>
+<p><strong>適用ポリシーのHTMLレポート作成・表示（管理者）（管理者としてPowerShellを起動）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd3">コピー</button></div><pre><code id="cmd3">gpresult /h &quot;$env:TEMP\windows11-gpresult.html&quot; /f; Start-Process &quot;$env:TEMP\windows11-gpresult.html&quot;</code></pre></div>
+<p><strong>確認条件:</strong> 管理レポートと各ポリシー画面の値が一致すること。</p>
+</section>
+<section id="s8"><h2>8. 停止・無効化する5サービス（各サービス個別操作）</h2>
+<p>次の5サービスを対象にします。Fax（Fax）、Downloaded Maps Manager（MapsBroker）、Windows Biometric Service（WbioSrvc）、位置情報サービス（lfsvc）、Windows Search（WSearch）。操作するGUIはすべて「サービス」です。</p>
+<h3>8.1 5サービスの停止・起動無効化</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + R</code> → <code>services.msc</code> → Enter。</li>
+<li>下表の「表示名」のサービスを一覧から探してダブルクリックし、「全般」タブを開きます。</li>
+<li>「サービス名」が表の値と一致することを確認します。</li>
+<li>「サービスの状態」が「実行中」なら「停止」を押します。</li>
+<li>「スタートアップの種類」を「無効」に変更し、「適用」→「OK」を押します。これを各サービスについて行います。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>表示名</th><th>サービス名</th><th>対象機能</th></tr></thead><tbody><tr><td>Fax</td><td><code>Fax</code></td><td>FAX送受信</td></tr><tr><td>Downloaded Maps Manager</td><td><code>MapsBroker</code></td><td>ダウンロード済みのオフライン地図</td></tr><tr><td>Windows Biometric Service</td><td><code>WbioSrvc</code></td><td>指紋・顔などの生体認証</td></tr><tr><td>Geolocation Service / 位置情報サービス</td><td><code>lfsvc</code></td><td>位置情報取得</td></tr><tr><td>Windows Search</td><td><code>WSearch</code></td><td>検索インデックス</td></tr></tbody></table></div>
+<p><strong>CUI / PowerShell</strong></p>
+<p>各サービスは名称を明示した個別コマンドで停止します。</p>
+<p><strong>Fax（Fax）を停止・無効化（管理者）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd4">コピー</button></div><pre><code id="cmd4">$s=Get-Service -Name Fax -ErrorAction SilentlyContinue; if($s){if($s.Status -ne &#39;Stopped&#39;){Stop-Service -Name Fax -Force -ErrorAction Stop}; Set-Service -Name Fax -StartupType Disabled -ErrorAction Stop}else{&#39;Fax: not installed&#39;}</code></pre></div>
+<p><strong>Downloaded Maps Manager（MapsBroker）を停止・無効化（管理者）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd5">コピー</button></div><pre><code id="cmd5">$s=Get-Service -Name MapsBroker -ErrorAction SilentlyContinue; if($s){if($s.Status -ne &#39;Stopped&#39;){Stop-Service -Name MapsBroker -Force -ErrorAction Stop}; Set-Service -Name MapsBroker -StartupType Disabled -ErrorAction Stop}else{&#39;MapsBroker: not installed&#39;}</code></pre></div>
+<p><strong>Windows Biometric Service（WbioSrvc）を停止・無効化（管理者）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd6">コピー</button></div><pre><code id="cmd6">$s=Get-Service -Name WbioSrvc -ErrorAction SilentlyContinue; if($s){if($s.Status -ne &#39;Stopped&#39;){Stop-Service -Name WbioSrvc -Force -ErrorAction Stop}; Set-Service -Name WbioSrvc -StartupType Disabled -ErrorAction Stop}else{&#39;WbioSrvc: not installed&#39;}</code></pre></div>
+<p><strong>位置情報サービス（lfsvc）を停止・無効化（管理者）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd7">コピー</button></div><pre><code id="cmd7">$s=Get-Service -Name lfsvc -ErrorAction SilentlyContinue; if($s){if($s.Status -ne &#39;Stopped&#39;){Stop-Service -Name lfsvc -Force -ErrorAction Stop}; Set-Service -Name lfsvc -StartupType Disabled -ErrorAction Stop}else{&#39;lfsvc: not installed&#39;}</code></pre></div>
+<p><strong>Windows Search（WSearch）を停止・無効化（管理者）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd8">コピー</button></div><pre><code id="cmd8">$s=Get-Service -Name WSearch -ErrorAction SilentlyContinue; if($s){if($s.Status -ne &#39;Stopped&#39;){Stop-Service -Name WSearch -Force -ErrorAction Stop}; Set-Service -Name WSearch -StartupType Disabled -ErrorAction Stop}else{&#39;WSearch: not installed&#39;}</code></pre></div>
+<p><strong>5サービスの状態確認</strong></p>
+<p><strong>全サービスの表示名・実行状態・起動種別を確認</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd9">コピー</button></div><pre><code id="cmd9">&#39;Fax&#39;,&#39;MapsBroker&#39;,&#39;WbioSrvc&#39;,&#39;lfsvc&#39;,&#39;WSearch&#39; | ForEach-Object { $n=$_; $s=Get-Service -Name $n -ErrorAction SilentlyContinue; if($s){[PSCustomObject]@{Name=$n;DisplayName=$s.DisplayName;Status=$s.Status;StartType=$s.StartType}}else{[PSCustomObject]@{Name=$n;DisplayName=&#39;未インストール&#39;;Status=&#39;N/A&#39;;StartType=&#39;N/A&#39;}} } | Format-Table -AutoSize</code></pre></div>
+<p><strong>確認条件:</strong> 存在する5サービスがそれぞれ <code>Stopped</code> / <code>Disabled</code> となっていること。インストールされていないサービスは「未インストール」と表示されること。</p>
+<p><strong>補足:</strong> Windows Helloの生体認証を使用している端末では <code>WbioSrvc</code> を停止すると利用できなくなります。 <code>WSearch</code> 停止によりインデックスベースの検索が制限されます。</p>
+</section>
+<section id="s9"><h2>9. プライバシーと検索の許可</h2>
+<p>プライバシーの各画面にあるスイッチを設定します。同じ画面内にある検索のアクセス許可のスイッチは、1つの節にまとめています。</p>
+<h3>9.1 オンライン音声認識</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「プライバシーとセキュリティ」→「音声認識」。</li>
+<li>「オンライン音声認識」スイッチを「オフ」にします。</li>
+</ol>
+<p><strong>確認条件:</strong> 「オンライン音声認識」が「オフ」。</p>
+<h3>9.2 デバイスの検索</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「プライバシーとセキュリティ」→「デバイスの検索」。</li>
+<li>「デバイスの検索」スイッチを「オフ」にします。</li>
+</ol>
+<p><strong>確認条件:</strong> 「デバイスの検索」が「オフ」。</p>
+<h3>9.3 手描き入力と入力の個人用設定</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「プライバシーとセキュリティ」→「手描き入力と入力の個人用設定」。</li>
+<li>「カスタム手描き入力と入力辞書」スイッチを「オフ」にします。</li>
+</ol>
+<p><strong>確認条件:</strong> 「カスタム手描き入力と入力辞書」が「オフ」。</p>
+<h3>9.4 検索のアクセス許可：クラウド検索と履歴</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「プライバシーとセキュリティ」→「検索のアクセス許可」を開きます。</li>
+<li>以下の項目のスイッチを変更します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>設定グループ</th><th>スイッチ名</th><th>設定値</th></tr></thead><tbody><tr><td>クラウド コンテンツの検索</td><td>Microsoft アカウント</td><td>オフ</td></tr><tr><td>クラウド コンテンツの検索</td><td>職場または学校アカウント（表示される場合）</td><td>オフ</td></tr><tr><td>履歴</td><td>このデバイスの検索履歴</td><td>オフ</td></tr></tbody></table></div>
+<ol>
+<li>保存済み履歴の消去も行う場合は「履歴」→「デバイスの検索履歴のクリア」をクリックします。</li>
+</ol>
+<p><strong>確認条件:</strong> 表に示したスイッチがすべて「オフ」。検索履歴の消去はスイッチ変更とは別の操作です。</p>
+<h3>9.5 アクティビティ履歴のローカル保存をオフ</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「プライバシーとセキュリティ」→「アクティビティの履歴」。</li>
+<li>「このデバイスでアクティビティ履歴を保存する」スイッチを「オフ」にします。</li>
+<li>既存履歴の消去も実施する場合は、同じ画面の「このアカウントのアクティビティ履歴をクリアする」→「履歴のクリア」をクリックします。既存履歴を消去する操作は、保存停止とは独立です。</li>
+</ol>
+<p><strong>確認条件:</strong> 「このデバイスでアクティビティ履歴を保存する」が「オフ」。</p>
+<p><strong>補足:</strong> Windows 11で廃止された「タイムライン」のUIと、アクティビティ履歴の設定は別です。Microsoft公式の現行手順に従います。</p>
+</section>
+<section id="s10"><h2>10. 個人用設定：背景・ロック画面・スタート・タスクバー</h2>
+<p>同じ設定画面に属する項目をまとめて操作します。画面単位は「背景」「ロック画面」「スタート」「タスク バー」です。</p>
+<h3>10.1 デスクトップ背景</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「個人用設定」→「背景」。</li>
+<li>「背景をカスタマイズする」ドロップダウンをクリックし、「単色」を選択。</li>
+<li>「背景色の選択」に表示された色のタイルをクリックし、使用する1色を選びます。</li>
+</ol>
+<p><strong>確認条件:</strong> 「背景をカスタマイズする」が「単色」。Windows スポットライトが選択されていないこと。</p>
+<h3>10.2 ロック画面とサインイン画面</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「個人用設定」→「ロック画面」を開きます。</li>
+<li>「ロック画面のカスタマイズ」ドロップダウンから「画像」を選択します。</li>
+<li>「写真の選択」→「写真を参照」から単色の画像ファイルを選択します。</li>
+<li>同じ画面で次の項目を設定します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>操作対象</th><th>種類</th><th>設定値</th></tr></thead><tbody><tr><td>ロック画面のカスタマイズ</td><td>ドロップダウン</td><td>画像（Windows スポットライト／スライドショーを使わない）</td></tr><tr><td>ロック画面で豆知識、ヒント、コツなどを取得する</td><td>チェックボックス</td><td>オフ</td></tr><tr><td>ウィジェット</td><td>スイッチ</td><td>オフ</td></tr><tr><td>PC を移動したときにロック画面の画像に反応させる（表示される端末のみ）</td><td>スイッチ</td><td>オフ</td></tr><tr><td>サインイン画面にロック画面の背景画像を表示する</td><td>スイッチ</td><td>オフ</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> 画像が選択され、表の各スイッチ・チェックボックスが指定値になっていること。</p>
+<p><strong>補足:</strong> ロック画面の背景には「単色」の直接選択がないため、「画像」を選び単色画像ファイルを指定します。</p>
+<h3>10.3 スタートメニュー</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「個人用設定」→「スタート」を開きます。</li>
+<li>「レイアウト オプション」→「新着順」をいったん「オン」にし、「∨」から詳細を展開します。</li>
+<li>詳細の3チェックボックスを下表のとおりすべて「オフ」にします。</li>
+<li>「新着順」の親スイッチを「オフ」に戻します。</li>
+<li>同じ「スタート」画面にある残りのスイッチも下表の値に変更します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>設定項目</th><th>種類</th><th>設定値</th></tr></thead><tbody><tr><td>最近追加したアプリを表示する</td><td>チェックボックス</td><td>オフ</td></tr><tr><td>最近使ったファイルとおすすめのファイルを表示する</td><td>チェックボックス</td><td>オフ</td></tr><tr><td>ヒントとアプリの推奨事項を表示する</td><td>チェックボックス</td><td>オフ</td></tr><tr><td>新着順</td><td>スイッチ（上記設定後）</td><td>オフ</td></tr><tr><td>スタートにモバイル デバイスを表示する</td><td>スイッチ</td><td>オフ</td></tr><tr><td>アカウントに関連する通知を表示</td><td>スイッチ</td><td>オフ</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> 3つのチェックボックスと3つのスイッチがすべて「オフ」。親スイッチをオフにした結果、スタートメニューに「最近使用」の欄が表示されないこと。</p>
+<p><strong>補足:</strong> 「新着順」を先にオフにすると内訳のチェックボックスが操作できなくなるため、上記の順序で設定します。</p>
+<h3>10.4 タスクバーとシステムトレイ</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li>タスクバーの空白を右クリック →「タスク バーの設定」を開きます。</li>
+<li>「タスク バー項目」を展開し、下表の項目を設定します。</li>
+<li>同じ画面の「システム トレイ アイコン」と「その他のシステム トレイ アイコン」も展開し、各項目を設定します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>設定グループ</th><th>設定項目</th><th>種類</th><th>設定値</th></tr></thead><tbody><tr><td>タスク バー項目</td><td>検索</td><td>ドロップダウン</td><td>非表示</td></tr><tr><td>タスク バー項目</td><td>タスク ビュー</td><td>スイッチ</td><td>オフ</td></tr><tr><td>タスク バー項目</td><td>ウィジェット</td><td>スイッチ</td><td>オフ</td></tr><tr><td>システム トレイ アイコン</td><td>ペン メニュー、タッチ キーボード、仮想タッチパッド（表示される項目）</td><td>スイッチ</td><td>オン</td></tr><tr><td>その他のシステム トレイ アイコン</td><td>一覧にある各アプリのアイコン表示</td><td>スイッチ</td><td>オン</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> タスクバーの不要な項目が非表示になり、表示可能なトレイアイコンのスイッチが「オン」。</p>
+</section>
+<section id="s11"><h2>11. 通知・ウェルカム画面・ヒント</h2>
+<p>「設定 → システム → 通知」の1画面で通知と追加のヒント表示をまとめて変更します。</p>
+<h3>11.1 通知・追加の設定</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「システム」→「通知」を開きます。</li>
+<li>画面上部の「通知」スイッチを「オフ」にします。</li>
+<li>ページ下部の「追加の設定」をクリックして展開します。</li>
+<li>以下のチェックボックスを「オフ」にします。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>画面内の位置</th><th>操作対象</th><th>種類</th><th>設定値</th></tr></thead><tbody><tr><td>通知</td><td>通知</td><td>スイッチ</td><td>オフ</td></tr><tr><td>追加の設定</td><td>更新後およびサインイン時に Windows へようこそエクスペリエンスを表示して、新機能や推奨事項を表示する</td><td>チェックボックス</td><td>オフ</td></tr><tr><td>追加の設定</td><td>Windows の使用時にヒントや提案を取得する</td><td>チェックボックス</td><td>オフ</td></tr></tbody></table></div>
+<p><strong>確認条件:</strong> 「通知」が「オフ」、2つのチェックボックスが空欄であること。</p>
+</section>
+<section id="s12"><h2>12. キーボードのリピート高速化（標準設定＋FilterKeys）</h2>
+<p>Windows標準のキーボード設定は最速値を保持し、フィルターキー機能（第13章）で初回リピート遅延200ms・リピート間隔20ms（設定値換算50回/秒）を指定します。</p>
+<h3>12.1 Windows標準設定（KeyboardDelay=0・KeyboardSpeed=31）</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + R</code> → <code>control keyboard</code> → Enter。</li>
+<li>「キーボードのプロパティ」→「速度」タブ。</li>
+<li>「文字の入力」→「表示までの待ち時間」スライダーを「短く」（最短側）へ動かします。</li>
+<li>「表示の間隔」スライダーを「速く」（最速側）へ動かし、「適用」→「OK」。</li>
+</ol>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>KeyboardDelay=0、KeyboardSpeed=31</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd10">コピー</button></div><pre><code id="cmd10">Set-ItemProperty -Path &#39;HKCU:\Control Panel\Keyboard&#39; -Name KeyboardDelay -Value &#39;0&#39;; Set-ItemProperty -Path &#39;HKCU:\Control Panel\Keyboard&#39; -Name KeyboardSpeed -Value &#39;31&#39;</code></pre></div>
+<p><strong>設定値の確認</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd11">コピー</button></div><pre><code id="cmd11">Get-ItemProperty &#39;HKCU:\Control Panel\Keyboard&#39; | Select-Object KeyboardDelay,KeyboardSpeed</code></pre></div>
+<p><strong>対応レジストリ</strong></p>
+<ul>
+<li>パス: <code>HKCU\Control Panel\Keyboard</code> ／ 値名: <code>KeyboardDelay</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>0</code></li>
+<li>パス: <code>HKCU\Control Panel\Keyboard</code> ／ 値名: <code>KeyboardSpeed</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>31</code></li>
+</ul>
+<p><strong>確認条件:</strong> レジストリが <code>KeyboardDelay=0</code>、<code>KeyboardSpeed=31</code>。</p>
+<p><strong>補足:</strong> <code>KeyboardDelay=0</code> と <code>KeyboardSpeed=31</code> はWindows標準の最速値です。標準設定だけでは20ms間隔を指定できないため、実際のリピートは第13章のFilterKeysで設定します。</p>
+</section>
+<section id="s13"><h2>13. 固定キー・フィルターキー・切り替えキー</h2>
+<p>アクセシビリティの「キーボード」画面を起点に、3機能と3ショートカットをまとめて設定します。</p>
+<h3>13.1 入力補助3機能と有効化ショートカット</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「アクセシビリティ」→「キーボード」を開きます。</li>
+<li>「固定キー機能」「切り替えキー機能」を「オフ」、「フィルター キー機能」を「オン」にします。</li>
+<li>各機能名をクリックして詳細画面を開き、次の有効化ショートカットも「オフ」にします。詳細の確認後は「キーボード」画面へ戻り、次の機能を操作します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>機能</th><th>機能本体</th><th>詳細画面でオフにするスイッチ</th><th>キー操作</th></tr></thead><tbody><tr><td>固定キー機能</td><td>オフ</td><td>固定キー機能用のキーボード ショートカット</td><td>Shift 5回</td></tr><tr><td>フィルター キー機能</td><td>オン</td><td>フィルター キー機能のキーボード ショートカット</td><td>右Shift 8秒</td></tr><tr><td>切り替えキー機能</td><td>オフ</td><td>切り替えキー機能用のキーボード ショートカット</td><td>NumLock 5秒</td></tr></tbody></table></div>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>固定キーのフラグを506に設定</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd12">コピー</button></div><pre><code id="cmd12">Set-ItemProperty -Path &#39;HKCU:\Control Panel\Accessibility\StickyKeys&#39; -Name Flags -Value &#39;506&#39;</code></pre></div>
+<p><strong>フラグ確認</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd13">コピー</button></div><pre><code id="cmd13">Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\StickyKeys&#39; | Select-Object Flags</code></pre></div>
+<p><strong>フィルターキー：初回リピート200ms・間隔20ms（ショートカット無効）</strong></p>
+<p><code>Keyboard Response</code> の同じレジストリキーにまとめて設定します。入力受付遅延は1ms、バウンス時間は0msです。</p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd14">コピー</button></div><pre><code id="cmd14">$p=&#39;HKCU:\Control Panel\Accessibility\Keyboard Response&#39;; Set-ItemProperty -Path $p -Name AutoRepeatDelay -Value &#39;200&#39;; Set-ItemProperty -Path $p -Name AutoRepeatRate -Value &#39;20&#39;; Set-ItemProperty -Path $p -Name DelayBeforeAcceptance -Value &#39;1&#39;; Set-ItemProperty -Path $p -Name BounceTime -Value &#39;0&#39;; Set-ItemProperty -Path $p -Name Flags -Value &#39;59&#39;</code></pre></div>
+<p><strong>設定値の確認</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd15">コピー</button></div><pre><code id="cmd15">Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\Keyboard Response&#39; | Select-Object Flags,AutoRepeatDelay,AutoRepeatRate,DelayBeforeAcceptance,BounceTime</code></pre></div>
+<p><strong>切り替えキーのフラグを58に設定</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd16">コピー</button></div><pre><code id="cmd16">Set-ItemProperty -Path &#39;HKCU:\Control Panel\Accessibility\ToggleKeys&#39; -Name Flags -Value &#39;58&#39;</code></pre></div>
+<p><strong>フラグ確認</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd17">コピー</button></div><pre><code id="cmd17">Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\ToggleKeys&#39; | Select-Object Flags</code></pre></div>
+<p><strong>対応レジストリ</strong></p>
+<ul>
+<li>パス: <code>HKCU\Control Panel\Accessibility\StickyKeys</code> ／ 値名: <code>Flags</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>506</code></li>
+<li>パス: <code>HKCU\Control Panel\Accessibility\Keyboard Response</code> ／ 型: <code>REG_SZ</code> ／ <code>Flags=59</code>、<code>AutoRepeatDelay=200</code>、<code>AutoRepeatRate=20</code>、<code>DelayBeforeAcceptance=1</code>、<code>BounceTime=0</code>（時間値の単位はms）</li>
+<li>パス: <code>HKCU\Control Panel\Accessibility\ToggleKeys</code> ／ 値名: <code>Flags</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>58</code></li>
+</ul>
+<p><strong>確認条件:</strong> 固定キーと切り替えキーは「オフ」、フィルターキーは「オン」、3つの有効化ショートカットは「オフ」。<code>Flags</code> は順に <code>506</code>・<code>59</code>・<code>58</code>。FilterKeysのリピート設定は <code>AutoRepeatDelay=200ms</code>、<code>AutoRepeatRate=20ms</code>。変更後はサインアウト・再サインインして反映を確認します。</p>
+</section>
+<section id="s14"><h2>14. 入力候補・自動修正・スペルチェック</h2>
+<p>「設定 → 時刻と言語 → 入力」の1画面にある4設定をまとめて操作します。</p>
+<h3>14.1 入力候補とスペルチェック</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + I</code> →「時刻と言語」→「入力」を開きます。</li>
+<li>同じ画面で下表の4スイッチをすべて「オフ」にします。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>設定項目</th><th>種類</th><th>設定値</th></tr></thead><tbody><tr><td>物理キーボードでの入力時にテキスト候補を表示する</td><td>スイッチ</td><td>オフ</td></tr><tr><td>多言語テキスト候補</td><td>スイッチ</td><td>オフ</td></tr><tr><td>スペルミスの単語のオートコレクト</td><td>スイッチ</td><td>オフ</td></tr><tr><td>スペルミスの単語を強調表示する</td><td>スイッチ</td><td>オフ</td></tr></tbody></table></div>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>物理キーボードのテキスト候補を無効化</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd18">コピー</button></div><pre><code id="cmd18">$p=&#39;HKCU:\Software\Microsoft\Input\Settings&#39;; New-Item -Path $p -Force | Out-Null; New-ItemProperty -Path $p -Name EnableHwkbTextPrediction -PropertyType DWord -Value 0 -Force | Out-Null</code></pre></div>
+<p><strong>多言語テキスト候補を無効化</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd19">コピー</button></div><pre><code id="cmd19">$p=&#39;HKCU:\Software\Microsoft\Input\Settings&#39;; New-Item -Path $p -Force | Out-Null; New-ItemProperty -Path $p -Name MultilingualEnabled -PropertyType DWord -Value 0 -Force | Out-Null</code></pre></div>
+<p><strong>自動修正を無効化（対応するレジストリ）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd20">コピー</button></div><pre><code id="cmd20">$p=&#39;HKCU:\Software\Microsoft\Input\Settings&#39;; New-Item -Path $p -Force | Out-Null; New-ItemProperty -Path $p -Name EnableAutocorrection -PropertyType DWord -Value 0 -Force | Out-Null; $q=&#39;HKCU:\Software\Microsoft\TabletTip\1.7&#39;; New-Item -Path $q -Force | Out-Null; New-ItemProperty -Path $q -Name EnableAutocorrection -PropertyType DWord -Value 0 -Force | Out-Null</code></pre></div>
+<p><strong>スペルチェックのレジストリを無効化</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd21">コピー</button></div><pre><code id="cmd21">$q=&#39;HKCU:\Software\Microsoft\TabletTip\1.7&#39;; New-Item -Path $q -Force | Out-Null; New-ItemProperty -Path $q -Name EnableSpellchecking -PropertyType DWord -Value 0 -Force | Out-Null</code></pre></div>
+<p><strong>対応レジストリ</strong></p>
+<ul>
+<li>パス: <code>HKCU\Software\Microsoft\Input\Settings</code> ／ 値名: <code>EnableHwkbTextPrediction</code> ／ 型: <code>REG_DWORD</code> ／ 値: <code>0</code></li>
+<li>パス: <code>HKCU\Software\Microsoft\Input\Settings</code> ／ 値名: <code>MultilingualEnabled</code> ／ 型: <code>REG_DWORD</code> ／ 値: <code>0</code></li>
+<li>パス: <code>HKCU\Software\Microsoft\Input\Settings</code> ／ 値名: <code>EnableAutocorrection</code> ／ 型: <code>REG_DWORD</code> ／ 値: <code>0</code></li>
+<li>パス: <code>HKCU\Software\Microsoft\TabletTip\1.7</code> ／ 値名: <code>EnableAutocorrection</code> ／ 型: <code>REG_DWORD</code> ／ 値: <code>0</code></li>
+<li>パス: <code>HKCU\Software\Microsoft\TabletTip\1.7</code> ／ 値名: <code>EnableSpellchecking</code> ／ 型: <code>REG_DWORD</code> ／ 値: <code>0</code></li>
+</ul>
+<p><strong>確認条件:</strong> 同じ「入力」画面の4スイッチがいずれも「オフ」であること。</p>
+<p><strong>補足:</strong> 記載したレジストリはWindowsの入力機構に関連する値です。GUIのスイッチ状態を設定結果の判定に使用します。Microsoft IME独自の変換候補設定は、この4スイッチとは別です。</p>
+</section>
+<section id="s15"><h2>15. メニュー表示遅延を0にする</h2>
+<p>GUI上にこの値を直接編集できる標準チェックボックスはありません。レジストリ・CUI操作を単独で記載します。</p>
+<h3>15.1 MenuShowDelay=0</h3>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>メニュー表示遅延を0へ</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd22">コピー</button></div><pre><code id="cmd22">Set-ItemProperty -Path &#39;HKCU:\Control Panel\Desktop&#39; -Name MenuShowDelay -Value &#39;0&#39;</code></pre></div>
+<p><strong>設定値確認</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd23">コピー</button></div><pre><code id="cmd23">Get-ItemProperty -Path &#39;HKCU:\Control Panel\Desktop&#39; | Select-Object MenuShowDelay</code></pre></div>
+<p><strong>対応レジストリ</strong></p>
+<ul>
+<li>パス: <code>HKCU\Control Panel\Desktop</code> ／ 値名: <code>MenuShowDelay</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>0</code></li>
+</ul>
+<p><strong>確認条件:</strong> <code>MenuShowDelay</code> が文字列 <code>0</code>。</p>
+<p><strong>補足:</strong> サインアウト・再サインインして反映を確認します。</p>
+</section>
+<section id="s16"><h2>16. 反映・全項目検証</h2>
+<p>操作対象、GUIでの反映、CUIの設定値、再起動要否を分離して確認します。</p>
+<h3>16.1 ポリシーと設定反映</h3>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li>キーボード、背景、タスクバー、各チェックボックスについて、記載した画面に再度移動して設定値を確認します。</li>
+<li>レジストリ操作設定の適用後はサインアウト・再サインインします。</li>
+<li><code>Scancode Map</code> を編集した場合はWindowsの再起動が必要です。</li>
+</ol>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>gpupdate（ポリシー変更時・管理者）（管理者としてPowerShellを起動）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd24">コピー</button></div><pre><code id="cmd24">gpupdate /force</code></pre></div>
+<p><strong>確認条件:</strong> 各章の「確認」条件を満たすこと。</p>
+<h3>16.2 サービス5件の起動設定の一覧</h3>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>5つの名称・状態・起動種別を一覧表示</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd25">コピー</button></div><pre><code id="cmd25">&#39;Fax&#39;,&#39;MapsBroker&#39;,&#39;WbioSrvc&#39;,&#39;lfsvc&#39;,&#39;WSearch&#39; | ForEach-Object { $n=$_; $s=Get-Service -Name $n -ErrorAction SilentlyContinue; if($s){[PSCustomObject]@{Name=$n;DisplayName=$s.DisplayName;Status=$s.Status;StartType=$s.StartType}}else{[PSCustomObject]@{Name=$n;DisplayName=&#39;未インストール&#39;;Status=&#39;N/A&#39;;StartType=&#39;N/A&#39;}} } | Format-Table -AutoSize</code></pre></div>
+<p><strong>確認条件:</strong> 存在する対象サービスは <code>Stopped/Disabled</code>、存在しないものは <code>未インストール</code>。</p>
+<h3>16.3 設定値・負荷の計測</h3>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>入力操作のレジストリ値</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd26">コピー</button></div><pre><code id="cmd26">Get-ItemProperty &#39;HKCU:\Control Panel\Keyboard&#39; | Select-Object KeyboardDelay,KeyboardSpeed; Get-ItemProperty &#39;HKCU:\Control Panel\Desktop&#39; | Select-Object MenuShowDelay; Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\StickyKeys&#39; | Select-Object Flags; Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\Keyboard Response&#39; | Select-Object Flags,AutoRepeatDelay,AutoRepeatRate,DelayBeforeAcceptance,BounceTime; Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\ToggleKeys&#39; | Select-Object Flags</code></pre></div>
+<p><strong>プロセス数</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd27">コピー</button></div><pre><code id="cmd27">(Get-Process | Measure-Object).Count</code></pre></div>
+<p><strong>物理メモリ使用量</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd28">コピー</button></div><pre><code id="cmd28">$os=Get-CimInstance Win32_OperatingSystem; [PSCustomObject]@{Total_GB=[math]::Round($os.TotalVisibleMemorySize/1MB,2);Used_GB=[math]::Round(($os.TotalVisibleMemorySize-$os.FreePhysicalMemory)/1MB,2);Free_GB=[math]::Round($os.FreePhysicalMemory/1MB,2)}</code></pre></div>
+<p><strong>確認条件:</strong> GUIの最終状態とCUIの値を照合し、プロセス数とメモリ量は測定結果として記録。</p>
+</section>
+<section id="s17"><h2>17. 不採用の設定</h2>
+<p>マウス加速は変更対象にしません。</p>
+<h3>17.1 マウス加速を変更しない</h3>
+<p><strong>確認条件:</strong> 「ポインターの精度を高める」の値を変更しないこと。</p>
+<p><strong>補足:</strong> マウス加速オフは不採用です。ここには変更手順を設けません。</p>
+</section>
+<section id="s18"><h2>18. WinキーとAltキーの左右入れ替え</h2>
+<p>常駐ソフトウェアを使わず、左右のWinキーとAltキーを入れ替えます。同じレジストリ画面で確認・設定・解除を行います。</p>
+<h3>18.1 Scancode Mapの確認・設定・解除</h3>
+<p>Windowsのキーボードスキャンコードをレジストリの <code>Scancode Map</code>（<code>REG_BINARY</code>）で入れ替えます。変更後は再起動が必要です。</p>
+<p><strong>GUI操作</strong></p>
+<ol>
+<li><code>Win + R</code> → <code>regedit</code> → Enter（管理者）。</li>
+<li><code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout</code> に移動します。</li>
+<li>右ペインの <code>Scancode Map</code> の有無と現在の内容を確認します。</li>
+<li>設定する場合は、値がなければ「右クリック → 新規 → バイナリ値」で <code>Scancode Map</code> を作成し、既に存在すればダブルクリックで編集します。</li>
+<li>「数値のデータ」に <code>00 00 00 00 00 00 00 00 05 00 00 00 38 00 5B E0 5B E0 38 00 38 E0 5C E0 5C E0 38 E0 00 00 00 00</code> を入力し、「OK」を押します。</li>
+<li>設定を解除する場合は <code>Scancode Map</code> を右クリック →「削除」→「はい」を選びます。</li>
+<li>設定・解除のどちらも Windows を再起動して反映します。</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>操作</th><th>対象</th><th>結果</th></tr></thead><tbody><tr><td>既存設定の確認</td><td><code>Scancode Map</code></td><td>登録の有無・値を確認</td></tr><tr><td>設定</td><td><code>Scancode Map</code>（REG_BINARY）</td><td>左Win↔左Alt、右Win↔右Alt</td></tr><tr><td>解除</td><td><code>Scancode Map</code> の削除</td><td>標準配置へ戻す</td></tr></tbody></table></div>
+<p><strong>CUI / PowerShell</strong></p>
+<p><strong>既存値を表示</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd29">コピー</button></div><pre><code id="cmd29">reg.exe query &quot;HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layout&quot; /v &quot;Scancode Map&quot;</code></pre></div>
+<p><strong>Win・Altを左右とも入れ替え（管理者）（管理者としてPowerShellを起動）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd30">コピー</button></div><pre><code id="cmd30">reg.exe add &quot;HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layout&quot; /v &quot;Scancode Map&quot; /t REG_BINARY /d &quot;00000000000000000500000038005BE05BE0380038E05CE05CE038E000000000&quot; /f</code></pre></div>
+<p><strong>Scancode Map削除（管理者）（管理者としてPowerShellを起動）</strong></p>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd31">コピー</button></div><pre><code id="cmd31">reg.exe delete &quot;HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layout&quot; /v &quot;Scancode Map&quot; /f</code></pre></div>
+<p><strong>対応レジストリ</strong></p>
+<ul>
+<li>パス: <code>HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layout</code> ／ 値名: <code>Scancode Map</code> ／ 型: <code>REG_BINARY</code></li>
+<li>設定値: <code>00000000000000000500000038005BE05BE0380038E05CE05CE038E000000000</code></li>
+</ul>
+<p><strong>確認条件:</strong> 再起動後、設定時には左右それぞれのWinキーとAltキーが入れ替わること。解除時には標準配置になること。</p>
+<p><strong>補足:</strong> 既に別の <code>Scancode Map</code> がある場合は上書きになります。解除すると <code>Scancode Map</code> 全体を削除するため、その他のキー再配置も削除されます。</p>
+</section>
+<section><h2>参考資料・照合元</h2>
+<p>Windows 11の公式操作資料と26H2の画面資料を参照します。</p>
+<ul>
+<li><a href="https://learn.microsoft.com/ja-jp/windows/release-health/windows11-release-information">Windows 11 リリース一覧（26H2）</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/servicing/os/windows-11/2026/08/kb5120998-windows-11-24h2-25h2-update">Windows 11 2026年8月UI変更（KB5120998）</a></li>
+<li><a href="https://www.fmworld.net/cs/azbyclub/qanavi/jsp/qacontents.jsp?PID=1711-3727">26H2実画面：スタートメニュー（FMV 2026-10-14）</a></li>
+<li><a href="https://www.fmworld.net/cs/azbyclub/qanavi/jsp/qacontents.jsp?PID=8211-3490">26H2実画面：ロック画面（FMV 2026-10-14）</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/startup-boot/configure-startup-applications-in-windows">Microsoft：スタートアップ設定</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/performance-optimization/tips-to-improve-pc-performance-in-windows">Microsoft：視覚効果</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/accessibility/windows/use-color-and-contrast-for-accessibility-in-microsoft-365">Microsoft：透明効果</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/change-the-power-mode-for-your-windows-pc">Microsoft：電源モード</a></li>
+<li><a href="https://www.fmworld.net/cs/azbyclub/qanavi/jsp/qacontents.jsp?PID=9311-3578">FMV：電源モードの設定画面と最適なパフォーマンス（2026年）</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/performance-optimization/search-indexing-in-windows">Microsoft：検索インデックス</a></li>
+<li><a href="https://learn.microsoft.com/ja-jp/windows/deployment/do/waas-delivery-optimization-reference">Microsoft：配信の最適化の動作</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/personalization/customize-the-lock-screen-in-windows">Microsoft：ロック画面</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/personalization/customize-the-taskbar-in-windows">Microsoft：タスクバー</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/experience/notifications-and-do-not-disturb-in-windows">Microsoft：通知</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/privacy/speech-voice-activation-inking-typing-and-privacy">Microsoft：音声認識・入力とプライバシー</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/privacy/windows-search-and-privacy">Microsoft：検索のアクセス許可</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/windows/privacy/windows-activity-history-and-your-privacy">Microsoft：Windowsのアクティビティ履歴とプライバシー</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/accessibility/windows/enable-text-suggestions-in-windows">Microsoft：入力候補</a></li>
+<li><a href="https://support.microsoft.com/ja-jp/accessibility/windows/windows-keyboard-shortcuts-for-accessibility">Microsoft：キーボードアクセシビリティ</a></li>
+</ul>
+<hr>
+</section></main>
+
+<script>document.querySelectorAll("button[data-copy]").forEach(b=>b.addEventListener("click",async()=>{const c=document.getElementById(b.dataset.copy);try{await navigator.clipboard.writeText(c.textContent);b.textContent="コピー済み"}catch(e){b.textContent="コピー不可"}}));</script></body></html>
