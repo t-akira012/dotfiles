@@ -44,7 +44,7 @@ if exist "%KEYHAC_DIR%\" (
     goto :keyhac_ready
 )
 set "KEYHAC_URL="
-for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/crftwr/keyhac/releases/latest').assets | Where-Object { $_.name -like 'Keyhac-2.*-win64.zip' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "KEYHAC_URL=%%u"
+for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/crftwr/keyhac/releases/latest').assets | Where-Object { $_.name -match '^Keyhac-2\..+-win(-x64|64)\.zip$' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "KEYHAC_URL=%%u"
 if not defined KEYHAC_URL (
     echo   ERROR: Keyhac 2 Windows asset not found
     goto :fail
