@@ -1,19 +1,20 @@
 @echo off
 setlocal enabledelayedexpansion
+chcp 65001 >nul
 
 set "EXE_DIR=%USERPROFILE%\exe"
 set "TEMP_DIR=%USERPROFILE%\Downloads\tmp\gh_install_%RANDOM%"
 set "FAILED=0"
 if not exist "%EXE_DIR%\" (
     mkdir "%EXE_DIR%"
-    if errorlevel 1 echo MANUAL: Create "%EXE_DIR%".
+    if errorlevel 1 echo 手動: "%EXE_DIR%" を作成してください。
 )
 if not exist "%TEMP_DIR%\" (
     mkdir "%TEMP_DIR%"
     if errorlevel 1 goto :fail
 )
 
-echo Installing CLI tools to %EXE_DIR% ...
+echo CLI ツールを %EXE_DIR% に導入しています...
 
 :: Single exe tools
 call :dl_exe "junegunn/fzf"       "windows_amd64.zip"          "fzf.exe"
@@ -38,12 +39,12 @@ if errorlevel 1 set "FAILED=1"
 if "%FAILED%"=="1" goto :fail
 rd /s /q "%TEMP_DIR%"
 echo.
-echo Done!
+echo CLI ツールの導入が完了しました。
 exit /b 0
 
 :fail
 echo.
-echo Some CLI tools need manual installation. Files and archives: "%TEMP_DIR%"
+echo 一部の CLI ツールは手動配置が必要です。ファイルと ZIP: "%TEMP_DIR%"
 exit /b 1
 
 :dl_exe
@@ -53,7 +54,7 @@ set "EXE=%~3"
 
 if exist "%EXE_DIR%\%EXE%" (
     echo.
-    echo [%REPO%] SKIP: %EXE% already exists
+    echo [%REPO%] スキップ: %EXE% は配置済みです。
     exit /b 0
 )
 
@@ -66,23 +67,23 @@ echo [%REPO%]
 set "URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/%REPO%/releases/latest').assets | Where-Object { $_.name -like '*%PATTERN%' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "URL=%%u"
 if not defined URL (
-    echo   ERROR: asset not found for %REPO%
+    echo   エラー: %REPO% の配布ファイルが見つかりません。
     exit /b 1
 )
 
 echo   %URL%
 curl -fL "%URL%" -o "%WORK%\archive.zip"
 if errorlevel 1 (
-    echo   ERROR: download failed for %REPO%
+    echo   エラー: %REPO% のダウンロードに失敗しました。
     exit /b 1
 )
 if not exist "%WORK%\archive.zip" (
-    echo   ERROR: download did not create an archive for %REPO%
+    echo   エラー: %REPO% の ZIP が作成されませんでした。
     exit /b 1
 )
 tar xvf "%WORK%\archive.zip" -C "%WORK%"
 if errorlevel 1 (
-    echo   ERROR: extraction failed for %REPO%
+    echo   エラー: %REPO% の展開に失敗しました。
     exit /b 1
 )
 
@@ -91,7 +92,7 @@ for /r "%WORK%" %%f in (%EXE%) do (
     if exist "%%f" (
         copy /y "%%f" "%EXE_DIR%\%EXE%" >nul
         if errorlevel 1 (
-            echo   MANUAL: Copy "%%f" to "%EXE_DIR%\%EXE%".
+            echo   手動: "%%f" を "%EXE_DIR%\%EXE%" にコピーしてください。
             echo           ZIP: "%WORK%\archive.zip"
             exit /b 1
         )
@@ -99,11 +100,11 @@ for /r "%WORK%" %%f in (%EXE%) do (
     )
 )
 if "!FOUND!"=="0" (
-    echo   ERROR: %EXE% not found in the archive
+    echo   エラー: ZIP 内に %EXE% が見つかりません。
     exit /b 1
 )
 if not exist "%EXE_DIR%\%EXE%" (
-    echo   ERROR: %EXE% was not installed
+    echo   エラー: %EXE% が配置されていません。
     exit /b 1
 )
 echo   -^> %EXE_DIR%\%EXE%
@@ -117,7 +118,7 @@ set "REQUIRED_FILE=%~4"
 
 if exist "%EXE_DIR%\%DIR_NAME%\%REQUIRED_FILE%" (
     echo.
-    echo [%REPO%] SKIP: %DIR_NAME% already exists
+    echo [%REPO%] スキップ: %DIR_NAME% は配置済みです。
     exit /b 0
 )
 
@@ -130,42 +131,42 @@ echo [%REPO%]
 set "URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/%REPO%/releases/latest').assets | Where-Object { $_.name -like '*%PATTERN%' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "URL=%%u"
 if not defined URL (
-    echo   ERROR: asset not found for %REPO%
+    echo   エラー: %REPO% の配布ファイルが見つかりません。
     exit /b 1
 )
 
 echo   %URL%
 curl -fL "%URL%" -o "%WORK%\archive.zip"
 if errorlevel 1 (
-    echo   ERROR: download failed for %REPO%
+    echo   エラー: %REPO% のダウンロードに失敗しました。
     exit /b 1
 )
 if not exist "%WORK%\archive.zip" (
-    echo   ERROR: download did not create an archive for %REPO%
+    echo   エラー: %REPO% の ZIP が作成されませんでした。
     exit /b 1
 )
 tar xvf "%WORK%\archive.zip" -C "%WORK%"
 if errorlevel 1 (
-    echo   ERROR: extraction failed for %REPO%
+    echo   エラー: %REPO% の展開に失敗しました。
     exit /b 1
 )
 if not exist "%WORK%\%DIR_NAME%\%REQUIRED_FILE%" (
-    echo   ERROR: %REQUIRED_FILE% not found in %DIR_NAME%
+    echo   エラー: %DIR_NAME% 内に %REQUIRED_FILE% が見つかりません。
     exit /b 1
 )
 if exist "%EXE_DIR%\%DIR_NAME%\" (
-    echo   MANUAL: "%EXE_DIR%\%DIR_NAME%" is incomplete. Copy files from "%WORK%\%DIR_NAME%" into it.
+    echo   手動: "%WORK%\%DIR_NAME%" の中身を "%EXE_DIR%\%DIR_NAME%" にコピーしてください。
     echo           ZIP: "%WORK%\archive.zip"
     exit /b 1
 )
 move "%WORK%\%DIR_NAME%" "%EXE_DIR%\%DIR_NAME%" >nul
 if errorlevel 1 (
-    echo   MANUAL: Move "%WORK%\%DIR_NAME%" to "%EXE_DIR%\%DIR_NAME%".
+    echo   手動: "%WORK%\%DIR_NAME%" を "%EXE_DIR%\%DIR_NAME%" に移動してください。
     echo           ZIP: "%WORK%\archive.zip"
     exit /b 1
 )
 if not exist "%EXE_DIR%\%DIR_NAME%\%REQUIRED_FILE%" (
-    echo   ERROR: %DIR_NAME% was not installed
+    echo   エラー: %DIR_NAME% が配置されていません。
     exit /b 1
 )
 echo   -^> %EXE_DIR%\%DIR_NAME%
@@ -174,7 +175,7 @@ exit /b 0
 :dl_git
 if exist "%EXE_DIR%\git-bash\cmd\git.exe" (
     echo.
-    echo [git-for-windows/git] SKIP: git-bash already exists
+    echo [git-for-windows/git] スキップ: git-bash は配置済みです。
     exit /b 0
 )
 
@@ -187,42 +188,42 @@ if errorlevel 1 exit /b 1
 set "URL="
 for /f "delims=" %%u in ('powershell -NoProfile -Command "(Invoke-RestMethod 'https://api.github.com/repos/git-for-windows/git/releases/latest').assets | Where-Object { $_.name -like 'PortableGit-*-64-bit.7z.exe' } | Select-Object -First 1 -ExpandProperty browser_download_url"') do set "URL=%%u"
 if not defined URL (
-    echo   ERROR: PortableGit asset not found
+    echo   エラー: PortableGit の配布ファイルが見つかりません。
     exit /b 1
 )
 
 echo   %URL%
 curl -fL "%URL%" -o "%WORK%\PortableGit.exe"
 if errorlevel 1 (
-    echo   ERROR: PortableGit download failed
+    echo   エラー: PortableGit のダウンロードに失敗しました。
     exit /b 1
 )
 if not exist "%WORK%\PortableGit.exe" (
-    echo   ERROR: PortableGit download did not create an executable
+    echo   エラー: PortableGit の実行ファイルが作成されませんでした。
     exit /b 1
 )
 "%WORK%\PortableGit.exe" -o"%WORK%\git-bash" -y
 if errorlevel 1 (
-    echo   ERROR: PortableGit extraction failed
+    echo   エラー: PortableGit の展開に失敗しました。
     exit /b 1
 )
 if not exist "%WORK%\git-bash\cmd\git.exe" (
-    echo   ERROR: git.exe not found in PortableGit
+    echo   エラー: PortableGit 内に git.exe が見つかりません。
     exit /b 1
 )
 if exist "%EXE_DIR%\git-bash\" (
-    echo   MANUAL: "%EXE_DIR%\git-bash" is incomplete. Copy files from "%WORK%\git-bash" into it.
-    echo           Archive: "%WORK%\PortableGit.exe"
+    echo   手動: "%WORK%\git-bash" の中身を "%EXE_DIR%\git-bash" にコピーしてください。
+    echo           配布ファイル: "%WORK%\PortableGit.exe"
     exit /b 1
 )
 move "%WORK%\git-bash" "%EXE_DIR%\git-bash" >nul
 if errorlevel 1 (
-    echo   MANUAL: Move "%WORK%\git-bash" to "%EXE_DIR%\git-bash".
-    echo           Archive: "%WORK%\PortableGit.exe"
+    echo   手動: "%WORK%\git-bash" を "%EXE_DIR%\git-bash" に移動してください。
+    echo           配布ファイル: "%WORK%\PortableGit.exe"
     exit /b 1
 )
 if not exist "%EXE_DIR%\git-bash\cmd\git.exe" (
-    echo   ERROR: PortableGit was not installed
+    echo   エラー: PortableGit が配置されていません。
     exit /b 1
 )
 echo   -^> %EXE_DIR%\git-bash

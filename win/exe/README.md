@@ -35,7 +35,7 @@ PATH は `cmdrun.bat` で設定済み。
 
 ## create_startup.bat で常駐ソフトを登録
 
-`create_startup.bat` は `%USERPROFILE%\Tools\keyhac\Keyhac.exe` と `%USERPROFILE%\Tools\clism\CLISM64.EXE` のショートカットを、現在のユーザーのスタートアップフォルダーに作成する。再実行すると同じショートカットを更新する。`dl.bat` からも毎回呼び出す。
+`%USERPROFILE%\exe\install\create_startup.bat` は `%USERPROFILE%\Tools\keyhac\Keyhac.exe` と `%USERPROFILE%\Tools\clism\CLISM64.EXE` のショートカットを、現在のユーザーのスタートアップフォルダーに作成する。再実行すると同じショートカットを更新する。`dl.bat` からも毎回呼び出す。
 
 ## cargo / go
 

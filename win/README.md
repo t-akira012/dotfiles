@@ -2,6 +2,8 @@
 
 cmd.exe をUnix風に使うための最小dotfiles。
 
+Windows 11 / Intel N100 の設定手順は [軽量化・高速操作環境構築手順書](docs/windows11-n100-optimization.md) を参照。
+
 ## セットアップ
 
 個別ダウンロード
@@ -27,10 +29,10 @@ dl.bat が行うこと:
    （Neovim 設定は既存の %USERPROFILE%\.config\nvim\ を削除して kickstart.nvim に置き換え）
 9. install_plemoljp_nf.bat を実行し、PlemolJP NF を現在のユーザーに導入
 10. install_apps.bat を %USERPROFILE%\exe\install\ に配置（winget からのアプリ導入は手動実行）
-11. create_startup.bat を %USERPROFILE%\exe\ に配置・実行し、Keyhac と CLISM excellent をスタートアップに登録
+11. install/create_startup.bat を実行し、Keyhac と CLISM excellent をスタートアップに登録
 ```
 
-ダウンロードと展開には `%USERPROFILE%\Downloads\tmp` を使う。コピーや移動がアクセス拒否などで失敗しても、残りのセットアップを続ける。画面に `MANUAL:` と元ファイル・配置先を表示し、必要な ZIP と展開済みファイルを `Downloads\tmp` に残す。手動配置後、スタートアップ登録が必要なら `create_startup.bat` を再実行する。手動作業が残った場合は終了コード 1 を返す。
+ダウンロードと展開には `%USERPROFILE%\Downloads\tmp` を使う。コピーや移動がアクセス拒否などで失敗しても、残りのセットアップを続ける。画面に `手動:` と元ファイル・配置先を表示し、必要な ZIP と展開済みファイルを `Downloads\tmp` に残す。Keyhac の展開済みフォルダには `config.py` を組み込んでから配置する。手動配置後、スタートアップ登録が必要なら `%USERPROFILE%\exe\install\create_startup.bat` を再実行する。手動作業が残った場合は終了コード 1 を返す。
 
 `%USERPROFILE%\bin\cmdrun.bat` を実行して起動する。
 
@@ -50,7 +52,6 @@ C:\Users\{WIN_USERNAME}\
 │   ├── tf.bat          fdでディレクトリ検索→fzfで選択してジャンプ
 │   └── rm.bat          ごみ箱に送る削除
 ├── exe\
-│   ├── create_startup.bat    常駐ソフトのスタートアップ登録
 │   ├── fzf.exe
 │   ├── ghq.exe
 │   ├── fd.exe
@@ -62,6 +63,7 @@ C:\Users\{WIN_USERNAME}\
 │   │   ├── update_nvim.bat       nvim設定をkickstart.nvimから更新
 │   │   ├── install_plemoljp_nf.bat  PlemolJP NF導入
 │   │   ├── install_plemoljp_nf.ps1  フォント登録処理
+│   │   ├── create_startup.bat  常駐ソフトのスタートアップ登録
 │   │   └── install_apps.bat  Visual C++、Google 日本語入力、Tailscale を導入
 │   ├── git-bash\       bin/, usr/bin/ のUnixコマンドをPATH供給
 │   └── nvim-win64\
@@ -133,7 +135,7 @@ OS全体に適用されるキーバインド設定。
 
 [公式配布ページ](https://toroidj.github.io/slwin4.html#clismex) から最新版を取得する。Windows x64 版の `CLISM64.EXE` を起動し、同じディレクトリにある x86 版も併用できるよう zip の内容をまとめて配置する。
 
-`%USERPROFILE%\exe\create_startup.bat` を実行すると、Keyhac と CLISM excellent のショートカットを現在のユーザーのスタートアップフォルダーに作成する。`dl.bat` からも実行される。
+`%USERPROFILE%\exe\install\create_startup.bat` を実行すると、Keyhac と CLISM excellent のショートカットを現在のユーザーのスタートアップフォルダーに作成する。`dl.bat` からも実行される。
 
 ## Google 日本語入力
 
