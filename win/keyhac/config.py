@@ -3,11 +3,9 @@ from keyhac import LaunchApplication
 
 def configure(keymap):
     keymap.editor = "notepad.exe"
+    keymap.replace_key("RAlt", "RWin")
 
     global_keys = keymap.define_keytable(focus_path_pattern="*")
-    # Release Alt before opening Start; only a lone Right Alt tap triggers it.
-    global_keys["U-RAlt"] = "U-RAlt"
-    global_keys["O-RAlt"] = "Ctrl-Escape"
     # Mark left Win as used before releasing it so a lone press does not open Start.
     global_keys["U-LWin"] = "D-LCtrl", "U-LCtrl", "U-LWin"
 
