@@ -23,10 +23,10 @@ $p=Join-Path $env:TEMP 'dotfiles-dl.bat'; curl.exe -fL 'https://raw.githubuserco
 
 ### Windows Terminal から Mac mini の Neovim に貼り付ける
 
-`dl.bat` で `bin\` を配置した後、PowerShell から通常の `ssh mini` の代わりに次を使う。`mini` は既存の SSH 接続先名に置き換えられる。
+`dl.bat` で `bin\` を配置した後、PowerShell から接続先を明示して起動する。次は宅内 LAN の Mac mini に接続する例。VPN 経由なら接続先 IP アドレスを置き換える。
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\bin\ssh-mini-clipboard.ps1" mini
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\bin\ssh-mini-clipboard.ps1" t-akira012@192.168.50.100
 ```
 
 このスクリプトは Windows の文字列クリップボードを localhost:2223 で読み出し、SSH の `-R` で Mac mini の localhost:2223 へ転送する。同時に接続の TTY を Mac mini に記録する。tmux は Neovim の `p` を押したクライアントの TTY で接続元を判定するため、MacBook Pro と同じ tmux セッションを使える。SSH が終了すると読み出し用プロセスと TTY の記録を片付ける。画像はこの経路の対象外。

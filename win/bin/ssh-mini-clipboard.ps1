@@ -7,8 +7,8 @@ $ErrorActionPreference = 'Stop'
 $port = 2223
 $server = Join-Path $PSScriptRoot 'host-clipboard-server.ps1'
 
-if ($SshArguments.Count -eq 0) {
-    $SshArguments = @('mini')
+if (-not $SshArguments -or $SshArguments.Count -eq 0) {
+    throw 'SSH destination is required (example: t-akira012@192.168.50.100)'
 }
 
 # Reserve the port briefly to fail early if another listener already owns it.
