@@ -1,5 +1,9 @@
 # Global Agent Instructions
 
+## 提案
+
+- 機能不全が判明している案を、実行可能な解決策として提示しない。
+
 ## Bash
 
 - Bash 3.2以上の構文を禁止する
