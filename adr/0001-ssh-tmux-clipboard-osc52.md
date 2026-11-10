@@ -9,7 +9,7 @@ SSH 中に、接続元（host）から Mac mini（remote）への画像貼り付
 
 ## 現時点の決定
 
-現在の実装は、Mac mini の tmux コピーモードが Clipper 対応の `$HOME/bin/pbcopy` を使い、SSH 中の Neovim が copy に `tmux load-buffer -w -`、テキスト paste に Mac mini の `/usr/bin/pbpaste` を使う構成である。tmux の `prefix → Ctrl+p` は `pbpaste | tmux load-buffer - && tmux paste-buffer`。Neovim の copy は MacBook Pro に届かないことを利用者が確認しており、この構成を最終決定とはしない。
+Mac mini の tmux コピーモードは Clipper 対応の `$HOME/bin/pbcopy` を使う。SSH 中の Neovim は copy に `tmux load-buffer -w -` を使い、利用者は remote → host の yank 成功を報告した。テキスト paste は接続元のクリップボードを読む試験実装に変更した。tmux の `prefix → Ctrl+p` は引き続き `pbpaste | tmux load-buffer - && tmux paste-buffer`。接続元からの Neovim paste の実機結果と画像貼り付けは未確認であり、この構成を最終決定とはしない。
 
 利用者の前提は、11月6日以降の変更前には MacBook Pro から Mac mini の Neovim への画像貼り付けが機能し、外部条件の差分は厳密にゼロ、というもの。回帰の原因を Git 履歴の差分から導く。以前の成功を `pngpaste` の一般的な仕様や新しい転送方式の必要性で否定しない。
 
@@ -157,10 +157,69 @@ Mac mini では Clipper 3.0.0 を Homebrew から再導入し、launchd の `sh.
 
 Visual `y` には独立した問題もある。現行マッピングは yank 後に `vim.fn.getreg(register)` を呼ぶ。`clipboard=unnamedplus` と現在の paste provider の組み合わせでは、隔離した tmux で選択文字列 `ab` ではなく Mac mini の既存クリップボード文字列が再送されることを再現した。これは Neovim 内の文字列の取り違えを示す。MacBook Pro への送信経路の問題と分けて扱う。試験的な Neovim コード変更は元に戻してあり、実装は変更していない。
 
+### 11月10日: host → remote のテキスト paste 経路（試験実装）
+
+利用者は、Mac mini の Neovim で `p` を押すと Mac mini 側に保持された文字列が貼り付けられることを観測した。従来の `/usr/bin/pbpaste` は Mac mini 自身のクリップボードを読む。Neovim の paste provider を `sh/host_clipboard_paste.sh` に変更し、接続元から文字列を取得する経路を追加した。`y` の接続元への送信経路は変更していない。Mac と Windows の同時接続ではポートの有無から接続元を推測せず、`p` を押した tmux クライアントの TTY で選ぶ。
+
+#### tmux への依存範囲
+
+tmux はクリップボード転送そのものの必須条件ではない。**現在の実装が tmux に依存する**のは、MacBook Pro と Windows が同じ tmux セッション・同じ Neovim pane を操作するとき、Neovim に届く `p` だけでは押した接続元を区別できないためである。tmux はキーを送ったクライアントを識別できるので、その情報から paste の取得先を選ぶ。セッションや pane は分離しない。
+
+現行 `lua/options.lua` の接続元 paste provider は `TMUX` がある SSH 中の Neovim でだけ有効になる。tmux 外の SSH 接続で起動した Neovim は macOS の通常の clipboard provider を使い、`p` は Mac mini 自身のクリップボードを読む。接続ごとに独立した Neovim を起動する場合は、SSH 接続の情報をその Neovim に直接渡す構成にでき、tmux は不要だが、その構成はまだ実装していない。
+
+```mermaid
+flowchart LR
+  W["Windows の SSH 起動スクリプト"] --> M["接続 TTY の印を Mac mini に記録"]
+  K["Mac / Windows のクライアントが p を押す"] --> T["共有 tmux セッション: 入力元 client_tty を取得"]
+  T --> L{"TTY に Windows の印があるか"}
+  M --> L
+  L -->|"ある"| FW["M-P → Neovim → Windows paste 転送"]
+  L -->|"ない"| FM["M-p → Neovim → Mac pbpaste 転送"]
+```
+
+tmux セッションと pane は共有したまま使う。`M-p` と `M-P` は tmux から Neovim へ送る内部キーであり、挿入モードなどでは元の文字 `p` に戻す。Neovim 以外の pane の `p` は通常のキー入力として送る。Windows の印は SSH 終了時に削除する。接続元の判定対象は `p` の入力であり、`getreg('+')` などキー入力を伴わない読み取りは対象外。隔離した tmux では二つのクライアントの入力元判定、Windows 側の文字列 paste、挿入モードとシェル pane の `p` を確認した。MacBook Pro と Windows の実機から同時に接続する検証は未実施。
+
+#### MacBook Pro → Mac mini
+
+```mermaid
+flowchart LR
+  subgraph HOST["MacBook Pro: SSH 接続元"]
+    MC["文字列クリップボード"] --> MP["/usr/bin/pbpaste"]
+    MP --> MS["MacBook Pro の sshd"]
+  end
+  subgraph REMOTE["Mac mini: SSH 接続先"]
+    NP["Neovim p"] --> HP["host_clipboard_paste.sh"]
+    HP --> RS["ssh -p 2222 localhost pbpaste"]
+  end
+  RS -->|"SSH RemoteForward 2222 localhost:22"| MS
+  MS -->|"文字列"| NP
+```
+
+MacBook Pro の SSH クライアントが既存の `RemoteForward 2222 localhost:22` を張り、Mac mini から接続元の SSH サーバーへ鍵認証できることが必要。調査時点では Mac mini の localhost:2222 に待受がなく、到達確認は保留。
+
+#### Windows Terminal / PowerShell → Mac mini
+
+```mermaid
+flowchart LR
+  subgraph HOST["Windows: SSH 接続元"]
+    WC["文字列クリップボード"] --> PS["host-clipboard-server.ps1"]
+    PS --> WL["127.0.0.1:2223"]
+    SSH["ssh-mini-clipboard.ps1"] -->|"ssh -R 127.0.0.1:2223:127.0.0.1:2223"| WF["SSH 転送"]
+  end
+  subgraph REMOTE["Mac mini: SSH 接続先"]
+    NP["Neovim p"] --> HP["host_clipboard_paste.sh"]
+    HP --> RL["127.0.0.1:2223"]
+  end
+  WL --> WF --> RL
+  RL -->|"文字列"| NP
+```
+
+Windows に SSH サーバーは不要。Windows 側で通常の `ssh` の代わりに `ssh-mini-clipboard.ps1` を起動すると、読み出し用プロセスと TTY の印を開始し、SSH 終了時に停止・削除する。Windows 実機での動作は未確認。Mac と Windows の両転送が同時に存在しても手動で環境変数を指定しない。SSH 転送そのものはバイナリを運べるが、現在の読み出し処理は Windows の `Clipboard.GetText()` と Mac の `pbpaste` であり、両経路とも文字列専用。画像貼り付けの成功を示さない。
+
 ## 次のステップ
 
-1. Neovim の修正案は、`lua/options.lua` の provider を画像貼り付けが動いていた構成へ戻し、copy を成功している tmux と同じ `$HOME/bin/pbcopy` 経路に揃える。Visual `y` の再読込問題も解消する。実装はこの ADR の分析が確定するまで変更しない。
-2. 修正前後に MacBook Pro 側で通常の `y` と Visual `y` の文字列、新しい画像の到達をそれぞれ確認する。`pbpaste` や `pngpaste` の一般的な能力から以前の成功を否定しない。
+1. MacBook Pro から SSH 接続し、逆転送 2222 と Mac mini から MacBook Pro への SSH 鍵認証を確認した上で、Neovim の `p` が接続元の新しい文字列を貼ることを確認する。
+2. Windows Terminal から `ssh-mini-clipboard.ps1` で接続し、Neovim の `p` が Windows の新しい文字列を貼ることを確認する。通常の `y` と Visual `y` の結果も両接続元で確認する。
 3. Codex の画像添付と Windows 11 からの貼り付けは、Neovim の回帰とは別に記録する。過去の画像を新しい転送の成功と数えない。
 4. MacBook Pro で新しい識別可能な PNG をコピーし、Ghostty → SSH → tmux → Codex に貼り付ける。同時に Mac mini 側の Clipper ソケットと画像クリップボードの状態を確認する。
 5. Windows 11 → Mac mini でも文字列と画像を確認する。Windows では Clipper の導入と SSH 設定をまだ行っていない。

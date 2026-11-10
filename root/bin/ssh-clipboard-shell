@@ -1,0 +1,22 @@
+#!/bin/sh
+# Mark this SSH TTY as a Windows clipboard client without changing tmux sessions.
+set -eu
+
+tty_path=$(tty)
+case "$tty_path" in
+  /dev/*) ;;
+  *) echo 'ssh-clipboard-shell requires an SSH TTY' >&2; exit 1 ;;
+esac
+
+umask 077
+marker_dir="$HOME/.cache/ssh-host-clipboard/by-tty"
+mkdir -p "$marker_dir"
+marker="$marker_dir/${tty_path##*/}"
+printf '%s\n' "$$" > "$marker"
+
+cleanup() {
+  rm -f "$marker"
+}
+trap cleanup EXIT HUP INT TERM
+
+"${SHELL:-/bin/zsh}" -l
