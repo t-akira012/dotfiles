@@ -214,7 +214,25 @@ flowchart LR
   RL -->|"文字列"| NP
 ```
 
-Windows に SSH サーバーは不要。Windows 側で通常の `ssh` の代わりに `ssh-mini-clipboard.ps1` を起動すると、読み出し用プロセスと TTY の印を開始し、SSH 終了時に停止・削除する。Windows 実機での動作は未確認。Mac と Windows の両転送が同時に存在しても手動で環境変数を指定しない。SSH 転送そのものはバイナリを運べるが、現在の読み出し処理は Windows の `Clipboard.GetText()` と Mac の `pbpaste` であり、両経路とも文字列専用。画像貼り付けの成功を示さない。
+Windows に SSH サーバーは不要。Windows 側で通常の `ssh` の代わりに `ssh-mini-clipboard.ps1` を起動すると、読み出し用プロセスと TTY の印を開始し、SSH 終了時に停止・削除する。Windows 実機での動作は未確認。Mac と Windows の両転送が同時に存在しても手動で環境変数を指定しない。この節の `p` / `P` 経路は Windows の `Clipboard.GetText()` と Mac の `pbpaste` を使う文字列専用である。画像の経路は次節で扱う。
+
+### 11月10日: Neovim の Ctrl+V による画像貼り付け（試験実装）
+
+Neovim の挿入モードには以前から `Ctrl+V` → `:PasteImage` のマッピングがあった。これを SSH 接続元の画像を保存できるように拡張した。tmux は `Ctrl+V` を押したクライアントの TTY で取得先を選び、Neovim に `M-j`（MacBook Pro）または `M-J`（Windows）を送る。Neovim は `:PasteImage mac` / `:PasteImage windows` を実行し、既存のローカル保存・MinIO・S3 の保存処理へ PNG を渡す。通常の `p` / `P` は引き続き文字列専用。
+
+```mermaid
+flowchart LR
+  MC["MacBook Pro の画像クリップボード"] --> MP["pngpaste → PNG"]
+  MP -->|"SSH 逆転送 2222"| CAP["Mac mini: capture_host_image.sh"]
+  WC["Windows の画像クリップボード"] --> WG["Clipboard.GetImage → PNG"]
+  WG -->|"SSH RemoteForward 2224"| CAP
+  KEY["Ctrl+V を押した tmux クライアント"] --> ROUTE["client_tty で Mac / Windows を選択"]
+  ROUTE --> NV["Neovim :PasteImage"]
+  NV --> CAP
+  CAP --> SAVE["images/ または MinIO / S3 に保存 → Markdown を挿入"]
+```
+
+Windows Terminal の既定の `Ctrl+V` は端末の貼り付けなので、Neovim にキーを届けるには Windows Terminal の `settings.json` で `ctrl+v` を `unbound` にする。`Ctrl+Shift+V` は端末の文字列貼り付けに残る。MacBook Pro では `pngpaste` と SSH 逆転送 2222、Windows では更新後の起動スクリプトによる 2224 の転送が必要。隔離した tmux と模擬 PNG では、Windows 経路の `Ctrl+V` から画像保存・Markdown 挿入まで確認した。両接続元の実機画像では未確認。
 
 ## 次のステップ
 
@@ -230,3 +248,5 @@ Windows に SSH サーバーは不要。Windows 側で通常の `ssh` の代わ�
 - [tmux Clipboard Wiki](https://github.com/tmux/tmux/wiki/Clipboard)
 - [Neovim clipboard provider](https://neovim.io/doc/user/provider/)
 - [Clipper](https://github.com/wincent/clipper)
+- [pngpaste](https://github.com/jcsalterego/pngpaste)
+- [Windows Terminal Actions](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions)

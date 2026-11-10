@@ -29,7 +29,13 @@ $p=Join-Path $env:TEMP 'dotfiles-dl.bat'; curl.exe -fL 'https://raw.githubuserco
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\bin\ssh-mini-clipboard.ps1" t-akira012@192.168.50.100
 ```
 
-このスクリプトは Windows の文字列クリップボードを localhost:2223 で読み出し、SSH の `-R` で Mac mini の localhost:2223 へ転送する。同時に接続の TTY を Mac mini に記録する。tmux は Neovim の `p` または `P` を押したクライアントの TTY で接続元を判定するため、MacBook Pro と同じ tmux セッションを使える。SSH が終了すると読み出し用プロセスと TTY の記録を片付ける。画像はこの経路の対象外。
+このスクリプトは Windows の文字列クリップボードを localhost:2223、画像を localhost:2224 で読み出し、SSH の `-R` で Mac mini へ転送する。同時に接続の TTY を Mac mini に記録する。tmux は Neovim の `p` / `P` / `Ctrl+V` を押したクライアントの TTY で接続元を判定するため、MacBook Pro と同じ tmux セッションを使える。SSH が終了すると読み出し用プロセスと TTY の記録を片付ける。`p` / `P` は文字列、Neovim 挿入モードの `Ctrl+V` は画像を貼り付ける。
+
+[Windows Terminal の既定設定](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions)では `Ctrl+V` は端末の貼り付けになる。Neovim へ `Ctrl+V` を届けるには、Windows Terminal の `settings.json` の既存の `keybindings` 配列に次の項目を追加する。端末の通常の貼り付けには `Ctrl+Shift+V` を使える。更新した `dl.bat` で `bin\` を配置し直した後、SSH を接続し直すと画像用の 2224 番転送が有効になる。
+
+```json
+{ "id": "unbound", "keys": "ctrl+v" }
+```
 
 ```
 dl.bat が行うこと:
