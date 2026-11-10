@@ -159,7 +159,7 @@ Visual `y` には独立した問題もある。現行マッピングは yank 後
 
 ### 11月10日: host → remote のテキスト paste 経路（試験実装）
 
-利用者は、Mac mini の Neovim で `p` を押すと Mac mini 側に保持された文字列が貼り付けられることを観測した。従来の `/usr/bin/pbpaste` は Mac mini 自身のクリップボードを読む。Neovim の paste provider を `sh/host_clipboard_paste.sh` に変更し、接続元から文字列を取得する経路を追加した。`y` の接続元への送信経路は変更していない。Mac と Windows の同時接続ではポートの有無から接続元を推測せず、`p` を押した tmux クライアントの TTY で選ぶ。
+利用者は、Mac mini の Neovim で `p` を押すと Mac mini 側に保持された文字列が貼り付けられることを観測した。従来の `/usr/bin/pbpaste` は Mac mini 自身のクリップボードを読む。Neovim の paste provider を `sh/host_clipboard_paste.sh` に変更し、接続元から文字列を取得する経路を追加した。`y` の接続元への送信経路は変更していない。Mac と Windows の同時接続ではポートの有無から接続元を推測せず、`p` または `P` を押した tmux クライアントの TTY で選ぶ。
 
 #### tmux への依存範囲
 
@@ -170,14 +170,14 @@ tmux はクリップボード転送そのものの必須条件ではない。**�
 ```mermaid
 flowchart LR
   W["Windows の SSH 起動スクリプト"] --> M["接続 TTY の印を Mac mini に記録"]
-  K["Mac / Windows のクライアントが p を押す"] --> T["共有 tmux セッション: 入力元 client_tty を取得"]
+  K["Mac / Windows のクライアントが p / P を押す"] --> T["共有 tmux セッション: 入力元 client_tty を取得"]
   T --> L{"TTY に Windows の印があるか"}
   M --> L
-  L -->|"ある"| FW["M-P → Neovim → Windows paste 転送"]
-  L -->|"ない"| FM["M-p → Neovim → Mac pbpaste 転送"]
+  L -->|"ある"| FW["M-P / M-K → Neovim → Windows paste 転送"]
+  L -->|"ない"| FM["M-p / M-k → Neovim → Mac pbpaste 転送"]
 ```
 
-tmux セッションと pane は共有したまま使う。`M-p` と `M-P` は tmux から Neovim へ送る内部キーであり、挿入モードなどでは元の文字 `p` に戻す。Neovim 以外の pane の `p` は通常のキー入力として送る。Windows の印は SSH 終了時に削除する。接続元の判定対象は `p` の入力であり、`getreg('+')` などキー入力を伴わない読み取りは対象外。隔離した tmux では二つのクライアントの入力元判定、Windows 側の文字列 paste、挿入モードとシェル pane の `p` を確認した。MacBook Pro と Windows の実機から同時に接続する検証は未実施。
+tmux セッションと pane は共有したまま使う。`M-p` / `M-P` は `p`、`M-k` / `M-K` は `P` を Neovim に指示する内部キーであり、挿入モードなどでは元の文字に戻す。Neovim 以外の pane の `p` と `P` は通常のキー入力として送る。Windows の印は SSH 終了時に削除する。接続元の判定対象は `p` / `P` の入力であり、`getreg('+')` などキー入力を伴わない読み取りは対象外。最初の試験実装は paste provider の初回呼び出し直後に取得先を Mac に戻していた。Windows 側からの `p` で Mac の逆転送がないというエラーが出た。このリセットが同じ操作中の再取得に影響する可能性をなくすため、選択した接続元を次の `p` / `P` まで保持するように修正した。隔離した tmux では二つのクライアントの入力元判定、Windows 側の `p` / `P`、挿入モードとシェル pane の `p` を確認した。MacBook Pro と Windows の実機から同時に接続する検証は未実施。
 
 #### MacBook Pro → Mac mini
 
@@ -188,7 +188,7 @@ flowchart LR
     MP --> MS["MacBook Pro の sshd"]
   end
   subgraph REMOTE["Mac mini: SSH 接続先"]
-    NP["Neovim p"] --> HP["host_clipboard_paste.sh"]
+    NP["Neovim p / P"] --> HP["host_clipboard_paste.sh"]
     HP --> RS["ssh -p 2222 localhost pbpaste"]
   end
   RS -->|"SSH RemoteForward 2222 localhost:22"| MS
@@ -207,7 +207,7 @@ flowchart LR
     SSH["ssh-mini-clipboard.ps1"] -->|"ssh -R 127.0.0.1:2223:127.0.0.1:2223"| WF["SSH 転送"]
   end
   subgraph REMOTE["Mac mini: SSH 接続先"]
-    NP["Neovim p"] --> HP["host_clipboard_paste.sh"]
+    NP["Neovim p / P"] --> HP["host_clipboard_paste.sh"]
     HP --> RL["127.0.0.1:2223"]
   end
   WL --> WF --> RL

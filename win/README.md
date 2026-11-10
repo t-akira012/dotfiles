@@ -29,7 +29,7 @@ $p=Join-Path $env:TEMP 'dotfiles-dl.bat'; curl.exe -fL 'https://raw.githubuserco
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\bin\ssh-mini-clipboard.ps1" t-akira012@192.168.50.100
 ```
 
-このスクリプトは Windows の文字列クリップボードを localhost:2223 で読み出し、SSH の `-R` で Mac mini の localhost:2223 へ転送する。同時に接続の TTY を Mac mini に記録する。tmux は Neovim の `p` を押したクライアントの TTY で接続元を判定するため、MacBook Pro と同じ tmux セッションを使える。SSH が終了すると読み出し用プロセスと TTY の記録を片付ける。画像はこの経路の対象外。
+このスクリプトは Windows の文字列クリップボードを localhost:2223 で読み出し、SSH の `-R` で Mac mini の localhost:2223 へ転送する。同時に接続の TTY を Mac mini に記録する。tmux は Neovim の `p` または `P` を押したクライアントの TTY で接続元を判定するため、MacBook Pro と同じ tmux セッションを使える。SSH が終了すると読み出し用プロセスと TTY の記録を片付ける。画像はこの経路の対象外。
 
 ```
 dl.bat が行うこと:
