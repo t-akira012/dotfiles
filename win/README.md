@@ -13,7 +13,29 @@ Windows 11 / Intel N100 の設定手順は [軽量化・高速操作環境構築
 
 ## Install
 
-Windows上のブラウザで `dl.bat` の raw URL を開き、保存して実行する。
+PowerShell から一行で `dl.bat` をダウンロードして実行する:
+
+```powershell
+$p=Join-Path $env:TEMP 'dotfiles-dl.bat'; curl.exe -fL 'https://raw.githubusercontent.com/t-akira012/dotfiles/main/win/dl.bat' -o $p; if ($LASTEXITCODE -ne 0) { throw 'dl.bat download failed' }; & $p
+```
+
+`dl.bat` はバッチファイルなので、保存してから実行する。ブラウザで raw URL を開いて保存する方法も使える。
+
+### Windows Terminal から Mac mini の Neovim に貼り付ける
+
+`dl.bat` で `bin\` を配置した後、PowerShell から接続先を明示して起動する。次は宅内 LAN の Mac mini に接続する例。VPN 経由なら接続先 IP アドレスを置き換える。
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\bin\ssh-mini-clipboard.ps1" t-akira012@192.168.50.100
+```
+
+このスクリプトは Windows の文字列クリップボードを localhost:2223、画像を localhost:2224 で読み出し、SSH の `-R` で Mac mini へ転送する。同時に接続の TTY を Mac mini に記録する。tmux は Neovim の `p` / `P` / `Ctrl+V` を押したクライアントの TTY で接続元を判定するため、MacBook Pro と同じ tmux セッションを使える。SSH が終了すると読み出し用プロセスと TTY の記録を片付ける。`p` / `P` は文字列、Neovim 挿入モードの `Ctrl+V` は画像を貼り付ける。
+
+[Windows Terminal の既定設定](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions)では `Ctrl+V` は端末の貼り付けになる。Neovim へ `Ctrl+V` を届けるには、Windows Terminal の `settings.json` の既存の `keybindings` 配列に次の項目を追加する。端末の通常の貼り付けには `Ctrl+Shift+V` を使える。更新した `dl.bat` で `bin\` を配置し直した後、SSH を接続し直すと画像用の 2224 番転送が有効になる。
+
+```json
+{ "id": "unbound", "keys": "ctrl+v" }
+```
 
 ```
 dl.bat が行うこと:
