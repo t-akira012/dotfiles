@@ -173,11 +173,11 @@ flowchart LR
   K["Mac / Windows のクライアントが p / P を押す"] --> T["共有 tmux セッション: 入力元 client_tty を取得"]
   T --> L{"TTY に Windows の印があるか"}
   M --> L
-  L -->|"ある"| FW["M-P / M-K → Neovim → Windows paste 転送"]
-  L -->|"ない"| FM["M-p / M-k → Neovim → Mac pbpaste 転送"]
+  L -->|"ある"| FW["F10 / F12 → Neovim → Windows paste 転送"]
+  L -->|"ない"| FM["F9 / F11 → Neovim → Mac pbpaste 転送"]
 ```
 
-tmux セッションと pane は共有したまま使う。`M-p` / `M-P` は `p`、`M-k` / `M-K` は `P` を Neovim に指示する内部キーであり、挿入モードなどでは元の文字に戻す。Neovim 以外の pane の `p` と `P` は通常のキー入力として送る。Windows の印は SSH 終了時に削除する。接続元の判定対象は `p` / `P` の入力であり、`getreg('+')` などキー入力を伴わない読み取りは対象外。最初の試験実装は paste provider の初回呼び出し直後に取得先を Mac に戻していた。Windows 側からの `p` で Mac の逆転送がないというエラーが出た。このリセットが同じ操作中の再取得に影響する可能性をなくすため、選択した接続元を次の `p` / `P` まで保持するように修正した。隔離した tmux では二つのクライアントの入力元判定、Windows 側の `p` / `P`、挿入モードとシェル pane の `p` を確認した。MacBook Pro と Windows の実機から同時に接続する検証は未実施。
+tmux セッションと pane は共有したまま使う。`F9` / `F10` は `p`、`F11` / `F12` は `P` を Neovim に指示する内部キーであり、挿入モードなどでは元の文字に戻す。これらは `TERM=screen-256color` で定義されている。先に使った `M-p` は `Esc` と `p` に分かれて通常モードの貼り付けを起こし、`F13` はこの端末設定に定義がなく、同様に貼り付けを起こしたため廃止した。Neovim 以外の pane の `p` と `P` は通常のキー入力として送る。Windows の印は SSH 終了時に削除する。接続元の判定対象は `p` / `P` の入力であり、`getreg('+')` などキー入力を伴わない読み取りは対象外。最初の試験実装は paste provider の初回呼び出し直後に取得先を Mac に戻していた。Windows 側からの `p` で Mac の逆転送がないというエラーが出た。このリセットが同じ操作中の再取得に影響する可能性をなくすため、選択した接続元を次の `p` / `P` まで保持するように修正した。以前の隔離した tmux では二つのクライアントの入力元判定、Windows 側の `p` / `P`、挿入モードとシェル pane の `p` を確認した。MacBook Pro と Windows の実機から同時に接続する検証は未実施。
 
 #### MacBook Pro → Mac mini
 
