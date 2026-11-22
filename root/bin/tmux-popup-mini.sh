@@ -44,7 +44,7 @@ create_ssh_popup_window() {
 		-w '96%' \
 		-h '100%' \
 		-E \
-		"ssh -O exit vpn; ssh -O exit mini
+		"ssh -O exit vpn 2>/dev/null; ssh -O exit mini 2>/dev/null
 		ssh -tt '$SSH_HOST' 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin tmux new-session -A -s $REMOTE_SESSION' || {
 			status=\$?
 			echo
