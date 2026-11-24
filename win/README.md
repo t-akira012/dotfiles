@@ -13,13 +13,21 @@ Windows 11 / Intel N100 の設定手順は [軽量化・高速操作環境構築
 
 ## Install
 
-PowerShell から一行で `dl.bat` をダウンロードして実行する:
+PowerShell から一行で `%USERPROFILE%\dl.bat` に保存して実行する:
 
 ```powershell
-$p=Join-Path $env:TEMP 'dotfiles-dl.bat'; curl.exe -fL 'https://raw.githubusercontent.com/t-akira012/dotfiles/main/win/dl.bat' -o $p; if ($LASTEXITCODE -ne 0) { throw 'dl.bat download failed' }; & $p
+$p=Join-Path $env:USERPROFILE 'dl.bat'; curl.exe -fL 'https://raw.githubusercontent.com/t-akira012/dotfiles/main/win/dl.bat' -o $p; if ($LASTEXITCODE -ne 0) { throw 'dl.bat download failed' }; & $p
 ```
 
 `dl.bat` はバッチファイルなので、保存してから実行する。ブラウザで raw URL を開いて保存する方法も使える。
+
+次回からは、保存済みの入口を PowerShell で実行するだけでよい。
+
+```powershell
+& "$env:USERPROFILE\dl.bat"
+```
+
+`dl.bat` は Windows 標準の `curl.exe` で毎回 main の最新 `setup.bat` を一時ディレクトリに取得し、取得に成功した場合だけ実行する薄い入口。実行中の `dl.bat` 自体は上書きしない。取得失敗時はセットアップを実行せず終了コード1を返す。セットアップの終了コードは呼び出し元へ引き継ぎ、成功時には取得した一時スクリプトを削除する。失敗時はその保存先を表示して残す。
 
 ### Windows Terminal から Mac mini の Neovim に貼り付ける
 
@@ -38,7 +46,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\bin\ss
 ```
 
 ```
-dl.bat が行うこと:
+dl.bat が取得・実行する setup.bat が行うこと:
 1. GitHubからdotfiles main zipをDL・展開
 2. %USERPROFILE%\Tools\ と %USERPROFILE%\.dir_history がなければ作成
 3. bin\ を %USERPROFILE%\bin\ に上書きコピー
