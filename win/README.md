@@ -74,6 +74,7 @@ C:\Users\{WIN_USERNAME}\
 ├── bin\
 │   ├── cmdrun.bat      エントリーポイント
 │   ├── init.macros     doskey マクロ定義（エイリアス集約）
+│   ├── paths.txt       cmdrun・Neovim共通のPATH追加先（ホームからの相対パス）
 │   ├── _cd.bat         cd置換（履歴記録付き）
 │   ├── l.bat           サブディレクトリをfzfで選択してジャンプ
 │   ├── z.bat           過去の移動履歴からfzfでジャンプ
@@ -118,6 +119,8 @@ C:\Users\{WIN_USERNAME}\
 ### エントリーポイント
 
 `cmdrun` を実行すると、UTF-8化・PATH設定・マクロ読込を行った新しいcmd.exeが起動する。
+
+PATH の追加先は `%USERPROFILE%\bin\paths.txt` に1行ずつ、ホームからの相対パスで定義する。`cmdrun.bat` は `for /f` で一覧を読み、サブルーチンで各行に `%USERPROFILE%\` を付けて PATH に追加する。Neovim の設定もプラグイン初期化前に同じ一覧を読み、未登録のパスを追加するため、Neovim を直接起動しても Git などを利用できる。ユーザー環境変数の PATH は変更しない。
 
 エイリアスは `init.macros` に `doskey /macrofile` 形式で集約されている。
 

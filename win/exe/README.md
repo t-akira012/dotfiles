@@ -15,7 +15,7 @@
 * neovim (`nvim-win64\bin\nvim.exe`)
 * git / git-bash (PortableGit → `git-bash\`)
 
-PATH は `cmdrun.bat` で設定済み。
+PATH の追加先は `%USERPROFILE%\bin\paths.txt` に集約し、`cmdrun.bat` と Neovim 設定が読み込む。Git 用には `git-bash\cmd` も含む。ユーザー環境変数の PATH は変更しない。
 
 ## install_plemoljp_nf.bat でフォントを導入
 
