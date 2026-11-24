@@ -26,6 +26,11 @@ if errorlevel 1 goto :fail
 xcopy /s /e /y "%TEMP_DIR%\kickstart.nvim-main\*" "%DEST%\"
 if errorlevel 1 goto :fail
 
+echo.
+echo Checking default Neovim config path ...
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0link_nvim_config.ps1"
+if errorlevel 1 goto :fail
+
 rd /s /q "%TEMP_DIR%"
 echo.
 echo Done!

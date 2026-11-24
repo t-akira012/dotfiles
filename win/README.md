@@ -49,6 +49,7 @@ dl.bat が行うこと:
 8. install/ のスクリプトを %USERPROFILE%\exe\install\ に配置し、install_exefiles.bat と update_nvim.bat を実行
    （fzf, ghq, fd, eza, bat, rg, nvim, git-bash を既存でなければDL）
    （Neovim 設定は既存の %USERPROFILE%\.config\nvim\ を削除して kickstart.nvim に置き換え）
+   （%LOCALAPPDATA%\nvim から設定配置先へのジャンクションを作成。既存パスの競合は手動対応）
 9. install_plemoljp_nf.bat を実行し、PlemolJP NF を現在のユーザーに導入
 10. install_apps.bat を %USERPROFILE%\exe\install\ に配置（winget からのアプリ導入は手動実行）
 11. install/create_startup.bat を実行し、Keyhac と CLISM excellent をスタートアップに登録
@@ -111,6 +112,27 @@ C:\Users\{WIN_USERNAME}\
 `cmdrun` を実行すると、UTF-8化・PATH設定・マクロ読込を行った新しいcmd.exeが起動する。
 
 エイリアスは `init.macros` に `doskey /macrofile` 形式で集約されている。
+
+### Neovim が起動方法によって設定を読まない場合
+
+`cmdrun.bat` は `XDG_CONFIG_HOME=%USERPROFILE%\.config` を設定する。それ以外の起動方法でこの環境変数が未設定なら、Neovim は既定の `%LOCALAPPDATA%\nvim` を探す。`update_nvim.bat` は両方が同じ設定を参照できるようジャンクションを作成する。
+
+設定を読む起動方法と読まない起動方法の両方で、Neovim 内から次を確認する。
+
+```vim
+:echo stdpath('config')
+:echo $MYVIMRC
+:echo $XDG_CONFIG_HOME
+:echo $NVIM_APPNAME
+```
+
+`stdpath('config')` は探索先、`$MYVIMRC` は読み込んだ設定ファイルを示す。PowerShell では次で既定パスの種類と参照先を確認できる。
+
+```powershell
+Get-Item -LiteralPath "$env:LOCALAPPDATA\nvim" -Force | Format-List FullName,LinkType,Target
+```
+
+既存フォルダーや別のリンクがある場合、自動処理は上書きしない。[ジャンクション作成スクリプトの再実行手順](exe/README.md#update_nvimbat-で-nvim-設定を更新)を参照。`XDG_CONFIG_HOME` が別の場所を指す場合や `NVIM_APPNAME` が設定されている場合は、その値に応じて探索先が変わるため、起動元の環境変数も確認する。`-u`、`--clean`、`-u NONE` などの起動引数も確認する。
 
 ### ディレクトリ移動
 

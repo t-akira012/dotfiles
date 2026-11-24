@@ -33,6 +33,12 @@ PATH は `cmdrun.bat` で設定済み。
 
 設定の配置に失敗した場合、ZIP と展開済み設定を `%USERPROFILE%\Downloads\tmp` に残し、手動コピー元を表示する。
 
+設定配置後、`link_nvim_config.ps1` が `%LOCALAPPDATA%\nvim` から `%USERPROFILE%\.config\nvim` へのジャンクションを作成する。同じ参照先のジャンクションがあれば成功としてスキップする。通常フォルダー・ファイル・別の参照先へのリンクがあれば変更せず、確認対象を表示して終了コード1を返す。必要な設定を退避して競合を解消した後は、この PowerShell スクリプトだけを再実行できる。
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\exe\install\link_nvim_config.ps1"
+```
+
 ## create_startup.bat で常駐ソフトを登録
 
 `%USERPROFILE%\exe\install\create_startup.bat` は `%USERPROFILE%\Tools\keyhac\Keyhac.exe` と `%USERPROFILE%\Tools\clism\CLISM64.EXE` のショートカットを、現在のユーザーのスタートアップフォルダーに作成する。再実行すると同じショートカットを更新する。`dl.bat` からも毎回呼び出す。
