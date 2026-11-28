@@ -15,7 +15,7 @@
 * neovim (`nvim-win64\bin\nvim.exe`)
 * git / git-bash (PortableGit → `git-bash\`)
 
-PATH は `cmdrun.bat` で設定済み。
+PATH の追加先は `%USERPROFILE%\bin\paths.txt` に集約し、`cmdrun.bat` と Neovim 設定が読み込む。Git 用には `git-bash\cmd` も含む。ユーザー環境変数の PATH は変更しない。
 
 ## install_plemoljp_nf.bat でフォントを導入
 
@@ -32,6 +32,12 @@ PATH は `cmdrun.bat` で設定済み。
 `%USERPROFILE%\exe\install\update_nvim.bat` を実行すると、`t-akira012/kickstart.nvim` の main ブランチ zip を取得し、既存の `%USERPROFILE%\.config\nvim` を削除してから設定を配置する。削除に失敗した場合は処理を中止する。`dl.bat` からも毎回呼び出す。
 
 設定の配置に失敗した場合、ZIP と展開済み設定を `%USERPROFILE%\Downloads\tmp` に残し、手動コピー元を表示する。
+
+設定配置後、`link_nvim_config.ps1` が `%LOCALAPPDATA%\nvim` から `%USERPROFILE%\.config\nvim` へのジャンクションを作成する。同じ参照先のジャンクションがあれば成功としてスキップする。通常フォルダー・ファイル・別の参照先へのリンクがあれば変更せず、確認対象を表示して終了コード1を返す。必要な設定を退避して競合を解消した後は、この PowerShell スクリプトだけを再実行できる。
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\exe\install\link_nvim_config.ps1"
+```
 
 ## create_startup.bat で常駐ソフトを登録
 

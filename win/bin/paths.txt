@@ -1,0 +1,6 @@
+bin
+exe
+exe\git-bash\cmd
+exe\git-bash\bin
+exe\git-bash\usr\bin
+exe\nvim-win64\bin

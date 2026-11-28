@@ -263,7 +263,7 @@ td:first-child{font-weight:600}
 <p><strong>確認条件:</strong> 「通知」が「オフ」、2つのチェックボックスが空欄であること。</p>
 </section>
 <section id="s12"><h2>12. キーボードのリピート高速化（標準設定＋FilterKeys）</h2>
-<p>Windows標準のキーボード設定は最速値を保持し、フィルターキー機能（第13章）で初回リピート遅延200ms・リピート間隔20ms（設定値換算50回/秒）を指定します。</p>
+<p>Windows標準のキーボード設定は最速値を保持し、フィルターキー機能（第13章）で初回リピート遅延200ms・リピート間隔15ms（設定値換算約67回/秒）を指定します。</p>
 <h3>12.1 Windows標準設定（KeyboardDelay=0・KeyboardSpeed=31）</h3>
 <p><strong>GUI操作</strong></p>
 <ol>
@@ -283,7 +283,7 @@ td:first-child{font-weight:600}
 <li>パス: <code>HKCU\Control Panel\Keyboard</code> ／ 値名: <code>KeyboardSpeed</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>31</code></li>
 </ul>
 <p><strong>確認条件:</strong> レジストリが <code>KeyboardDelay=0</code>、<code>KeyboardSpeed=31</code>。</p>
-<p><strong>補足:</strong> <code>KeyboardDelay=0</code> と <code>KeyboardSpeed=31</code> はWindows標準の最速値です。標準設定だけでは20ms間隔を指定できないため、実際のリピートは第13章のFilterKeysで設定します。</p>
+<p><strong>補足:</strong> <code>KeyboardDelay=0</code> と <code>KeyboardSpeed=31</code> はWindows標準の最速値です。標準設定だけでは15ms間隔を指定できないため、実際のリピートは第13章のFilterKeysで設定します。</p>
 </section>
 <section id="s13"><h2>13. 固定キー・フィルターキー・切り替えキー</h2>
 <p>アクセシビリティの「キーボード」画面を起点に、3機能と3ショートカットをまとめて設定します。</p>
@@ -300,9 +300,9 @@ td:first-child{font-weight:600}
 <div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd12">コピー</button></div><pre><code id="cmd12">Set-ItemProperty -Path &#39;HKCU:\Control Panel\Accessibility\StickyKeys&#39; -Name Flags -Value &#39;506&#39;</code></pre></div>
 <p><strong>フラグ確認</strong></p>
 <div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd13">コピー</button></div><pre><code id="cmd13">Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\StickyKeys&#39; | Select-Object Flags</code></pre></div>
-<p><strong>フィルターキー：初回リピート200ms・間隔20ms（ショートカット無効）</strong></p>
+<p><strong>フィルターキー：初回リピート200ms・間隔15ms（ショートカット無効）</strong></p>
 <p><code>Keyboard Response</code> の同じレジストリキーにまとめて設定します。入力受付遅延は1ms、バウンス時間は0msです。</p>
-<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd14">コピー</button></div><pre><code id="cmd14">$p=&#39;HKCU:\Control Panel\Accessibility\Keyboard Response&#39;; Set-ItemProperty -Path $p -Name AutoRepeatDelay -Value &#39;200&#39;; Set-ItemProperty -Path $p -Name AutoRepeatRate -Value &#39;20&#39;; Set-ItemProperty -Path $p -Name DelayBeforeAcceptance -Value &#39;1&#39;; Set-ItemProperty -Path $p -Name BounceTime -Value &#39;0&#39;; Set-ItemProperty -Path $p -Name Flags -Value &#39;59&#39;</code></pre></div>
+<div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd14">コピー</button></div><pre><code id="cmd14">$p=&#39;HKCU:\Control Panel\Accessibility\Keyboard Response&#39;; Set-ItemProperty -Path $p -Name AutoRepeatDelay -Value &#39;200&#39;; Set-ItemProperty -Path $p -Name AutoRepeatRate -Value &#39;15&#39;; Set-ItemProperty -Path $p -Name DelayBeforeAcceptance -Value &#39;1&#39;; Set-ItemProperty -Path $p -Name BounceTime -Value &#39;0&#39;; Set-ItemProperty -Path $p -Name Flags -Value &#39;59&#39;</code></pre></div>
 <p><strong>設定値の確認</strong></p>
 <div class="cmd"><div class="cmd-head"><span>PowerShell</span><button type="button" data-copy="cmd15">コピー</button></div><pre><code id="cmd15">Get-ItemProperty &#39;HKCU:\Control Panel\Accessibility\Keyboard Response&#39; | Select-Object Flags,AutoRepeatDelay,AutoRepeatRate,DelayBeforeAcceptance,BounceTime</code></pre></div>
 <p><strong>切り替えキーのフラグを58に設定</strong></p>
@@ -312,10 +312,10 @@ td:first-child{font-weight:600}
 <p><strong>対応レジストリ</strong></p>
 <ul>
 <li>パス: <code>HKCU\Control Panel\Accessibility\StickyKeys</code> ／ 値名: <code>Flags</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>506</code></li>
-<li>パス: <code>HKCU\Control Panel\Accessibility\Keyboard Response</code> ／ 型: <code>REG_SZ</code> ／ <code>Flags=59</code>、<code>AutoRepeatDelay=200</code>、<code>AutoRepeatRate=20</code>、<code>DelayBeforeAcceptance=1</code>、<code>BounceTime=0</code>（時間値の単位はms）</li>
+<li>パス: <code>HKCU\Control Panel\Accessibility\Keyboard Response</code> ／ 型: <code>REG_SZ</code> ／ <code>Flags=59</code>、<code>AutoRepeatDelay=200</code>、<code>AutoRepeatRate=15</code>、<code>DelayBeforeAcceptance=1</code>、<code>BounceTime=0</code>（時間値の単位はms）</li>
 <li>パス: <code>HKCU\Control Panel\Accessibility\ToggleKeys</code> ／ 値名: <code>Flags</code> ／ 型: <code>REG_SZ</code> ／ 値: <code>58</code></li>
 </ul>
-<p><strong>確認条件:</strong> 固定キーと切り替えキーは「オフ」、フィルターキーは「オン」、3つの有効化ショートカットは「オフ」。<code>Flags</code> は順に <code>506</code>・<code>59</code>・<code>58</code>。FilterKeysのリピート設定は <code>AutoRepeatDelay=200ms</code>、<code>AutoRepeatRate=20ms</code>。変更後はサインアウト・再サインインして反映を確認します。</p>
+<p><strong>確認条件:</strong> 固定キーと切り替えキーは「オフ」、フィルターキーは「オン」、3つの有効化ショートカットは「オフ」。<code>Flags</code> は順に <code>506</code>・<code>59</code>・<code>58</code>。FilterKeysのリピート設定は <code>AutoRepeatDelay=200ms</code>、<code>AutoRepeatRate=15ms</code>。変更後はサインアウト・再サインインして反映を確認します。</p>
 </section>
 <section id="s14"><h2>14. 入力候補・自動修正・スペルチェック</h2>
 <p>「設定 → 時刻と言語 → 入力」の1画面にある4設定をまとめて操作します。</p>
