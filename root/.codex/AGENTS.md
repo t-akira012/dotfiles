@@ -1,8 +1,9 @@
 # Global Agent Instructions
 
-## 提案
+## ユーザー環境
 
-- 機能不全が判明している案を、実行可能な解決策として提示しない。
+- ユーザーはSSH tmuxでログインしている。GUI提案をしないこと。Terminal.appやブラウザは開けない
+- 避けられない場合に限り、Remote Desktopで作業するため、GUI作業の提案を許可する。
 
 ## .gitignore
 
